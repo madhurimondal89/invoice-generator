@@ -222,6 +222,7 @@ export default function InvoiceForm({
   // Update shared state when form data changes
   useEffect(() => {
     const subscription = form.watch((value) => {
+      console.log("Form data changed:", value);
       onDataChange?.(value);
     });
     return () => subscription.unsubscribe();
@@ -235,8 +236,16 @@ export default function InvoiceForm({
   // Initialize shared state with default values
   useEffect(() => {
     const initialData = form.getValues();
+    console.log("Initializing form data:", initialData);
     onDataChange?.(initialData);
   }, [form, onDataChange]);
+  
+  // Force update on mount with all current values
+  useEffect(() => {
+    const currentValues = form.getValues();
+    console.log("Form mounted with values:", currentValues);
+    onDataChange?.(currentValues);
+  }, []);
 
   // Calculate totals
   const subtotal = lineItems.reduce((sum, item) => sum + item.amount, 0);

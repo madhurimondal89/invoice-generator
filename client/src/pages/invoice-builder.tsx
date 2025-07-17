@@ -21,7 +21,13 @@ export default function InvoiceBuilder() {
   const [logoPreview, setLogoPreview] = useState<string>("");
   
   // Debug logging to track state changes
-  console.log("Invoice Builder State:", { formData, lineItems, logoPreview });
+  console.log("Invoice Builder State Updated:", { 
+    formData, 
+    lineItems, 
+    logoPreview,
+    formDataKeys: Object.keys(formData),
+    hasFormData: Object.keys(formData).length > 0
+  });
 
   // Check if we're editing an existing invoice
   const invoiceId = params.id ? parseInt(params.id) : null;
