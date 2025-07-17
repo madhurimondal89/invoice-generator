@@ -323,7 +323,7 @@ export default function Home() {
                 >
                   <Plus className="mr-3 h-6 w-6" />
                   <div className="text-left">
-                    <p className="font-medium">Create New Invoice</p>
+                    <p className="font-medium">Create New Doc</p>
                     <p className="text-sm text-gray-600">Start with a blank invoice</p>
                   </div>
                 </Button>
