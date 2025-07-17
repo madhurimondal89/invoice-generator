@@ -36,6 +36,7 @@ export interface IStorage {
   deleteInvoiceLineItem(id: number): Promise<boolean>;
   
   // Template operations
+  getTemplates(): Promise<InvoiceTemplate[]>;
   getInvoiceTemplates(): Promise<InvoiceTemplate[]>;
   getInvoiceTemplate(id: number): Promise<InvoiceTemplate | undefined>;
   createInvoiceTemplate(template: InsertInvoiceTemplate): Promise<InvoiceTemplate>;
@@ -140,11 +141,64 @@ export class DatabaseStorage implements IStorage {
   }
 
   // Template operations
+  async getTemplates(): Promise<InvoiceTemplate[]> {
+    return await this.getInvoiceTemplates();
+  }
+
   async getInvoiceTemplates(): Promise<InvoiceTemplate[]> {
-    return await db
-      .select()
-      .from(invoiceTemplates)
-      .where(eq(invoiceTemplates.isActive, true));
+    const existingTemplates = await db.select().from(invoiceTemplates);
+    
+    // If no templates exist, create default ones
+    if (existingTemplates.length === 0) {
+      await this.createDefaultTemplates();
+      return await db.select().from(invoiceTemplates);
+    }
+    
+    return existingTemplates;
+  }
+
+  private async createDefaultTemplates(): Promise<void> {
+    const defaultTemplates = [
+      {
+        name: "Classic White",
+        description: "Clean and professional design",
+        category: "classic",
+        documentType: "invoice",
+        templateData: { primaryColor: "#1f2937", bgColor: "#ffffff" }
+      },
+      {
+        name: "Modern Blue", 
+        description: "Contemporary blue theme",
+        category: "modern",
+        documentType: "invoice", 
+        templateData: { primaryColor: "#2563eb", bgColor: "#f8fafc" }
+      },
+      {
+        name: "Green Quote",
+        description: "Professional quote template",
+        category: "modern",
+        documentType: "quote",
+        templateData: { primaryColor: "#059669", bgColor: "#f0fdf4" }
+      },
+      {
+        name: "Red Credit Note",
+        description: "Credit note template", 
+        category: "modern",
+        documentType: "credit_note",
+        templateData: { primaryColor: "#dc2626", bgColor: "#fef2f2" }
+      },
+      {
+        name: "Purple Purchase Order",
+        description: "Purchase order template",
+        category: "modern",
+        documentType: "purchase_order", 
+        templateData: { primaryColor: "#7c3aed", bgColor: "#faf5ff" }
+      }
+    ];
+
+    for (const template of defaultTemplates) {
+      await db.insert(invoiceTemplates).values(template);
+    }
   }
 
   async getInvoiceTemplate(id: number): Promise<InvoiceTemplate | undefined> {
