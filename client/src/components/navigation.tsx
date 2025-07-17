@@ -38,9 +38,7 @@ export default function Navigation() {
             <button
               onClick={() => setLocation("/")}
               className="text-xl font-bold text-primary hover:text-primary/80"
-            >
-              Invoice Home
-            </button>
+            >Invoice Pro</button>
           </div>
 
           {/* Main Navigation */}
@@ -131,7 +129,6 @@ export default function Navigation() {
           </div>
         </div>
       </div>
-
       {/* Mobile Menu */}
       <div className="md:hidden border-t">
         <div className="px-4 py-3 space-y-2">
