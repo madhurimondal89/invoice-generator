@@ -65,15 +65,7 @@ export default function Home() {
                 Manage your invoices and get paid faster
               </p>
             </div>
-            <div className="mt-4 sm:mt-0">
-              <Button
-                onClick={() => setLocation("/invoice/new")}
-                className="btn-accent"
-              >
-                <Plus className="mr-2 h-5 w-5" />
-                Create Invoice
-              </Button>
-            </div>
+
           </div>
         </div>
       </div>

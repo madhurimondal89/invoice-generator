@@ -13,7 +13,8 @@ import PurchaseOrderBuilder from "@/pages/purchase-order-builder";
 import Templates from "@/pages/templates";
 import Invoices from "@/pages/invoices";
 import NotFound from "@/pages/not-found";
-import Header from "@/components/layout/header";
+import Navigation from "@/components/navigation";
+import FloatingActionButton from "@/components/floating-action-button";
 import Footer from "@/components/layout/footer";
 
 function Router() {
@@ -30,7 +31,7 @@ function Router() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Header />
+      <Navigation />
       <main className="flex-1">
         <Switch>
           {!isAuthenticated ? (
@@ -56,6 +57,7 @@ function Router() {
           <Route component={NotFound} />
         </Switch>
       </main>
+      {isAuthenticated && <FloatingActionButton />}
       <Footer />
     </div>
   );
