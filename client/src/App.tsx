@@ -14,8 +14,9 @@ import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 
 function Router() {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading, error } = useAuth();
 
+  // Show loading only for a short period, then show unauthenticated state
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
