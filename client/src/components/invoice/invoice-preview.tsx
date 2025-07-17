@@ -58,6 +58,30 @@ export default function InvoicePreview({
       };
     }
     
+    // Document type specific styling
+    if (template?.documentType === 'credit_note') {
+      return {
+        ...baseStyles,
+        headerBg: "bg-gradient-to-r from-red-50 to-red-100",
+        accentColor: "text-red-600",
+        borderColor: "border-red-200"
+      };
+    } else if (template?.documentType === 'quote') {
+      return {
+        ...baseStyles,
+        headerBg: "bg-gradient-to-r from-green-50 to-green-100",
+        accentColor: "text-green-600",
+        borderColor: "border-green-200"
+      };
+    } else if (template?.documentType === 'purchase_order') {
+      return {
+        ...baseStyles,
+        headerBg: "bg-gradient-to-r from-purple-50 to-purple-100",
+        accentColor: "text-purple-600",
+        borderColor: "border-purple-200"
+      };
+    }
+    
     return baseStyles;
   };
   
@@ -97,7 +121,9 @@ export default function InvoicePreview({
           {/* Header */}
           <div className={`invoice-header ${styles.headerBg} -m-8 p-8 mb-8 ${styles.borderColor} border-b`}>
             <div>
-              <h1 className={`invoice-title ${styles.accentColor} ${styles.primaryFont}`}>INVOICE</h1>
+              <h1 className={`invoice-title ${styles.accentColor} ${styles.primaryFont}`}>
+                {template?.templateData?.documentLabel || 'INVOICE'}
+              </h1>
               <p className={`invoice-number ${styles.accentColor}`}>
                 # {data.invoiceNumber || "INV-001"}
               </p>

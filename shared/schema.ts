@@ -38,12 +38,13 @@ export const users = pgTable("users", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
-// Invoice templates table
+// Document templates table (supports invoices, quotes, credit notes, purchase orders)
 export const invoiceTemplates = pgTable("invoice_templates", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 255 }).notNull(),
   description: text("description"),
   category: varchar("category", { length: 100 }).notNull(),
+  documentType: varchar("document_type", { length: 50 }).default("invoice"),
   previewImage: varchar("preview_image"),
   templateData: jsonb("template_data").notNull(),
   isActive: boolean("is_active").default(true),

@@ -83,8 +83,17 @@ const categories = [
   { value: "minimal", label: "Minimal" },
 ];
 
+const documentTypes = [
+  { value: "all", label: "All Documents" },
+  { value: "invoice", label: "Invoice Templates" },
+  { value: "quote", label: "Quote Templates" },
+  { value: "credit_note", label: "Credit Note Templates" },
+  { value: "purchase_order", label: "Purchase Order Templates" },
+];
+
 export default function Templates() {
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedDocumentType, setSelectedDocumentType] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
   const [, setLocation] = useLocation();
   const { isAuthenticated } = useAuth();
@@ -99,14 +108,23 @@ export default function Templates() {
 
   const filteredTemplates = allTemplates.filter((template: any) => {
     const matchesCategory = selectedCategory === "all" || template.category === selectedCategory;
+    const matchesDocumentType = selectedDocumentType === "all" || template.documentType === selectedDocumentType;
     const matchesSearch = template.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          template.description.toLowerCase().includes(searchTerm.toLowerCase());
-    return matchesCategory && matchesSearch;
+    return matchesCategory && matchesDocumentType && matchesSearch;
   });
 
-  const handleUseTemplate = (templateId: number) => {
+  const handleUseTemplate = (templateId: number, documentType: string) => {
     if (isAuthenticated) {
-      setLocation(`/invoice/new?template=${templateId}`);
+      // Route to appropriate document builder based on document type
+      const routes = {
+        'invoice': '/invoice/new',
+        'quote': '/quote/new',
+        'credit_note': '/credit-note/new',
+        'purchase_order': '/purchase-order/new'
+      };
+      const route = routes[documentType as keyof typeof routes] || '/invoice/new';
+      setLocation(`${route}?template=${templateId}`);
     } else {
       window.location.href = "/api/login";
     }
@@ -127,10 +145,10 @@ export default function Templates() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              Invoice Templates
+              Document Templates
             </h1>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Choose from our collection of professional invoice templates designed to impress your clients
+              Choose from our collection of professional templates for invoices, quotes, credit notes, and purchase orders
             </p>
           </div>
         </div>
@@ -138,7 +156,7 @@ export default function Templates() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Filters */}
-        <div className="mb-8">
+        <div className="mb-8 space-y-4">
           <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
             {/* Search */}
             <div className="relative flex-1 max-w-md">
@@ -166,6 +184,21 @@ export default function Templates() {
               ))}
             </div>
           </div>
+          
+          {/* Document Type filters */}
+          <div className="flex flex-wrap gap-2 justify-center">
+            {documentTypes.map((docType) => (
+              <Button
+                key={docType.value}
+                variant={selectedDocumentType === docType.value ? "default" : "outline"}
+                size="sm"
+                onClick={() => setSelectedDocumentType(docType.value)}
+                className={selectedDocumentType === docType.value ? "bg-blue-600 text-white" : ""}
+              >
+                {docType.label}
+              </Button>
+            ))}
+          </div>
         </div>
 
         {/* Results count */}
@@ -188,7 +221,7 @@ export default function Templates() {
                   />
                   <div className="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
                     <Button
-                      onClick={() => handleUseTemplate(template.id)}
+                      onClick={() => handleUseTemplate(template.id, template.documentType)}
                       className="bg-white text-gray-900 hover:bg-gray-100"
                     >
                       <FileText className="mr-2 h-4 w-4" />
@@ -200,9 +233,22 @@ export default function Templates() {
                 <div className="p-4">
                   <div className="flex items-center justify-between mb-2">
                     <h3 className="font-semibold text-gray-900">{template.name}</h3>
-                    <Badge variant="secondary" className="text-xs capitalize">
-                      {template.category}
-                    </Badge>
+                    <div className="flex gap-2">
+                      <Badge variant="secondary" className="text-xs capitalize">
+                        {template.category}
+                      </Badge>
+                      <Badge 
+                        variant="outline" 
+                        className={`text-xs ${
+                          template.documentType === 'invoice' ? 'bg-blue-50 text-blue-600 border-blue-200' :
+                          template.documentType === 'quote' ? 'bg-green-50 text-green-600 border-green-200' :
+                          template.documentType === 'credit_note' ? 'bg-red-50 text-red-600 border-red-200' :
+                          'bg-purple-50 text-purple-600 border-purple-200'
+                        }`}
+                      >
+                        {template.documentType?.replace('_', ' ').toUpperCase() || 'INVOICE'}
+                      </Badge>
+                    </div>
                   </div>
                   
                   <p className="text-sm text-gray-600 mb-4 line-clamp-2">
@@ -214,7 +260,7 @@ export default function Templates() {
                       Free
                     </Badge>
                     <Button
-                      onClick={() => handleUseTemplate(template.id)}
+                      onClick={() => handleUseTemplate(template.id, template.documentType)}
                       variant="ghost"
                       size="sm"
                       className="text-primary hover:text-blue-700"
@@ -240,6 +286,7 @@ export default function Templates() {
               onClick={() => {
                 setSearchTerm("");
                 setSelectedCategory("all");
+                setSelectedDocumentType("all");
               }}
               variant="outline"
             >
