@@ -133,7 +133,7 @@ export default function InvoicePreview({
     <div className="space-y-4">
       {/* Preview Actions */}
       <div className="flex justify-between items-center">
-        <h3 className="text-lg font-semibold text-gray-900">Invoice Preview</h3>
+        <h3 className="text-lg font-semibold text-gray-900">Preview</h3>
         <div className="flex gap-2">
           <Button variant="outline" size="sm" title="Zoom Out">
             <Eye className="h-4 w-4" />
@@ -145,7 +145,6 @@ export default function InvoicePreview({
           )}
         </div>
       </div>
-
       {/* Invoice Preview */}
       <Card className="invoice-preview">
         <CardContent className="p-8">
