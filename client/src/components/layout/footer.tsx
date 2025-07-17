@@ -53,9 +53,7 @@ export default function Footer() {
                 <button className="text-gray-300 hover:text-white transition-colors">Credit Notes</button>
               </li>
               <li>
-                <button className="text-gray-300 hover:text-white transition-colors">
-                  Mobile Apps
-                </button>
+                <button className="text-gray-300 hover:text-white transition-colors">Purchese Orders</button>
               </li>
             </ul>
           </div>
