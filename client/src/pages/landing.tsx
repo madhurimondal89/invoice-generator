@@ -107,9 +107,7 @@ export default function Landing() {
         <div className="hero-content">
           <div className="hero-grid">
             <div>
-              <h1 className="hero-title">
-                100 Free Invoice Templates
-              </h1>
+              <h1 className="hero-title">Free Invoice Templates</h1>
               <p className="hero-description">
                 Create professional invoices in minutes. Choose from 100+ beautiful templates, 
                 customize with your brand, and get paid faster with integrated payment options.
@@ -161,7 +159,6 @@ export default function Landing() {
           </div>
         </div>
       </section>
-
       {/* How It Works Section */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -186,7 +183,6 @@ export default function Landing() {
           </div>
         </div>
       </section>
-
       {/* Template Gallery Section */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -231,7 +227,6 @@ export default function Landing() {
           </div>
         </div>
       </section>
-
       {/* Features Section */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -253,7 +248,6 @@ export default function Landing() {
           </div>
         </div>
       </section>
-
       {/* Payment Gateways Section */}
       <section className="py-12 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -278,7 +272,6 @@ export default function Landing() {
           </div>
         </div>
       </section>
-
       {/* Mobile App Section */}
       <section className="py-16 bg-primary text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -328,7 +321,6 @@ export default function Landing() {
           </div>
         </div>
       </section>
-
       {/* CTA Section */}
       <section className="py-16 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
