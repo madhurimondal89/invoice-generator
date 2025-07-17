@@ -69,7 +69,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Document Types Overview */}
         <div className="mb-8">
@@ -167,7 +166,7 @@ export default function Home() {
                 <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
                   <CheckCircle className="h-6 w-6 text-purple-600" />
                 </div>
-                <h3 className="font-bold text-lg mb-2">PDF Export & Email</h3>
+                <h3 className="font-bold text-lg mb-2">PDF Export</h3>
                 <p className="text-gray-600 text-sm">
                   Generate professional PDFs and send documents directly to clients via email
                 </p>

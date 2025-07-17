@@ -317,6 +317,31 @@ export default function InvoicePreview({
             </div>
           </div>
 
+          {/* Payment Information */}
+          {(data.bankName || data.accountNumber || data.paymentInstructions) && (
+            <div className="mt-8 pt-6 border-t border-gray-200">
+              <h3 className={`font-medium ${styles.accentColor} mb-4`}>Payment Information</h3>
+              {(data.bankName || data.accountNumber || data.routingNumber) && (
+                <div className="mb-4">
+                  <h4 className="font-medium text-gray-900 mb-2">Bank Details:</h4>
+                  <div className="text-sm text-gray-600 space-y-1">
+                    {data.bankName && <p>Bank: {data.bankName}</p>}
+                    {data.accountNumber && <p>Account: {data.accountNumber}</p>}
+                    {data.routingNumber && <p>Routing: {data.routingNumber}</p>}
+                  </div>
+                </div>
+              )}
+              {data.paymentInstructions && (
+                <div>
+                  <h4 className="font-medium text-gray-900 mb-2">Payment Instructions:</h4>
+                  <div className="text-sm text-gray-600 whitespace-pre-wrap">
+                    {data.paymentInstructions}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
           {/* Notes and Terms */}
           {(data.notes || data.terms) && (
             <div className="mt-8 pt-6 border-t border-gray-200">

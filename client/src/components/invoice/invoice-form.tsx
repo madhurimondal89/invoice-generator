@@ -66,12 +66,28 @@ const invoiceFormSchema = z.object({
   clientEmail: z.string().email("Valid client email is required"),
   clientAddress: z.string().min(1, "Client address is required"),
   
+  // Shipping information
+  shipToName: z.string().optional(),
+  shipToAddress: z.string().optional(),
+  shipToCity: z.string().optional(),
+  shipToState: z.string().optional(),
+  shipToZip: z.string().optional(),
+  shipToCountry: z.string().optional(),
+  shipToEmail: z.string().optional(),
+  
   invoiceNumber: z.string().min(1, "Invoice number is required"),
   issueDate: z.string().min(1, "Issue date is required"),
   dueDate: z.string().min(1, "Due date is required"),
   
   taxRate: z.number().min(0).max(100),
   discount: z.number().min(0),
+  shippingCost: z.number().min(0),
+  
+  // Payment information
+  bankName: z.string().optional(),
+  accountNumber: z.string().optional(),
+  routingNumber: z.string().optional(),
+  paymentInstructions: z.string().optional(),
   
   notes: z.string().optional(),
   terms: z.string().optional(),
@@ -130,6 +146,15 @@ export default function InvoiceForm({
       clientEmail: invoice?.clientEmail || "",
       clientAddress: invoice?.clientAddress || "",
       
+      // Shipping defaults
+      shipToName: invoice?.shipToName || "",
+      shipToAddress: invoice?.shipToAddress || "",
+      shipToCity: invoice?.shipToCity || "",
+      shipToState: invoice?.shipToState || "",
+      shipToZip: invoice?.shipToZip || "",
+      shipToCountry: invoice?.shipToCountry || "",
+      shipToEmail: invoice?.shipToEmail || "",
+      
       invoiceNumber: invoice?.invoiceNumber || `${getDocumentPrefix(documentType)}-${Date.now()}`,
       issueDate: invoice?.issueDate ? new Date(invoice.issueDate).toISOString().split('T')[0] : 
                  new Date().toISOString().split('T')[0],
@@ -138,6 +163,13 @@ export default function InvoiceForm({
       
       taxRate: invoice?.taxRate ? parseFloat(invoice.taxRate) : 0,
       discount: invoice?.discount ? parseFloat(invoice.discount) : 0,
+      shippingCost: invoice?.shippingCost ? parseFloat(invoice.shippingCost) : 0,
+      
+      // Payment defaults
+      bankName: invoice?.bankName || "",
+      accountNumber: invoice?.accountNumber || "",
+      routingNumber: invoice?.routingNumber || "",
+      paymentInstructions: invoice?.paymentInstructions || "",
       
       notes: invoice?.notes || "",
       terms: invoice?.terms || "Payment is due within 30 days",
