@@ -114,6 +114,7 @@ export default function InvoiceBuilder() {
                 formData={formData}
                 lineItems={lineItems}
                 logoPreview={logoPreview}
+                template={template}
                 onEdit={() => setActiveTab("form")}
               />
             </TabsContent>
@@ -152,6 +153,7 @@ export default function InvoiceBuilder() {
                   formData={formData}
                   lineItems={lineItems}
                   logoPreview={logoPreview}
+                  template={template}
                 />
               </CardContent>
             </Card>

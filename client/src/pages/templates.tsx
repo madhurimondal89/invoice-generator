@@ -94,8 +94,8 @@ export default function Templates() {
     retry: false,
   });
 
-  // Use default templates if API fails or returns empty
-  const allTemplates = templates && templates.length > 0 ? templates : defaultTemplates;
+  // Use templates from API (they're now properly loaded)
+  const allTemplates = templates || [];
 
   const filteredTemplates = allTemplates.filter((template: any) => {
     const matchesCategory = selectedCategory === "all" || template.category === selectedCategory;

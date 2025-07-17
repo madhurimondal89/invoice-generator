@@ -100,6 +100,26 @@ export default function InvoiceForm({
     },
   });
 
+  // Apply template data when template is selected
+  useEffect(() => {
+    if (template && !invoice) {
+      // Apply template styling/defaults based on template data
+      const templateData = template.templateData || {};
+      
+      // Set default terms based on template category
+      let defaultTerms = "Payment is due within 30 days";
+      if (template.category === "creative") {
+        defaultTerms = "Payment is due within 15 days of invoice date";
+      } else if (template.category === "modern") {
+        defaultTerms = "Payment is due within 30 days. Thank you for your business!";
+      } else if (template.category === "classic") {
+        defaultTerms = "Payment is due within 30 days from invoice date";
+      }
+      
+      form.setValue("terms", defaultTerms);
+    }
+  }, [template, invoice, form]);
+
   // Load line items if editing
   useEffect(() => {
     if (invoice?.lineItems && invoice.lineItems.length > 0) {

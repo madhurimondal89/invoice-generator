@@ -9,6 +9,7 @@ interface InvoicePreviewProps {
   formData?: any;
   lineItems?: any[];
   logoPreview?: string;
+  template?: any;
 }
 
 export default function InvoicePreview({ 
@@ -16,11 +17,51 @@ export default function InvoicePreview({
   onEdit, 
   formData, 
   lineItems = [], 
-  logoPreview 
+  logoPreview,
+  template 
 }: InvoicePreviewProps) {
   // Use either passed formData or invoice data
   const data = formData || invoice || {};
   const items = lineItems.length > 0 ? lineItems : (invoice?.lineItems || []);
+  
+  // Get template styling data
+  const templateData = template?.templateData || {};
+  const getTemplateStyles = () => {
+    const baseStyles = {
+      headerBg: "bg-white",
+      headerText: "text-gray-900", 
+      accentColor: "text-blue-600",
+      borderColor: "border-gray-200",
+      primaryFont: "font-sans"
+    };
+    
+    if (template?.category === "modern") {
+      return {
+        ...baseStyles,
+        headerBg: "bg-gradient-to-r from-blue-50 to-blue-100",
+        accentColor: "text-blue-600",
+        borderColor: "border-blue-200"
+      };
+    } else if (template?.category === "creative") {
+      return {
+        ...baseStyles,
+        headerBg: "bg-gradient-to-r from-purple-50 to-pink-50",
+        accentColor: "text-purple-600",
+        borderColor: "border-purple-200"
+      };
+    } else if (template?.category === "minimal") {
+      return {
+        ...baseStyles,
+        headerBg: "bg-gray-50",
+        accentColor: "text-gray-600",
+        borderColor: "border-gray-100"
+      };
+    }
+    
+    return baseStyles;
+  };
+  
+  const styles = getTemplateStyles();
   
   const subtotal = items.reduce((sum: number, item: any) => sum + (parseFloat(item.amount) || 0), 0);
   const taxRate = parseFloat(data.taxRate) || 0;
@@ -54,10 +95,10 @@ export default function InvoicePreview({
       <Card className="invoice-preview">
         <CardContent className="p-8">
           {/* Header */}
-          <div className="invoice-header">
+          <div className={`invoice-header ${styles.headerBg} -m-8 p-8 mb-8 ${styles.borderColor} border-b`}>
             <div>
-              <h1 className="invoice-title">INVOICE</h1>
-              <p className="invoice-number">
+              <h1 className={`invoice-title ${styles.accentColor} ${styles.primaryFont}`}>INVOICE</h1>
+              <p className={`invoice-number ${styles.accentColor}`}>
                 # {data.invoiceNumber || "INV-001"}
               </p>
             </div>
@@ -79,17 +120,17 @@ export default function InvoicePreview({
           {/* Company and Client Information */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
             <div className="invoice-section">
-              <h3 className="invoice-section-title">From:</h3>
+              <h3 className={`invoice-section-title ${styles.accentColor} ${styles.primaryFont}`}>From:</h3>
               <div className="text-sm text-gray-600 space-y-1">
-                <p className="font-medium">{data.companyName || "Your Company Name"}</p>
+                <p className={`font-medium ${styles.headerText}`}>{data.companyName || "Your Company Name"}</p>
                 <p>{data.companyAddress || "Your business address"}</p>
                 <p>{data.companyEmail || "your@company.com"}</p>
               </div>
             </div>
             <div className="invoice-section">
-              <h3 className="invoice-section-title">To:</h3>
+              <h3 className={`invoice-section-title ${styles.accentColor} ${styles.primaryFont}`}>To:</h3>
               <div className="text-sm text-gray-600 space-y-1">
-                <p className="font-medium">{data.clientName || "Client Name"}</p>
+                <p className={`font-medium ${styles.headerText}`}>{data.clientName || "Client Name"}</p>
                 <p>{data.clientAddress || "Client address"}</p>
                 <p>{data.clientEmail || "client@company.com"}</p>
               </div>
