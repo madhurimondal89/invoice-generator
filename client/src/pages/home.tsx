@@ -3,7 +3,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { FileText, Plus, DollarSign, Clock, CheckCircle, File, Receipt, ShoppingCart } from "lucide-react";
+import { FileText, Plus, DollarSign, Clock, CheckCircle, File, Receipt, ShoppingCart, Layout } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { useLocation } from "wouter";
 
@@ -62,7 +62,7 @@ export default function Home() {
                 Welcome back, {user?.firstName || user?.email || 'User'}!
               </h1>
               <p className="text-gray-600 mt-1">
-                Manage your invoices and get paid faster
+                Create professional business documents - Invoices, Quotes, Credit Notes & Purchase Orders
               </p>
             </div>
 
@@ -181,10 +181,10 @@ export default function Home() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Total Invoices</p>
+                  <p className="text-sm font-medium text-gray-600">Total Documents</p>
                   <p className="text-3xl font-bold text-gray-900">{totalInvoices}</p>
                 </div>
-                <FileText className="h-8 w-8 text-primary" />
+                <FileText className="h-8 w-8 text-blue-600" />
               </div>
             </CardContent>
           </Card>
@@ -205,7 +205,7 @@ export default function Home() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Paid Invoices</p>
+                  <p className="text-sm font-medium text-gray-600">Active Invoices</p>
                   <p className="text-3xl font-bold text-gray-900">{paidInvoices}</p>
                 </div>
                 <CheckCircle className="h-8 w-8 text-green-600" />
@@ -217,10 +217,10 @@ export default function Home() {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Pending Payment</p>
-                  <p className="text-3xl font-bold text-gray-900">{pendingInvoices}</p>
+                  <p className="text-sm font-medium text-gray-600">Templates Available</p>
+                  <p className="text-3xl font-bold text-gray-900">100+</p>
                 </div>
-                <Clock className="h-8 w-8 text-yellow-600" />
+                <Layout className="h-8 w-8 text-purple-600" />
               </div>
             </CardContent>
           </Card>
@@ -244,7 +244,7 @@ export default function Home() {
                 </div>
                 <div className="border-l-4 border-red-500 pl-4">
                   <h4 className="font-semibold text-red-900">Credit Note</h4>
-                  <p className="text-sm text-gray-600">Use when issuing refunds or adjusting customer accounts</p>
+                  <p className="text-sm text-gray-600">Use when issuing refunds, returns, or billing corrections</p>
                 </div>
                 <div className="border-l-4 border-purple-500 pl-4">
                   <h4 className="font-semibold text-purple-900">Purchase Order</h4>

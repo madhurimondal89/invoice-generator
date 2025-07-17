@@ -107,10 +107,10 @@ export default function Landing() {
         <div className="hero-content">
           <div className="hero-grid">
             <div>
-              <h1 className="hero-title">Free Invoice Templates</h1>
+              <h1 className="hero-title">Professional Document Templates</h1>
               <p className="hero-description">
-                Create professional invoices in minutes. Choose from 100+ beautiful templates, 
-                customize with your brand, and get paid faster with integrated payment options.
+                Create professional business documents in minutes. Generate invoices, quotes, credit notes, 
+                and purchase orders from 100+ beautiful templates with custom branding and payment integration.
               </p>
               
               <div className="hero-actions">
@@ -119,7 +119,7 @@ export default function Landing() {
                   className="btn-accent text-lg px-8 py-4"
                 >
                   <FileText className="mr-2 h-5 w-5" />
-                  Create Invoice Now
+                  Create Document Now
                 </Button>
                 <Button
                   onClick={() => setLocation("/templates")}
@@ -164,7 +164,7 @@ export default function Landing() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">How It Works</h2>
-            <p className="text-xl text-gray-600">Create professional invoices in just 3 simple steps</p>
+            <p className="text-xl text-gray-600">Create professional documents in just 3 simple steps</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -183,12 +183,77 @@ export default function Landing() {
           </div>
         </div>
       </section>
-      {/* Template Gallery Section */}
+      
+      {/* Document Types Section */}
       <section className="py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Choose Your Invoice Template</h2>
-            <p className="text-xl text-gray-600">Professional designs for every business type</p>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">All Your Business Documents</h2>
+            <p className="text-xl text-gray-600">One platform for all your professional document needs</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer border-blue-200 bg-blue-50">
+              <CardContent className="p-6 text-center">
+                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <FileText className="h-8 w-8 text-blue-600" />
+                </div>
+                <h3 className="text-xl font-bold mb-2 text-blue-900">Invoices</h3>
+                <p className="text-gray-600 text-sm mb-3">Professional billing documents for completed work or delivered services</p>
+                <Button onClick={handleCreateInvoice} variant="outline" size="sm" className="border-blue-300 text-blue-700 hover:bg-blue-100">
+                  Create Invoice
+                </Button>
+              </CardContent>
+            </Card>
+            
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer border-green-200 bg-green-50">
+              <CardContent className="p-6 text-center">
+                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <FileText className="h-8 w-8 text-green-600" />
+                </div>
+                <h3 className="text-xl font-bold mb-2 text-green-900">Quotes</h3>
+                <p className="text-gray-600 text-sm mb-3">Professional estimates and proposals for potential clients and projects</p>
+                <Button onClick={handleCreateInvoice} variant="outline" size="sm" className="border-green-300 text-green-700 hover:bg-green-100">
+                  Create Quote
+                </Button>
+              </CardContent>
+            </Card>
+            
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer border-red-200 bg-red-50">
+              <CardContent className="p-6 text-center">
+                <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <FileText className="h-8 w-8 text-red-600" />
+                </div>
+                <h3 className="text-xl font-bold mb-2 text-red-900">Credit Notes</h3>
+                <p className="text-gray-600 text-sm mb-3">Professional refunds, returns, and billing adjustments for customers</p>
+                <Button onClick={handleCreateInvoice} variant="outline" size="sm" className="border-red-300 text-red-700 hover:bg-red-100">
+                  Create Credit Note
+                </Button>
+              </CardContent>
+            </Card>
+            
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer border-purple-200 bg-purple-50">
+              <CardContent className="p-6 text-center">
+                <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <FileText className="h-8 w-8 text-purple-600" />
+                </div>
+                <h3 className="text-xl font-bold mb-2 text-purple-900">Purchase Orders</h3>
+                <p className="text-gray-600 text-sm mb-3">Official requests to suppliers for goods and services with order tracking</p>
+                <Button onClick={handleCreateInvoice} variant="outline" size="sm" className="border-purple-300 text-purple-700 hover:bg-purple-100">
+                  Create Purchase Order
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Template Gallery Section */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Choose Your Document Template</h2>
+            <p className="text-xl text-gray-600">Professional designs for every business type and document</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

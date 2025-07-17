@@ -38,7 +38,7 @@ export default function Navigation() {
             <button
               onClick={() => setLocation("/")}
               className="text-xl font-bold text-primary hover:text-primary/80"
-            >Invoice Pro</button>
+            >DocGen Pro</button>
           </div>
 
           {/* Main Navigation */}
