@@ -2,6 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Edit, Download, Mail, Eye } from "lucide-react";
+import { formatCurrency } from "@shared/currencies";
 
 // Helper function to get document title
 const getDocumentTitle = (documentType: string) => {
@@ -35,6 +36,7 @@ export default function InvoicePreview({
   // Use either passed formData or invoice data
   const data = formData || invoice || {};
   const items = lineItems.length > 0 ? lineItems : (invoice?.lineItems || []);
+  const currency = data.currency || "USD";
   
   // Get template styling data
   const templateData = template?.templateData || {};
@@ -255,16 +257,16 @@ export default function InvoicePreview({
                         {item.quantity || 1}
                       </td>
                       <td className="text-right py-3">
-                        ${(item.rate || 0).toFixed(2)}
+                        {formatCurrency(item.rate || 0, currency)}
                       </td>
                       <td className="text-right py-3">
                         {(item.taxRate || 0).toFixed(1)}%
                       </td>
                       <td className="text-right py-3">
-                        ${(item.taxAmount || 0).toFixed(2)}
+                        {formatCurrency(item.taxAmount || 0, currency)}
                       </td>
                       <td className="text-right py-3">
-                        ${(item.amount || 0).toFixed(2)}
+                        {formatCurrency(item.amount || 0, currency)}
                       </td>
                     </tr>
                   ))
@@ -284,35 +286,35 @@ export default function InvoicePreview({
             <div className="invoice-total-table">
               <div className="invoice-total-row">
                 <span>Subtotal:</span>
-                <span>${subtotal.toFixed(2)}</span>
+                <span>{formatCurrency(subtotal, currency)}</span>
               </div>
               {itemTaxTotal > 0 && (
                 <div className="invoice-total-row">
                   <span>Item Tax:</span>
-                  <span>${itemTaxTotal.toFixed(2)}</span>
+                  <span>{formatCurrency(itemTaxTotal, currency)}</span>
                 </div>
               )}
               {taxRate > 0 && (
                 <div className="invoice-total-row">
                   <span>Additional Tax ({taxRate}%):</span>
-                  <span>${globalTaxAmount.toFixed(2)}</span>
+                  <span>{formatCurrency(globalTaxAmount, currency)}</span>
                 </div>
               )}
               {discount > 0 && (
                 <div className="invoice-total-row">
                   <span>Discount:</span>
-                  <span>-${discount.toFixed(2)}</span>
+                  <span>-{formatCurrency(discount, currency)}</span>
                 </div>
               )}
               {shippingCost > 0 && (
                 <div className="invoice-total-row">
                   <span>Shipping:</span>
-                  <span>${shippingCost.toFixed(2)}</span>
+                  <span>{formatCurrency(shippingCost, currency)}</span>
                 </div>
               )}
               <div className="invoice-total-row invoice-total-final">
                 <span>Total:</span>
-                <span>${total.toFixed(2)}</span>
+                <span>{formatCurrency(total, currency)}</span>
               </div>
             </div>
           </div>

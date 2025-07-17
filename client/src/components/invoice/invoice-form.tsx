@@ -15,7 +15,7 @@ import { useLocation } from "wouter";
 import { Upload, Plus, Save, FileText, Download } from "lucide-react";
 import LineItemManager, { type LineItem } from "./line-item-manager";
 import { generateInvoicePDF } from "@/lib/pdf-generator";
-import CurrencySelector from "@/components/ui/currency-selector";
+import SimpleCurrencySelector from "@/components/ui/simple-currency-selector";
 import { formatCurrency } from "@shared/currencies";
 
 // Helper function to get document prefix based on type
@@ -631,9 +631,10 @@ export default function InvoiceForm({
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div>
-                <CurrencySelector
+                <SimpleCurrencySelector
                   value={form.watch("currency") || "USD"}
                   onValueChange={(value) => {
+                    console.log("Currency changed to:", value);
                     form.setValue("currency", value);
                     form.trigger("currency");
                   }}
