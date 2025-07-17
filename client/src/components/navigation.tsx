@@ -37,8 +37,11 @@ export default function Navigation() {
           <div className="flex items-center">
             <button
               onClick={() => setLocation("/")}
-              className="text-xl font-bold text-primary hover:text-primary/80"
-            >DocGen Pro</button>
+              className="flex items-center space-x-1 hover:opacity-80 transition-opacity"
+            >
+              <span className="text-2xl font-bold text-blue-600">invoice</span>
+              <span className="bg-purple-600 text-white px-2 py-1 rounded font-bold text-lg">Pro</span>
+            </button>
           </div>
 
           {/* Main Navigation */}

@@ -228,7 +228,7 @@ export default function Home() {
         <div className="mb-16">
           <div className={`bg-white/70 backdrop-blur-md rounded-3xl shadow-2xl border border-white/20 p-12 transition-all duration-1000 delay-600 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
             <h2 className="text-4xl font-bold text-center bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-12">
-              Why Choose DocGen Pro?
+              Why Choose Invoice Pro?
             </h2>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
@@ -490,7 +490,7 @@ export default function Home() {
                 Ready to Create Professional Documents?
               </h3>
               <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-                Join thousands of businesses worldwide who trust DocGen Pro for their document needs
+                Join thousands of businesses worldwide who trust Invoice Pro for their document needs
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
