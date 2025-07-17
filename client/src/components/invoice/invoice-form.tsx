@@ -126,6 +126,12 @@ export default function InvoiceForm({
     onLineItemsChange?.(lineItems);
   }, [lineItems, onLineItemsChange]);
 
+  // Initialize shared state with default values
+  useEffect(() => {
+    const initialData = form.getValues();
+    onDataChange?.(initialData);
+  }, [form, onDataChange]);
+
   // Calculate totals
   const subtotal = lineItems.reduce((sum, item) => sum + item.amount, 0);
   const taxRate = form.watch("taxRate") || 0;
