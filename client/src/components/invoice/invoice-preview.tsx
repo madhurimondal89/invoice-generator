@@ -99,11 +99,16 @@ export default function InvoicePreview({
   
   const styles = getTemplateStyles();
   
-  const subtotal = items.reduce((sum: number, item: any) => sum + (parseFloat(item.amount) || 0), 0);
+  const subtotal = items.reduce((sum: number, item: any) => {
+    const baseAmount = (parseFloat(item.quantity) || 0) * (parseFloat(item.rate) || 0);
+    return sum + baseAmount;
+  }, 0);
+  const itemTaxTotal = items.reduce((sum: number, item: any) => sum + (parseFloat(item.taxAmount) || 0), 0);
   const taxRate = parseFloat(data.taxRate) || 0;
   const discount = parseFloat(data.discount) || 0;
-  const taxAmount = (subtotal * taxRate) / 100;
-  const total = subtotal + taxAmount - discount;
+  const shippingCost = parseFloat(data.shippingCost) || 0;
+  const globalTaxAmount = (subtotal * taxRate) / 100;
+  const total = subtotal + itemTaxTotal + globalTaxAmount + shippingCost - discount;
 
   const formatDate = (dateString: string) => {
     if (!dateString) return "Not set";
@@ -281,10 +286,16 @@ export default function InvoicePreview({
                 <span>Subtotal:</span>
                 <span>${subtotal.toFixed(2)}</span>
               </div>
+              {itemTaxTotal > 0 && (
+                <div className="invoice-total-row">
+                  <span>Item Tax:</span>
+                  <span>${itemTaxTotal.toFixed(2)}</span>
+                </div>
+              )}
               {taxRate > 0 && (
                 <div className="invoice-total-row">
-                  <span>Tax ({taxRate}%):</span>
-                  <span>${taxAmount.toFixed(2)}</span>
+                  <span>Additional Tax ({taxRate}%):</span>
+                  <span>${globalTaxAmount.toFixed(2)}</span>
                 </div>
               )}
               {discount > 0 && (
@@ -293,10 +304,10 @@ export default function InvoicePreview({
                   <span>-${discount.toFixed(2)}</span>
                 </div>
               )}
-              {data.shippingCost > 0 && (
+              {shippingCost > 0 && (
                 <div className="invoice-total-row">
                   <span>Shipping:</span>
-                  <span>${parseFloat(data.shippingCost).toFixed(2)}</span>
+                  <span>${shippingCost.toFixed(2)}</span>
                 </div>
               )}
               <div className="invoice-total-row invoice-total-final">
