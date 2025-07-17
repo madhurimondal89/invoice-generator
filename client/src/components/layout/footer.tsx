@@ -11,7 +11,7 @@ export default function Footer() {
           <div>
             <div className="flex items-center mb-4">
               <span className="text-2xl font-bold text-primary">invoice</span>
-              <span className="text-2xl font-bold bg-accent text-white px-2 py-1 rounded ml-1">home</span>
+              <span className="text-2xl font-bold text-white px-2 py-1 rounded ml-1 bg-[#5b33c6]">Pro</span>
             </div>
             <p className="text-gray-300 mb-4">
               The world's most popular free invoice generator. Create professional invoices in minutes.
