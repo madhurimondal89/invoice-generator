@@ -18,9 +18,11 @@ import FloatingActionButton from "@/components/floating-action-button";
 import Footer from "@/components/layout/footer";
 
 function Router() {
-  const { isAuthenticated, isLoading, error } = useAuth();
+  const { isAuthenticated, isLoading, user } = useAuth();
 
-  // Show loading only for a short period, then show unauthenticated state
+  // Always show the authenticated routes in development since we have a mock user
+  const showAuthenticatedRoutes = isAuthenticated || (user && user.id === 'dev-user');
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -34,12 +36,7 @@ function Router() {
       <Navigation />
       <main className="flex-1">
         <Switch>
-          {!isAuthenticated ? (
-            <>
-              <Route path="/" component={Landing} />
-              <Route path="/templates" component={Templates} />
-            </>
-          ) : (
+          {showAuthenticatedRoutes ? (
             <>
               <Route path="/" component={Home} />
               <Route path="/invoices" component={Invoices} />
@@ -53,11 +50,16 @@ function Router() {
               <Route path="/purchase-order/:id" component={PurchaseOrderBuilder} />
               <Route path="/templates" component={Templates} />
             </>
+          ) : (
+            <>
+              <Route path="/" component={Landing} />
+              <Route path="/templates" component={Templates} />
+            </>
           )}
           <Route component={NotFound} />
         </Switch>
       </main>
-      {isAuthenticated && <FloatingActionButton />}
+      {showAuthenticatedRoutes && <FloatingActionButton />}
       <Footer />
     </div>
   );
