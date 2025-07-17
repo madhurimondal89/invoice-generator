@@ -175,6 +175,23 @@ export default function InvoicePreview({
             </div>
           </div>
 
+          {/* Shipping Information */}
+          {(data.shipToName || data.shipToAddress || data.shipToCity) && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+              <div className="invoice-section">
+                <h3 className={`invoice-section-title ${styles.accentColor} ${styles.primaryFont}`}>Ship To:</h3>
+                <div className="text-sm text-gray-600 space-y-1">
+                  <p className={`font-medium ${styles.headerText}`}>{data.shipToName || ""}</p>
+                  <p>{data.shipToAddress || ""}</p>
+                  <p>{data.shipToCity && data.shipToState ? `${data.shipToCity}, ${data.shipToState}` : ""}</p>
+                  <p>{data.shipToZip || ""} {data.shipToCountry || ""}</p>
+                  {data.shipToEmail && <p>{data.shipToEmail}</p>}
+                </div>
+              </div>
+              <div></div>
+            </div>
+          )}
+
           {/* Invoice Details */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 text-sm">
             <div>
@@ -217,6 +234,8 @@ export default function InvoicePreview({
                   <th>Description</th>
                   <th className="text-right w-20">Qty</th>
                   <th className="text-right w-24">Rate</th>
+                  <th className="text-right w-16">Tax %</th>
+                  <th className="text-right w-20">Tax</th>
                   <th className="text-right w-28">Amount</th>
                 </tr>
               </thead>
@@ -234,13 +253,19 @@ export default function InvoicePreview({
                         ${(item.rate || 0).toFixed(2)}
                       </td>
                       <td className="text-right py-3">
+                        {(item.taxRate || 0).toFixed(1)}%
+                      </td>
+                      <td className="text-right py-3">
+                        ${(item.taxAmount || 0).toFixed(2)}
+                      </td>
+                      <td className="text-right py-3">
                         ${(item.amount || 0).toFixed(2)}
                       </td>
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td colSpan={4} className="text-center py-8 text-gray-500">
+                    <td colSpan={6} className="text-center py-8 text-gray-500">
                       No line items added yet
                     </td>
                   </tr>
@@ -266,6 +291,12 @@ export default function InvoicePreview({
                 <div className="invoice-total-row">
                   <span>Discount:</span>
                   <span>-${discount.toFixed(2)}</span>
+                </div>
+              )}
+              {data.shippingCost > 0 && (
+                <div className="invoice-total-row">
+                  <span>Shipping:</span>
+                  <span>${parseFloat(data.shippingCost).toFixed(2)}</span>
                 </div>
               )}
               <div className="invoice-total-row invoice-total-final">

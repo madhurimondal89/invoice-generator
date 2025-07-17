@@ -71,6 +71,15 @@ export const invoices = pgTable("invoices", {
   clientEmail: varchar("client_email", { length: 255 }),
   clientAddress: text("client_address"),
   
+  // Shipping information
+  shipToName: varchar("ship_to_name", { length: 255 }),
+  shipToEmail: varchar("ship_to_email", { length: 255 }),
+  shipToAddress: text("ship_to_address"),
+  shipToCity: varchar("ship_to_city", { length: 100 }),
+  shipToState: varchar("ship_to_state", { length: 100 }),
+  shipToZip: varchar("ship_to_zip", { length: 20 }),
+  shipToCountry: varchar("ship_to_country", { length: 100 }),
+  
   // Invoice details
   issueDate: timestamp("issue_date"),
   dueDate: timestamp("due_date"),
@@ -80,16 +89,19 @@ export const invoices = pgTable("invoices", {
   taxRate: decimal("tax_rate", { precision: 5, scale: 2 }).default("0.00"),
   taxAmount: decimal("tax_amount", { precision: 10, scale: 2 }).default("0.00"),
   discount: decimal("discount", { precision: 10, scale: 2 }).default("0.00"),
+  shippingCost: decimal("shipping_cost", { precision: 10, scale: 2 }).default("0.00"),
   total: decimal("total", { precision: 10, scale: 2 }).default("0.00"),
   
   // Payment information
   paymentStatus: varchar("payment_status", { length: 50 }).default("pending"),
   paymentMethod: varchar("payment_method", { length: 100 }),
   paymentDate: timestamp("payment_date"),
+  paymentDetails: text("payment_details"),
   
   // Notes and terms
   notes: text("notes"),
   terms: text("terms"),
+  termsConditions: text("terms_conditions"),
   
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
@@ -102,6 +114,8 @@ export const invoiceLineItems = pgTable("invoice_line_items", {
   description: text("description").notNull(),
   quantity: decimal("quantity", { precision: 10, scale: 2 }).default("1.00"),
   rate: decimal("rate", { precision: 10, scale: 2 }).default("0.00"),
+  taxRate: decimal("tax_rate", { precision: 5, scale: 2 }).default("0.00"),
+  taxAmount: decimal("tax_amount", { precision: 10, scale: 2 }).default("0.00"),
   amount: decimal("amount", { precision: 10, scale: 2 }).default("0.00"),
   createdAt: timestamp("created_at").defaultNow(),
 });

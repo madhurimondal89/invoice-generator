@@ -8,6 +8,8 @@ interface LineItem {
   description: string;
   quantity: number;
   rate: number;
+  taxRate: number;
+  taxAmount: number;
   amount: number;
 }
 
@@ -16,12 +18,16 @@ interface LineItemManagerProps {
   onLineItemsChange: (items: LineItem[]) => void;
 }
 
+export { type LineItem };
+
 export default function LineItemManager({ lineItems, onLineItemsChange }: LineItemManagerProps) {
   const addLineItem = () => {
     const newItem: LineItem = {
       description: "",
       quantity: 1,
       rate: 0,
+      taxRate: 0,
+      taxAmount: 0,
       amount: 0,
     };
     onLineItemsChange([...lineItems, newItem]);
@@ -37,9 +43,12 @@ export default function LineItemManager({ lineItems, onLineItemsChange }: LineIt
       if (i === index) {
         const updatedItem = { ...item, [field]: value };
         
-        // Recalculate amount when quantity or rate changes
-        if (field === 'quantity' || field === 'rate') {
-          updatedItem.amount = Number(updatedItem.quantity) * Number(updatedItem.rate);
+        // Recalculate amount when quantity, rate, or tax rate changes
+        if (field === 'quantity' || field === 'rate' || field === 'taxRate') {
+          const baseAmount = Number(updatedItem.quantity) * Number(updatedItem.rate);
+          const taxAmount = baseAmount * (Number(updatedItem.taxRate) / 100);
+          updatedItem.taxAmount = taxAmount;
+          updatedItem.amount = baseAmount + taxAmount;
         }
         
         return updatedItem;
@@ -78,6 +87,8 @@ export default function LineItemManager({ lineItems, onLineItemsChange }: LineIt
                 <th className="text-left py-3 px-2 font-medium text-gray-900">Description</th>
                 <th className="text-right py-3 px-2 font-medium text-gray-900 w-24">Quantity</th>
                 <th className="text-right py-3 px-2 font-medium text-gray-900 w-28">Rate ($)</th>
+                <th className="text-right py-3 px-2 font-medium text-gray-900 w-20">Tax %</th>
+                <th className="text-right py-3 px-2 font-medium text-gray-900 w-24">Tax ($)</th>
                 <th className="text-right py-3 px-2 font-medium text-gray-900 w-32">Amount ($)</th>
                 <th className="py-3 px-2 w-12"></th>
               </tr>
@@ -112,6 +123,19 @@ export default function LineItemManager({ lineItems, onLineItemsChange }: LineIt
                       onChange={(e) => updateLineItem(index, 'rate', parseFloat(e.target.value) || 0)}
                       className="border-0 focus:ring-0 p-0 text-right"
                     />
+                  </td>
+                  <td className="py-3 px-2">
+                    <Input
+                      type="number"
+                      min="0"
+                      step="0.01"
+                      value={item.taxRate}
+                      onChange={(e) => updateLineItem(index, 'taxRate', parseFloat(e.target.value) || 0)}
+                      className="border-0 focus:ring-0 p-0 text-right"
+                    />
+                  </td>
+                  <td className="py-3 px-2 text-right font-medium">
+                    ${item.taxAmount.toFixed(2)}
                   </td>
                   <td className="py-3 px-2 text-right font-medium">
                     ${item.amount.toFixed(2)}
@@ -185,6 +209,32 @@ export default function LineItemManager({ lineItems, onLineItemsChange }: LineIt
                   step="0.01"
                   value={item.rate}
                   onChange={(e) => updateLineItem(index, 'rate', parseFloat(e.target.value) || 0)}
+                />
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Tax Rate (%)
+                </label>
+                <Input
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  value={item.taxRate}
+                  onChange={(e) => updateLineItem(index, 'taxRate', parseFloat(e.target.value) || 0)}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Tax Amount ($)
+                </label>
+                <Input
+                  type="number"
+                  value={item.taxAmount.toFixed(2)}
+                  readOnly
+                  className="bg-gray-50"
                 />
               </div>
             </div>

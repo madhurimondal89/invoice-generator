@@ -13,7 +13,7 @@ import { apiRequest } from "@/lib/queryClient";
 import { isUnauthorizedError } from "@/lib/authUtils";
 import { useLocation } from "wouter";
 import { Upload, Plus, Save, FileText, Download } from "lucide-react";
-import LineItemManager from "./line-item-manager";
+import LineItemManager, { type LineItem } from "./line-item-manager";
 import { generateInvoicePDF } from "@/lib/pdf-generator";
 
 // Helper function to get document prefix based on type
@@ -113,7 +113,7 @@ export default function InvoiceForm({
   // Get document-specific labels
   const labels = getDocumentLabels(documentType);
   const [lineItems, setLineItems] = useState<LineItem[]>([
-    { description: "", quantity: 1, rate: 0, amount: 0 }
+    { description: "", quantity: 1, rate: 0, taxRate: 0, taxAmount: 0, amount: 0 }
   ]);
   const [logoFile, setLogoFile] = useState<File | null>(null);
   const [logoPreview, setLogoPreview] = useState<string>("");
@@ -172,6 +172,8 @@ export default function InvoiceForm({
         description: item.description,
         quantity: parseFloat(item.quantity),
         rate: parseFloat(item.rate),
+        taxRate: parseFloat(item.taxRate || 0),
+        taxAmount: parseFloat(item.taxAmount || 0),
         amount: parseFloat(item.amount),
       })));
     }
@@ -441,6 +443,82 @@ export default function InvoiceForm({
           </CardContent>
         </Card>
 
+        {/* Shipping Information */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Ship To</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="shipToName">Name</Label>
+                <Input
+                  id="shipToName"
+                  {...form.register("shipToName")}
+                  placeholder="Shipping contact name"
+                />
+              </div>
+              <div>
+                <Label htmlFor="shipToEmail">Email</Label>
+                <Input
+                  id="shipToEmail"
+                  type="email"
+                  {...form.register("shipToEmail")}
+                  placeholder="shipping@company.com"
+                />
+              </div>
+            </div>
+            
+            <div>
+              <Label htmlFor="shipToAddress">Address</Label>
+              <Textarea
+                id="shipToAddress"
+                {...form.register("shipToAddress")}
+                placeholder="Shipping address"
+                rows={2}
+              />
+            </div>
+            
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="shipToCity">City</Label>
+                <Input
+                  id="shipToCity"
+                  {...form.register("shipToCity")}
+                  placeholder="City"
+                />
+              </div>
+              <div>
+                <Label htmlFor="shipToState">State</Label>
+                <Input
+                  id="shipToState"
+                  {...form.register("shipToState")}
+                  placeholder="State"
+                />
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="shipToZip">ZIP Code</Label>
+                <Input
+                  id="shipToZip"
+                  {...form.register("shipToZip")}
+                  placeholder="ZIP Code"
+                />
+              </div>
+              <div>
+                <Label htmlFor="shipToCountry">Country</Label>
+                <Input
+                  id="shipToCountry"
+                  {...form.register("shipToCountry")}
+                  placeholder="Country"
+                />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
         {/* Document Details */}
         <Card>
           <CardHeader>
@@ -510,7 +588,7 @@ export default function InvoiceForm({
             <CardTitle>Totals</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
                 <Label htmlFor="taxRate">Tax Rate (%)</Label>
                 <Input
@@ -531,6 +609,16 @@ export default function InvoiceForm({
                   placeholder="0.00"
                 />
               </div>
+              <div>
+                <Label htmlFor="shippingCost">Shipping Cost ($)</Label>
+                <Input
+                  id="shippingCost"
+                  type="number"
+                  step="0.01"
+                  {...form.register("shippingCost", { valueAsNumber: true })}
+                  placeholder="0.00"
+                />
+              </div>
             </div>
 
             <div className="bg-gray-50 p-4 rounded-lg space-y-2">
@@ -546,9 +634,13 @@ export default function InvoiceForm({
                 <span>Discount:</span>
                 <span>-${discount.toFixed(2)}</span>
               </div>
+              <div className="flex justify-between text-sm">
+                <span>Shipping:</span>
+                <span>${(form.watch("shippingCost") || 0).toFixed(2)}</span>
+              </div>
               <div className="flex justify-between text-lg font-bold border-t pt-2">
                 <span>Total:</span>
-                <span>${total.toFixed(2)}</span>
+                <span>${(subtotal + taxAmount - discount + (form.watch("shippingCost") || 0)).toFixed(2)}</span>
               </div>
             </div>
           </CardContent>
@@ -570,11 +662,29 @@ export default function InvoiceForm({
               />
             </div>
             <div>
+              <Label htmlFor="paymentDetails">Payment Details</Label>
+              <Textarea
+                id="paymentDetails"
+                {...form.register("paymentDetails")}
+                placeholder="Bank account details, payment instructions, etc."
+                rows={3}
+              />
+            </div>
+            <div>
               <Label htmlFor="terms">Payment Terms</Label>
               <Textarea
                 id="terms"
                 {...form.register("terms")}
-                placeholder="Payment terms and conditions"
+                placeholder="Payment terms (e.g., Net 30)"
+                rows={2}
+              />
+            </div>
+            <div>
+              <Label htmlFor="termsConditions">Terms & Conditions</Label>
+              <Textarea
+                id="termsConditions"
+                {...form.register("termsConditions")}
+                placeholder="Terms and conditions for this transaction"
                 rows={3}
               />
             </div>
