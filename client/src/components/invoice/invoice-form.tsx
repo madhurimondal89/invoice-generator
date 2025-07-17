@@ -75,15 +75,14 @@ const invoiceFormSchema = z.object({
   shipToState: z.string().optional(),
   shipToZip: z.string().optional(),
   shipToCountry: z.string().optional(),
-  
-  // Financial information
-  currency: z.string().length(3).default("USD"),
   shipToEmail: z.string().optional(),
   
   invoiceNumber: z.string().min(1, "Invoice number is required"),
   issueDate: z.string().min(1, "Issue date is required"),
   dueDate: z.string().min(1, "Due date is required"),
   
+  // Financial information
+  currency: z.string().min(3).max(3).default("USD"),
   taxRate: z.number().min(0).max(100),
   discount: z.number().min(0),
   shippingCost: z.number().min(0),
@@ -141,6 +140,7 @@ export default function InvoiceForm({
 
   const form = useForm<InvoiceFormData>({
     resolver: zodResolver(invoiceFormSchema),
+    mode: "onChange",
     defaultValues: {
       companyName: invoice?.companyName || "",
       companyEmail: invoice?.companyEmail || "",
@@ -632,8 +632,11 @@ export default function InvoiceForm({
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div>
                 <CurrencySelector
-                  value={form.watch("currency")}
-                  onValueChange={(value) => form.setValue("currency", value)}
+                  value={form.watch("currency") || "USD"}
+                  onValueChange={(value) => {
+                    form.setValue("currency", value);
+                    form.trigger("currency");
+                  }}
                   label="Currency"
                 />
               </div>

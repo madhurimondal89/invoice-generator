@@ -70,10 +70,10 @@ export default function CurrencySelector({
             <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-full p-0" align="start">
+        <PopoverContent className="w-[400px] p-0" align="start">
           <Command>
-            <CommandInput placeholder="Search currencies..." />
-            <CommandList>
+            <CommandInput placeholder="Search currencies..." className="h-9" />
+            <CommandList className="max-h-60">
               <CommandEmpty>No currency found.</CommandEmpty>
               
               <CommandGroup heading="Major Currencies">
@@ -82,6 +82,7 @@ export default function CurrencySelector({
                     key={currency.code}
                     value={`${currency.code} ${currency.name} ${currency.country}`}
                     onSelect={() => {
+                      console.log("Major currency selected:", currency.code);
                       onValueChange(currency.code);
                       setOpen(false);
                     }}
@@ -111,6 +112,7 @@ export default function CurrencySelector({
                     key={currency.code}
                     value={`${currency.code} ${currency.name} ${currency.country}`}
                     onSelect={() => {
+                      console.log("Other currency selected:", currency.code);
                       onValueChange(currency.code);
                       setOpen(false);
                     }}
