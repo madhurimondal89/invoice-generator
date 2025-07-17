@@ -71,41 +71,108 @@ export default function Home() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Document Types Overview */}
+        <div className="mb-8">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Professional Document Generation</h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Create professional invoices, quotes, credit notes, and purchase orders with ease. 
+              Choose from 100+ templates and customize to match your brand.
+            </p>
+          </div>
+        </div>
+
         {/* Quick Actions */}
         <div className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Quick Actions</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">Create Documents</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setLocation("/invoice/new")}>
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer border-blue-200" onClick={() => setLocation("/invoice/new")}>
               <CardContent className="p-6 text-center">
-                <FileText className="h-8 w-8 text-blue-600 mx-auto mb-3" />
-                <h3 className="text-lg font-semibold mb-2">Create Invoice</h3>
-                <p className="text-gray-600 text-sm">Bill your clients professionally</p>
+                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <FileText className="h-8 w-8 text-blue-600" />
+                </div>
+                <h3 className="text-xl font-bold mb-2 text-blue-900">Invoice</h3>
+                <p className="text-gray-600 text-sm mb-3">Professional billing documents for completed work or services</p>
+                <div className="text-xs text-blue-600 font-medium">
+                  • Payment requests • Due dates • Tax calculations
+                </div>
               </CardContent>
             </Card>
             
-            <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setLocation("/quote/new")}>
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer border-green-200" onClick={() => setLocation("/quote/new")}>
               <CardContent className="p-6 text-center">
-                <File className="h-8 w-8 text-green-600 mx-auto mb-3" />
-                <h3 className="text-lg font-semibold mb-2">Create Quote</h3>
-                <p className="text-gray-600 text-sm">Send estimates to prospects</p>
+                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <File className="h-8 w-8 text-green-600" />
+                </div>
+                <h3 className="text-xl font-bold mb-2 text-green-900">Quote</h3>
+                <p className="text-gray-600 text-sm mb-3">Estimates and proposals for potential clients and projects</p>
+                <div className="text-xs text-green-600 font-medium">
+                  • Price estimates • Project scope • Terms & conditions
+                </div>
               </CardContent>
             </Card>
             
-            <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setLocation("/credit-note/new")}>
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer border-red-200" onClick={() => setLocation("/credit-note/new")}>
               <CardContent className="p-6 text-center">
-                <Receipt className="h-8 w-8 text-red-600 mx-auto mb-3" />
-                <h3 className="text-lg font-semibold mb-2">Credit Note</h3>
-                <p className="text-gray-600 text-sm">Issue refunds and adjustments</p>
+                <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Receipt className="h-8 w-8 text-red-600" />
+                </div>
+                <h3 className="text-xl font-bold mb-2 text-red-900">Credit Note</h3>
+                <p className="text-gray-600 text-sm mb-3">Refunds, returns, and billing adjustments for customers</p>
+                <div className="text-xs text-red-600 font-medium">
+                  • Refund processing • Error corrections • Account credits
+                </div>
               </CardContent>
             </Card>
             
-            <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setLocation("/purchase-order/new")}>
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer border-purple-200" onClick={() => setLocation("/purchase-order/new")}>
               <CardContent className="p-6 text-center">
-                <ShoppingCart className="h-8 w-8 text-purple-600 mx-auto mb-3" />
-                <h3 className="text-lg font-semibold mb-2">Purchase Order</h3>
-                <p className="text-gray-600 text-sm">Order from suppliers</p>
+                <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <ShoppingCart className="h-8 w-8 text-purple-600" />
+                </div>
+                <h3 className="text-xl font-bold mb-2 text-purple-900">Purchase Order</h3>
+                <p className="text-gray-600 text-sm mb-3">Official requests to suppliers for goods and services</p>
+                <div className="text-xs text-purple-600 font-medium">
+                  • Supplier orders • Inventory management • Budget control
+                </div>
               </CardContent>
             </Card>
+          </div>
+        </div>
+
+        {/* Features Overview */}
+        <div className="mb-8">
+          <div className="bg-white rounded-lg shadow-sm border p-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Why Choose Our Document Generator?</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="text-center">
+                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <FileText className="h-6 w-6 text-blue-600" />
+                </div>
+                <h3 className="font-bold text-lg mb-2">100+ Professional Templates</h3>
+                <p className="text-gray-600 text-sm">
+                  Choose from a wide variety of professionally designed templates for all document types
+                </p>
+              </div>
+              <div className="text-center">
+                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <DollarSign className="h-6 w-6 text-green-600" />
+                </div>
+                <h3 className="font-bold text-lg mb-2">Tax & Shipping Support</h3>
+                <p className="text-gray-600 text-sm">
+                  Built-in tax calculations, shipping addresses, and payment terms for complete documents
+                </p>
+              </div>
+              <div className="text-center">
+                <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <CheckCircle className="h-6 w-6 text-purple-600" />
+                </div>
+                <h3 className="font-bold text-lg mb-2">PDF Export & Email</h3>
+                <p className="text-gray-600 text-sm">
+                  Generate professional PDFs and send documents directly to clients via email
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -161,11 +228,38 @@ export default function Home() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Document Guide */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Document Types Guide</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="border-l-4 border-blue-500 pl-4">
+                  <h4 className="font-semibold text-blue-900">Invoice</h4>
+                  <p className="text-sm text-gray-600">Use when requesting payment for completed work or delivered goods</p>
+                </div>
+                <div className="border-l-4 border-green-500 pl-4">
+                  <h4 className="font-semibold text-green-900">Quote</h4>
+                  <p className="text-sm text-gray-600">Use when providing price estimates for potential projects</p>
+                </div>
+                <div className="border-l-4 border-red-500 pl-4">
+                  <h4 className="font-semibold text-red-900">Credit Note</h4>
+                  <p className="text-sm text-gray-600">Use when issuing refunds or adjusting customer accounts</p>
+                </div>
+                <div className="border-l-4 border-purple-500 pl-4">
+                  <h4 className="font-semibold text-purple-900">Purchase Order</h4>
+                  <p className="text-sm text-gray-600">Use when ordering goods or services from suppliers</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
           {/* Recent Invoices */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center justify-between">
-                <span>Recent Invoices</span>
+                <span>Recent Documents</span>
                 <Button
                   variant="outline"
                   size="sm"
