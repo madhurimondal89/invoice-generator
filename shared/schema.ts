@@ -85,6 +85,7 @@ export const invoices = pgTable("invoices", {
   dueDate: timestamp("due_date"),
   
   // Financial information
+  currency: varchar("currency", { length: 3 }).default("USD"),
   subtotal: decimal("subtotal", { precision: 10, scale: 2 }).default("0.00"),
   taxRate: decimal("tax_rate", { precision: 5, scale: 2 }).default("0.00"),
   taxAmount: decimal("tax_amount", { precision: 10, scale: 2 }).default("0.00"),
@@ -159,6 +160,8 @@ export const insertInvoiceSchema = createInsertSchema(invoices).omit({
   id: true,
   createdAt: true,
   updatedAt: true,
+}).extend({
+  currency: z.string().length(3).default("USD"),
 });
 
 export const insertInvoiceLineItemSchema = createInsertSchema(invoiceLineItems).omit({

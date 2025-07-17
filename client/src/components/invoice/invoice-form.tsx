@@ -15,6 +15,8 @@ import { useLocation } from "wouter";
 import { Upload, Plus, Save, FileText, Download } from "lucide-react";
 import LineItemManager, { type LineItem } from "./line-item-manager";
 import { generateInvoicePDF } from "@/lib/pdf-generator";
+import CurrencySelector from "@/components/ui/currency-selector";
+import { formatCurrency } from "@shared/currencies";
 
 // Helper function to get document prefix based on type
 const getDocumentPrefix = (documentType: string) => {
@@ -73,6 +75,9 @@ const invoiceFormSchema = z.object({
   shipToState: z.string().optional(),
   shipToZip: z.string().optional(),
   shipToCountry: z.string().optional(),
+  
+  // Financial information
+  currency: z.string().length(3).default("USD"),
   shipToEmail: z.string().optional(),
   
   invoiceNumber: z.string().min(1, "Invoice number is required"),
@@ -165,6 +170,9 @@ export default function InvoiceForm({
       discount: invoice?.discount ? parseFloat(invoice.discount) : 0,
       shippingCost: invoice?.shippingCost ? parseFloat(invoice.shippingCost) : 0,
       
+      // Currency default
+      currency: invoice?.currency || "USD",
+      
       // Payment defaults
       bankName: invoice?.bankName || "",
       accountNumber: invoice?.accountNumber || "",
@@ -236,6 +244,7 @@ export default function InvoiceForm({
   const discount = form.watch("discount") || 0;
   const taxAmount = (subtotal * taxRate) / 100;
   const total = subtotal + taxAmount - discount;
+  const selectedCurrency = form.watch("currency") || "USD";
 
   const handleLogoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -620,7 +629,14 @@ export default function InvoiceForm({
             <CardTitle>Totals</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div>
+                <CurrencySelector
+                  value={form.watch("currency")}
+                  onValueChange={(value) => form.setValue("currency", value)}
+                  label="Currency"
+                />
+              </div>
               <div>
                 <Label htmlFor="taxRate">Tax Rate (%)</Label>
                 <Input
@@ -632,7 +648,7 @@ export default function InvoiceForm({
                 />
               </div>
               <div>
-                <Label htmlFor="discount">Discount ($)</Label>
+                <Label htmlFor="discount">Discount</Label>
                 <Input
                   id="discount"
                   type="number"
@@ -642,7 +658,7 @@ export default function InvoiceForm({
                 />
               </div>
               <div>
-                <Label htmlFor="shippingCost">Shipping Cost ($)</Label>
+                <Label htmlFor="shippingCost">Shipping Cost</Label>
                 <Input
                   id="shippingCost"
                   type="number"
@@ -656,23 +672,23 @@ export default function InvoiceForm({
             <div className="bg-gray-50 p-4 rounded-lg space-y-2">
               <div className="flex justify-between text-sm">
                 <span>Subtotal:</span>
-                <span>${subtotal.toFixed(2)}</span>
+                <span>{formatCurrency(subtotal, selectedCurrency)}</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span>Tax ({taxRate}%):</span>
-                <span>${taxAmount.toFixed(2)}</span>
+                <span>{formatCurrency(taxAmount, selectedCurrency)}</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span>Discount:</span>
-                <span>-${discount.toFixed(2)}</span>
+                <span>-{formatCurrency(discount, selectedCurrency)}</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span>Shipping:</span>
-                <span>${(form.watch("shippingCost") || 0).toFixed(2)}</span>
+                <span>{formatCurrency(form.watch("shippingCost") || 0, selectedCurrency)}</span>
               </div>
               <div className="flex justify-between text-lg font-bold border-t pt-2">
                 <span>Total:</span>
-                <span>${(subtotal + taxAmount - discount + (form.watch("shippingCost") || 0)).toFixed(2)}</span>
+                <span>{formatCurrency(subtotal + taxAmount - discount + (form.watch("shippingCost") || 0), selectedCurrency)}</span>
               </div>
             </div>
           </CardContent>
