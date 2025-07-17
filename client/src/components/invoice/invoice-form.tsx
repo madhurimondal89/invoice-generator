@@ -52,9 +52,19 @@ interface InvoiceFormProps {
   invoice?: any;
   template?: any;
   onPreview?: () => void;
+  onDataChange?: (data: any) => void;
+  onLineItemsChange?: (items: any[]) => void;
+  onLogoChange?: (logo: string) => void;
 }
 
-export default function InvoiceForm({ invoice, template, onPreview }: InvoiceFormProps) {
+export default function InvoiceForm({ 
+  invoice, 
+  template, 
+  onPreview,
+  onDataChange,
+  onLineItemsChange,
+  onLogoChange
+}: InvoiceFormProps) {
   const { toast } = useToast();
   const [, setLocation] = useLocation();
   const queryClient = useQueryClient();
@@ -103,6 +113,19 @@ export default function InvoiceForm({ invoice, template, onPreview }: InvoiceFor
     }
   }, [invoice]);
 
+  // Update shared state when form data changes
+  useEffect(() => {
+    const subscription = form.watch((value) => {
+      onDataChange?.(value);
+    });
+    return () => subscription.unsubscribe();
+  }, [form, onDataChange]);
+
+  // Update shared state when line items change
+  useEffect(() => {
+    onLineItemsChange?.(lineItems);
+  }, [lineItems, onLineItemsChange]);
+
   // Calculate totals
   const subtotal = lineItems.reduce((sum, item) => sum + item.amount, 0);
   const taxRate = form.watch("taxRate") || 0;
@@ -116,7 +139,9 @@ export default function InvoiceForm({ invoice, template, onPreview }: InvoiceFor
       setLogoFile(file);
       const reader = new FileReader();
       reader.onload = (e) => {
-        setLogoPreview(e.target?.result as string);
+        const logoUrl = e.target?.result as string;
+        setLogoPreview(logoUrl);
+        onLogoChange?.(logoUrl);
       };
       reader.readAsDataURL(file);
     }

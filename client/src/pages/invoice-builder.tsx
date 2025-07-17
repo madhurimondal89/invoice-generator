@@ -15,6 +15,11 @@ export default function InvoiceBuilder() {
   const [location] = useLocation();
   const [activeTab, setActiveTab] = useState("form");
 
+  // Shared state for live preview
+  const [formData, setFormData] = useState<any>({});
+  const [lineItems, setLineItems] = useState<any[]>([]);
+  const [logoPreview, setLogoPreview] = useState<string>("");
+
   // Check if we're editing an existing invoice
   const invoiceId = params.id ? parseInt(params.id) : null;
   const isEditing = invoiceId !== null;
@@ -97,12 +102,18 @@ export default function InvoiceBuilder() {
                 invoice={invoice}
                 template={template}
                 onPreview={() => setActiveTab("preview")}
+                onDataChange={setFormData}
+                onLineItemsChange={setLineItems}
+                onLogoChange={setLogoPreview}
               />
             </TabsContent>
             
             <TabsContent value="preview" className="mt-6">
               <InvoicePreview
                 invoice={invoice}
+                formData={formData}
+                lineItems={lineItems}
+                logoPreview={logoPreview}
                 onEdit={() => setActiveTab("form")}
               />
             </TabsContent>
@@ -121,6 +132,9 @@ export default function InvoiceBuilder() {
                 <InvoiceForm
                   invoice={invoice}
                   template={template}
+                  onDataChange={setFormData}
+                  onLineItemsChange={setLineItems}
+                  onLogoChange={setLogoPreview}
                 />
               </CardContent>
             </Card>
@@ -135,6 +149,9 @@ export default function InvoiceBuilder() {
               <CardContent>
                 <InvoicePreview
                   invoice={invoice}
+                  formData={formData}
+                  lineItems={lineItems}
+                  logoPreview={logoPreview}
                 />
               </CardContent>
             </Card>
