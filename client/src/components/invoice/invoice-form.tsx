@@ -12,10 +12,10 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { isUnauthorizedError } from "@/lib/authUtils";
 import { useLocation } from "wouter";
-import { Upload, Plus, Save, FileText, Mail, Download } from "lucide-react";
+import { Upload, Plus, Save, FileText, Download } from "lucide-react";
 import LineItemManager from "./line-item-manager";
 import { generateInvoicePDF } from "@/lib/pdf-generator";
-import { sendInvoiceEmail } from "@/lib/email-service";
+
 
 const invoiceFormSchema = z.object({
   companyName: z.string().min(1, "Company name is required"),
@@ -224,40 +224,7 @@ export default function InvoiceForm({
     }
   };
 
-  const handleSendEmail = async () => {
-    if (!form.getValues("clientEmail")) {
-      toast({
-        title: "Error",
-        description: "Client email is required to send invoice",
-        variant: "destructive",
-      });
-      return;
-    }
 
-    const formData = form.getValues();
-    const invoiceData = {
-      ...formData,
-      lineItems,
-      subtotal,
-      taxAmount,
-      total,
-      logoPreview,
-    };
-
-    try {
-      await sendInvoiceEmail(invoiceData);
-      toast({
-        title: "Success",
-        description: "Invoice sent successfully",
-      });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to send invoice",
-        variant: "destructive",
-      });
-    }
-  };
 
   return (
     <div className="space-y-6">
@@ -564,14 +531,7 @@ export default function InvoiceForm({
             Download PDF
           </Button>
           
-          <Button
-            type="button"
-            onClick={handleSendEmail}
-            className="btn-success flex-1"
-          >
-            <Mail className="h-4 w-4 mr-2" />
-            Send Email
-          </Button>
+
           
           {onPreview && (
             <Button
