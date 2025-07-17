@@ -347,7 +347,7 @@ export default function Home() {
                 >
                   <DollarSign className="mr-3 h-6 w-6" />
                   <div className="text-left">
-                    <p className="font-medium">Manage Invoices</p>
+                    <p className="font-medium">Manage Doc</p>
                     <p className="text-sm text-gray-600">View and edit existing invoices</p>
                   </div>
                 </Button>
