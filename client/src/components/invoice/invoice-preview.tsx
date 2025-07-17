@@ -1,0 +1,220 @@
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Edit, Download, Mail, Eye } from "lucide-react";
+
+interface InvoicePreviewProps {
+  invoice?: any;
+  onEdit?: () => void;
+  formData?: any;
+  lineItems?: any[];
+  logoPreview?: string;
+}
+
+export default function InvoicePreview({ 
+  invoice, 
+  onEdit, 
+  formData, 
+  lineItems = [], 
+  logoPreview 
+}: InvoicePreviewProps) {
+  // Use either passed formData or invoice data
+  const data = formData || invoice || {};
+  const items = lineItems.length > 0 ? lineItems : (invoice?.lineItems || []);
+  
+  const subtotal = items.reduce((sum: number, item: any) => sum + (parseFloat(item.amount) || 0), 0);
+  const taxRate = parseFloat(data.taxRate) || 0;
+  const discount = parseFloat(data.discount) || 0;
+  const taxAmount = (subtotal * taxRate) / 100;
+  const total = subtotal + taxAmount - discount;
+
+  const formatDate = (dateString: string) => {
+    if (!dateString) return "Not set";
+    return new Date(dateString).toLocaleDateString();
+  };
+
+  return (
+    <div className="space-y-4">
+      {/* Preview Actions */}
+      <div className="flex justify-between items-center">
+        <h3 className="text-lg font-semibold text-gray-900">Invoice Preview</h3>
+        <div className="flex gap-2">
+          <Button variant="outline" size="sm" title="Zoom Out">
+            <Eye className="h-4 w-4" />
+          </Button>
+          {onEdit && (
+            <Button onClick={onEdit} variant="outline" size="sm">
+              <Edit className="h-4 w-4" />
+            </Button>
+          )}
+        </div>
+      </div>
+
+      {/* Invoice Preview */}
+      <Card className="invoice-preview">
+        <CardContent className="p-8">
+          {/* Header */}
+          <div className="invoice-header">
+            <div>
+              <h1 className="invoice-title">INVOICE</h1>
+              <p className="invoice-number">
+                # {data.invoiceNumber || "INV-001"}
+              </p>
+            </div>
+            <div className="text-right">
+              <div className="w-20 h-20 bg-gray-200 rounded border-2 border-dashed border-gray-300 flex items-center justify-center">
+                {logoPreview || data.companyLogo ? (
+                  <img 
+                    src={logoPreview || data.companyLogo} 
+                    alt="Company Logo" 
+                    className="w-full h-full object-contain rounded"
+                  />
+                ) : (
+                  <span className="text-xs text-gray-500">LOGO</span>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Company and Client Information */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <div className="invoice-section">
+              <h3 className="invoice-section-title">From:</h3>
+              <div className="text-sm text-gray-600 space-y-1">
+                <p className="font-medium">{data.companyName || "Your Company Name"}</p>
+                <p>{data.companyAddress || "Your business address"}</p>
+                <p>{data.companyEmail || "your@company.com"}</p>
+              </div>
+            </div>
+            <div className="invoice-section">
+              <h3 className="invoice-section-title">To:</h3>
+              <div className="text-sm text-gray-600 space-y-1">
+                <p className="font-medium">{data.clientName || "Client Name"}</p>
+                <p>{data.clientAddress || "Client address"}</p>
+                <p>{data.clientEmail || "client@company.com"}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Invoice Details */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 text-sm">
+            <div>
+              <div className="space-y-2">
+                <div className="flex justify-between">
+                  <span className="font-medium">Issue Date:</span>
+                  <span>{formatDate(data.issueDate)}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="font-medium">Due Date:</span>
+                  <span>{formatDate(data.dueDate)}</span>
+                </div>
+              </div>
+            </div>
+            <div>
+              {data.status && (
+                <div className="flex justify-between mb-2">
+                  <span className="font-medium">Status:</span>
+                  <Badge variant="outline" className="text-xs">
+                    {data.status}
+                  </Badge>
+                </div>
+              )}
+              {data.paymentStatus && (
+                <div className="flex justify-between">
+                  <span className="font-medium">Payment:</span>
+                  <Badge variant="outline" className="text-xs">
+                    {data.paymentStatus}
+                  </Badge>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Line Items */}
+          <div className="invoice-section">
+            <table className="invoice-table">
+              <thead>
+                <tr>
+                  <th>Description</th>
+                  <th className="text-right w-20">Qty</th>
+                  <th className="text-right w-24">Rate</th>
+                  <th className="text-right w-28">Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                {items.length > 0 ? (
+                  items.map((item: any, index: number) => (
+                    <tr key={index}>
+                      <td className="py-3">
+                        {item.description || "Service description"}
+                      </td>
+                      <td className="text-right py-3">
+                        {item.quantity || 1}
+                      </td>
+                      <td className="text-right py-3">
+                        ${(item.rate || 0).toFixed(2)}
+                      </td>
+                      <td className="text-right py-3">
+                        ${(item.amount || 0).toFixed(2)}
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={4} className="text-center py-8 text-gray-500">
+                      No line items added yet
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Totals */}
+          <div className="invoice-total-section">
+            <div className="invoice-total-table">
+              <div className="invoice-total-row">
+                <span>Subtotal:</span>
+                <span>${subtotal.toFixed(2)}</span>
+              </div>
+              {taxRate > 0 && (
+                <div className="invoice-total-row">
+                  <span>Tax ({taxRate}%):</span>
+                  <span>${taxAmount.toFixed(2)}</span>
+                </div>
+              )}
+              {discount > 0 && (
+                <div className="invoice-total-row">
+                  <span>Discount:</span>
+                  <span>-${discount.toFixed(2)}</span>
+                </div>
+              )}
+              <div className="invoice-total-row invoice-total-final">
+                <span>Total:</span>
+                <span>${total.toFixed(2)}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Notes and Terms */}
+          {(data.notes || data.terms) && (
+            <div className="mt-8 pt-6 border-t border-gray-200">
+              {data.notes && (
+                <div className="mb-4">
+                  <h4 className="font-medium text-gray-900 mb-2">Notes:</h4>
+                  <p className="text-sm text-gray-600">{data.notes}</p>
+                </div>
+              )}
+              {data.terms && (
+                <div>
+                  <h4 className="font-medium text-gray-900 mb-2">Terms:</h4>
+                  <p className="text-sm text-gray-600">{data.terms}</p>
+                </div>
+              )}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
