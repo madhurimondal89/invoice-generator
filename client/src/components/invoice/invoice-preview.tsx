@@ -38,6 +38,9 @@ export default function InvoicePreview({
   const items = lineItems.length > 0 ? lineItems : (invoice?.lineItems || []);
   const currency = data.currency || "USD";
   
+  // Debug logging to see what data we're receiving
+  console.log("Preview Data:", { formData, data, items, currency });
+  
   // Get template styling data
   const templateData = template?.templateData || {};
   const getTemplateStyles = () => {

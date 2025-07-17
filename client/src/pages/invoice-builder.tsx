@@ -19,6 +19,9 @@ export default function InvoiceBuilder() {
   const [formData, setFormData] = useState<any>({});
   const [lineItems, setLineItems] = useState<any[]>([]);
   const [logoPreview, setLogoPreview] = useState<string>("");
+  
+  // Debug logging to track state changes
+  console.log("Invoice Builder State:", { formData, lineItems, logoPreview });
 
   // Check if we're editing an existing invoice
   const invoiceId = params.id ? parseInt(params.id) : null;
