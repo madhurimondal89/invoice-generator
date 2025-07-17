@@ -47,9 +47,7 @@ export default function Footer() {
                 </button>
               </li>
               <li>
-                <button className="text-gray-300 hover:text-white transition-colors">
-                  Features
-                </button>
+                <button className="text-gray-300 hover:text-white transition-colors">Quotes</button>
               </li>
               <li>
                 <button className="text-gray-300 hover:text-white transition-colors">
