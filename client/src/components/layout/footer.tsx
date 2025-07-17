@@ -42,9 +42,7 @@ export default function Footer() {
                 <button 
                   onClick={() => setLocation("/templates")}
                   className="text-gray-300 hover:text-white transition-colors"
-                >
-                  Invoice Templates
-                </button>
+                >Invoice</button>
               </li>
               <li>
                 <button className="text-gray-300 hover:text-white transition-colors">Quotes</button>
