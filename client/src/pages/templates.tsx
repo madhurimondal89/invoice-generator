@@ -7,6 +7,7 @@ import { FileText, Search } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { useLocation } from "wouter";
 import { useAuth } from "@/hooks/useAuth";
+import TemplatePreview from "@/components/template/template-preview";
 
 const defaultTemplates = [
   {
@@ -213,11 +214,10 @@ export default function Templates() {
           {filteredTemplates.map((template: any) => (
             <Card key={template.id} className="template-card group">
               <CardContent className="p-0">
-                <div className="relative overflow-hidden rounded-t-lg">
-                  <img
-                    src={template.previewImage}
-                    alt={`${template.name} invoice template`}
-                    className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-200"
+                <div className="relative overflow-hidden rounded-t-lg h-48 bg-gray-50">
+                  <TemplatePreview 
+                    template={template} 
+                    className="w-full h-full"
                   />
                   <div className="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
                     <Button
