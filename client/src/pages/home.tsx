@@ -88,25 +88,7 @@ export default function Home() {
               <span className="font-semibold text-purple-600"> lightning-fast generation</span>
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-              <Button 
-                onClick={() => setLocation("/invoice/new")}
-                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 text-lg font-semibold rounded-xl shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 group"
-              >
-                <Plus className="mr-2 h-5 w-5 group-hover:rotate-90 transition-transform duration-300" />
-                Create Document
-                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
-              </Button>
-              
-              <Button 
-                variant="outline"
-                onClick={() => setLocation("/templates")}
-                className="px-8 py-4 text-lg font-semibold rounded-xl border-2 border-gray-300 hover:border-blue-500 hover:bg-blue-50 transition-all duration-300 backdrop-blur-sm"
-              >
-                <Layout className="mr-2 h-5 w-5" />
-                Browse Templates
-              </Button>
-            </div>
+            
 
             {/* Live Stats */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-2xl mx-auto">
