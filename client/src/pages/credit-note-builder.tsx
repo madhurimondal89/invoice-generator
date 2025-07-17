@@ -148,7 +148,7 @@ export default function CreditNoteBuilder() {
           <div className={showPreview ? "" : "hidden lg:block"}>
             <Card>
               <CardHeader>
-                <CardTitle>Credit Note Preview</CardTitle>
+                <CardTitle>Live Preview</CardTitle>
               </CardHeader>
               <CardContent>
                 <InvoicePreview 
