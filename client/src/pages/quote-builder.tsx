@@ -148,7 +148,7 @@ export default function QuoteBuilder() {
           <div className={showPreview ? "" : "hidden lg:block"}>
             <Card>
               <CardHeader>
-                <CardTitle>Quote Preview</CardTitle>
+                <CardTitle>Live Preview</CardTitle>
               </CardHeader>
               <CardContent>
                 <InvoicePreview 
