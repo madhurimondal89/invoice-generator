@@ -148,7 +148,7 @@ export default function PurchaseOrderBuilder() {
           <div className={showPreview ? "" : "hidden lg:block"}>
             <Card>
               <CardHeader>
-                <CardTitle>Purchase Order Preview</CardTitle>
+                <CardTitle>Live Preview</CardTitle>
               </CardHeader>
               <CardContent>
                 <InvoicePreview 
