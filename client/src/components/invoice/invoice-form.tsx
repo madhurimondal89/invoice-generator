@@ -16,6 +16,45 @@ import { Upload, Plus, Save, FileText, Download } from "lucide-react";
 import LineItemManager from "./line-item-manager";
 import { generateInvoicePDF } from "@/lib/pdf-generator";
 
+// Helper function to get document prefix based on type
+const getDocumentPrefix = (documentType: string) => {
+  switch (documentType) {
+    case 'quote': return 'QUO';
+    case 'credit_note': return 'CN';
+    case 'purchase_order': return 'PO';
+    default: return 'INV';
+  }
+};
+
+// Helper function to get document labels
+const getDocumentLabels = (documentType: string) => {
+  switch (documentType) {
+    case 'quote': return {
+      number: 'Quote Number',
+      date: 'Quote Date',
+      due: 'Valid Until',
+      title: 'Quote'
+    };
+    case 'credit_note': return {
+      number: 'Credit Note Number',
+      date: 'Credit Date',
+      due: 'Reference Date',
+      title: 'Credit Note'
+    };
+    case 'purchase_order': return {
+      number: 'PO Number',
+      date: 'Order Date',
+      due: 'Required By',
+      title: 'Purchase Order'
+    };
+    default: return {
+      number: 'Invoice Number',
+      date: 'Invoice Date',
+      due: 'Due Date',
+      title: 'Invoice'
+    };
+  }
+};
 
 const invoiceFormSchema = z.object({
   companyName: z.string().min(1, "Company name is required"),
@@ -53,6 +92,7 @@ interface InvoiceFormProps {
   template?: any;
   onPreview?: () => void;
   onDataChange?: (data: any) => void;
+  documentType?: 'invoice' | 'quote' | 'credit_note' | 'purchase_order';
   onLineItemsChange?: (items: any[]) => void;
   onLogoChange?: (logo: string) => void;
 }
@@ -62,12 +102,16 @@ export default function InvoiceForm({
   template, 
   onPreview,
   onDataChange,
+  documentType = 'invoice',
   onLineItemsChange,
   onLogoChange
 }: InvoiceFormProps) {
   const { toast } = useToast();
   const [, setLocation] = useLocation();
   const queryClient = useQueryClient();
+  
+  // Get document-specific labels
+  const labels = getDocumentLabels(documentType);
   const [lineItems, setLineItems] = useState<LineItem[]>([
     { description: "", quantity: 1, rate: 0, amount: 0 }
   ]);
@@ -86,7 +130,7 @@ export default function InvoiceForm({
       clientEmail: invoice?.clientEmail || "",
       clientAddress: invoice?.clientAddress || "",
       
-      invoiceNumber: invoice?.invoiceNumber || `INV-${Date.now()}`,
+      invoiceNumber: invoice?.invoiceNumber || `${getDocumentPrefix(documentType)}-${Date.now()}`,
       issueDate: invoice?.issueDate ? new Date(invoice.issueDate).toISOString().split('T')[0] : 
                  new Date().toISOString().split('T')[0],
       dueDate: invoice?.dueDate ? new Date(invoice.dueDate).toISOString().split('T')[0] : 
@@ -397,19 +441,19 @@ export default function InvoiceForm({
           </CardContent>
         </Card>
 
-        {/* Invoice Details */}
+        {/* Document Details */}
         <Card>
           <CardHeader>
-            <CardTitle>Invoice Details</CardTitle>
+            <CardTitle>{labels.title} Details</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <Label htmlFor="invoiceNumber">Invoice Number *</Label>
+                <Label htmlFor="invoiceNumber">{labels.number} *</Label>
                 <Input
                   id="invoiceNumber"
                   {...form.register("invoiceNumber")}
-                  placeholder="INV-001"
+                  placeholder={`${getDocumentPrefix(documentType)}-001`}
                 />
                 {form.formState.errors.invoiceNumber && (
                   <p className="text-sm text-red-600 mt-1">
@@ -418,7 +462,7 @@ export default function InvoiceForm({
                 )}
               </div>
               <div>
-                <Label htmlFor="issueDate">Issue Date *</Label>
+                <Label htmlFor="issueDate">{labels.date} *</Label>
                 <Input
                   id="issueDate"
                   type="date"
@@ -431,7 +475,7 @@ export default function InvoiceForm({
                 )}
               </div>
               <div>
-                <Label htmlFor="dueDate">Due Date *</Label>
+                <Label htmlFor="dueDate">{labels.due} *</Label>
                 <Input
                   id="dueDate"
                   type="date"

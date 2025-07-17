@@ -7,6 +7,9 @@ import { useAuth } from "@/hooks/useAuth";
 import Landing from "@/pages/landing";
 import Home from "@/pages/home";
 import InvoiceBuilder from "@/pages/invoice-builder";
+import QuoteBuilder from "@/pages/quote-builder";
+import CreditNoteBuilder from "@/pages/credit-note-builder";
+import PurchaseOrderBuilder from "@/pages/purchase-order-builder";
 import Templates from "@/pages/templates";
 import Invoices from "@/pages/invoices";
 import NotFound from "@/pages/not-found";
@@ -41,6 +44,12 @@ function Router() {
               <Route path="/invoices" component={Invoices} />
               <Route path="/invoice/new" component={InvoiceBuilder} />
               <Route path="/invoice/:id" component={InvoiceBuilder} />
+              <Route path="/quote/new" component={QuoteBuilder} />
+              <Route path="/quote/:id" component={QuoteBuilder} />
+              <Route path="/credit-note/new" component={CreditNoteBuilder} />
+              <Route path="/credit-note/:id" component={CreditNoteBuilder} />
+              <Route path="/purchase-order/new" component={PurchaseOrderBuilder} />
+              <Route path="/purchase-order/:id" component={PurchaseOrderBuilder} />
               <Route path="/templates" component={Templates} />
             </>
           )}

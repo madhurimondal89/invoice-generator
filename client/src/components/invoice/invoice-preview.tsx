@@ -3,6 +3,16 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Edit, Download, Mail, Eye } from "lucide-react";
 
+// Helper function to get document title
+const getDocumentTitle = (documentType: string) => {
+  switch (documentType) {
+    case 'quote': return 'QUOTE';
+    case 'credit_note': return 'CREDIT NOTE';
+    case 'purchase_order': return 'PURCHASE ORDER';
+    default: return 'INVOICE';
+  }
+};
+
 interface InvoicePreviewProps {
   invoice?: any;
   onEdit?: () => void;
@@ -10,6 +20,7 @@ interface InvoicePreviewProps {
   lineItems?: any[];
   logoPreview?: string;
   template?: any;
+  documentType?: 'invoice' | 'quote' | 'credit_note' | 'purchase_order';
 }
 
 export default function InvoicePreview({ 
@@ -18,7 +29,8 @@ export default function InvoicePreview({
   formData, 
   lineItems = [], 
   logoPreview,
-  template 
+  template,
+  documentType = 'invoice'
 }: InvoicePreviewProps) {
   // Use either passed formData or invoice data
   const data = formData || invoice || {};
@@ -122,7 +134,7 @@ export default function InvoicePreview({
           <div className={`invoice-header ${styles.headerBg} -m-8 p-8 mb-8 ${styles.borderColor} border-b`}>
             <div>
               <h1 className={`invoice-title ${styles.accentColor} ${styles.primaryFont}`}>
-                {template?.templateData?.documentLabel || 'INVOICE'}
+                {getDocumentTitle(documentType)}
               </h1>
               <p className={`invoice-number ${styles.accentColor}`}>
                 # {data.invoiceNumber || "INV-001"}

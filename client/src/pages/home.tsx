@@ -3,7 +3,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { FileText, Plus, DollarSign, Clock, CheckCircle } from "lucide-react";
+import { FileText, Plus, DollarSign, Clock, CheckCircle, File, Receipt, ShoppingCart } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { useLocation } from "wouter";
 
@@ -79,6 +79,44 @@ export default function Home() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Quick Actions */}
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Quick Actions</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setLocation("/invoice/new")}>
+              <CardContent className="p-6 text-center">
+                <FileText className="h-8 w-8 text-blue-600 mx-auto mb-3" />
+                <h3 className="text-lg font-semibold mb-2">Create Invoice</h3>
+                <p className="text-gray-600 text-sm">Bill your clients professionally</p>
+              </CardContent>
+            </Card>
+            
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setLocation("/quote/new")}>
+              <CardContent className="p-6 text-center">
+                <File className="h-8 w-8 text-green-600 mx-auto mb-3" />
+                <h3 className="text-lg font-semibold mb-2">Create Quote</h3>
+                <p className="text-gray-600 text-sm">Send estimates to prospects</p>
+              </CardContent>
+            </Card>
+            
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setLocation("/credit-note/new")}>
+              <CardContent className="p-6 text-center">
+                <Receipt className="h-8 w-8 text-red-600 mx-auto mb-3" />
+                <h3 className="text-lg font-semibold mb-2">Credit Note</h3>
+                <p className="text-gray-600 text-sm">Issue refunds and adjustments</p>
+              </CardContent>
+            </Card>
+            
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setLocation("/purchase-order/new")}>
+              <CardContent className="p-6 text-center">
+                <ShoppingCart className="h-8 w-8 text-purple-600 mx-auto mb-3" />
+                <h3 className="text-lg font-semibold mb-2">Purchase Order</h3>
+                <p className="text-gray-600 text-sm">Order from suppliers</p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <Card>
