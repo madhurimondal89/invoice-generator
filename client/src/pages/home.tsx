@@ -303,9 +303,7 @@ export default function Home() {
                     onClick={() => setLocation("/invoice/new")}
                     className="mt-4"
                     variant="outline"
-                  >
-                    Create Your First Invoice
-                  </Button>
+                  >Create Your First Doc</Button>
                 </div>
               )}
             </CardContent>
