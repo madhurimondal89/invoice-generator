@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { FileText, Search } from "lucide-react";
+import { FileText, Search, Plus } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { useLocation } from "wouter";
 import { useAuth } from "@/hooks/useAuth";
@@ -431,32 +431,38 @@ export default function Templates() {
 
         {/* CTA Section */}
         <div className="mt-16 text-center">
-          <div className="bg-primary text-white rounded-lg p-8">
-            <h2 className="text-2xl font-bold mb-4">Ready to Create Your Invoice?</h2>
-            <p className="text-blue-100 mb-6">
-              Choose a template above or start with a blank invoice
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button
-                onClick={() => handleUseTemplate(1, 'invoice')}
-                className="bg-accent text-white hover:bg-yellow-600"
-              >
-                <FileText className="mr-2 h-4 w-4" />
-                Start with Template
-              </Button>
-              <Button
-                onClick={() => {
-                  if (isAuthenticated) {
-                    setLocation("/invoice/new");
-                  } else {
-                    window.location.href = "/api/login";
-                  }
-                }}
-                variant="outline"
-                className="border-white text-white hover:bg-white hover:text-primary"
-              >
-                Start from Scratch
-              </Button>
+          <div className="relative overflow-hidden bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 text-white rounded-3xl p-8 sm:p-12 shadow-xl shadow-blue-500/15 border border-blue-500/20">
+            {/* Ambient decorative glow */}
+            <div className="absolute -top-24 -left-24 w-60 h-60 bg-white/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute -bottom-24 -right-24 w-60 h-60 bg-indigo-400/20 rounded-full blur-3xl pointer-events-none" />
+
+            <div className="relative z-10 max-w-2xl mx-auto">
+              <h2 className="text-2xl sm:text-3xl font-extrabold mb-3 tracking-tight">Ready to Create Your Invoice?</h2>
+              <p className="text-blue-100 text-sm sm:text-base mb-6 font-medium">
+                Choose a template above or start with a blank invoice in seconds
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <Button
+                  onClick={() => handleUseTemplate(1, 'invoice')}
+                  className="bg-amber-500 hover:bg-amber-600 text-white font-bold px-6 py-2.5 h-11 rounded-xl shadow-lg shadow-amber-500/25 transition-all transform hover:-translate-y-0.5 cursor-pointer"
+                >
+                  <FileText className="mr-2 h-4 w-4" />
+                  Start with Template
+                </Button>
+                <Button
+                  onClick={() => {
+                    if (isAuthenticated) {
+                      setLocation("/invoice/new");
+                    } else {
+                      window.location.href = "/api/login";
+                    }
+                  }}
+                  className="bg-white hover:bg-slate-100 text-blue-700 font-bold px-6 py-2.5 h-11 rounded-xl shadow-md border border-white hover:border-slate-200 transition-all transform hover:-translate-y-0.5 cursor-pointer"
+                >
+                  <Plus className="mr-2 h-4 w-4 text-blue-700" />
+                  Start from Scratch
+                </Button>
+              </div>
             </div>
           </div>
         </div>
