@@ -136,7 +136,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="https://recipe.calculatorfree.in/"
+                  href="https://rannabanna.co.in/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-gray-400 hover:text-white transition-colors flex items-center justify-between group"
