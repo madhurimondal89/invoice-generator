@@ -10,7 +10,12 @@ import {
   LayoutGrid,
   Sparkles,
   QrCode,
-  LogIn
+  LogIn,
+  Globe,
+  Activity,
+  TrendingUp,
+  Cpu,
+  ExternalLink
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -75,11 +80,186 @@ export default function Navigation() {
               >
                 Receipt
               </Button>
+
+              {/* Web Tools Dropdown (Desktop) */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-xs text-blue-700 bg-blue-50/70 hover:bg-blue-100/80 font-semibold flex items-center gap-1.5 ml-1 px-2.5 py-1.5 rounded-lg border border-blue-200/50 shadow-2xs transition-all"
+                  >
+                    <Globe className="h-3.5 w-3.5 text-blue-600" />
+                    <span>Web Tools</span>
+                    <ChevronDown className="h-3 w-3 opacity-70" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start" className="w-72 p-2 rounded-2xl shadow-2xl border border-gray-100 bg-white/95 backdrop-blur-md z-50">
+                  <div className="px-3 py-1.5 text-[11px] font-bold text-gray-400 uppercase tracking-wider flex items-center justify-between">
+                    <span>Our Web Tools Network</span>
+                    <span className="text-[10px] bg-blue-50 text-blue-600 font-semibold px-1.5 py-0.5 rounded-full">Free Suite</span>
+                  </div>
+                  
+                  <DropdownMenuItem asChild>
+                    <a
+                      href="https://health-hub.calculatorfree.in/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-between p-2.5 rounded-xl cursor-pointer hover:bg-rose-50/80 group transition-all"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                          <Activity className="h-4 w-4" />
+                        </div>
+                        <div>
+                          <div className="text-xs font-bold text-gray-900 group-hover:text-rose-600 flex items-center gap-1">
+                            Health Hub
+                            <ExternalLink className="h-2.5 w-2.5 opacity-50" />
+                          </div>
+                          <div className="text-[11px] text-gray-500">BMI, Calorie, Water & Vitals Hub</div>
+                        </div>
+                      </div>
+                    </a>
+                  </DropdownMenuItem>
+
+                  <DropdownMenuItem asChild>
+                    <a
+                      href="https://financialhub.calculatorfree.in/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-between p-2.5 rounded-xl cursor-pointer hover:bg-emerald-50/80 group transition-all"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                          <TrendingUp className="h-4 w-4" />
+                        </div>
+                        <div>
+                          <div className="text-xs font-bold text-gray-900 group-hover:text-emerald-600 flex items-center gap-1">
+                            Financial Hub
+                            <ExternalLink className="h-2.5 w-2.5 opacity-50" />
+                          </div>
+                          <div className="text-[11px] text-gray-500">SIP, EMI, GST, Tax & Salary Tools</div>
+                        </div>
+                      </div>
+                    </a>
+                  </DropdownMenuItem>
+
+                  <DropdownMenuItem asChild>
+                    <a
+                      href="https://engineering.calculatorfree.in/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-between p-2.5 rounded-xl cursor-pointer hover:bg-blue-50/80 group transition-all"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                          <Cpu className="h-4 w-4" />
+                        </div>
+                        <div>
+                          <div className="text-xs font-bold text-gray-900 group-hover:text-blue-600 flex items-center gap-1">
+                            Engg Hub
+                            <ExternalLink className="h-2.5 w-2.5 opacity-50" />
+                          </div>
+                          <div className="text-[11px] text-gray-500">Engineering Formulas & Visualizers</div>
+                        </div>
+                      </div>
+                    </a>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
 
           {/* Main Actions */}
           <div className="flex items-center space-x-3">
+            {/* Web Tools Dropdown (Tablet & Mobile) */}
+            <div className="lg:hidden">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-xs text-blue-700 bg-blue-50/80 hover:bg-blue-100 font-semibold flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-blue-200/60"
+                  >
+                    <Globe className="h-3.5 w-3.5 text-blue-600" />
+                    <span className="hidden sm:inline">Web Tools</span>
+                    <ChevronDown className="h-3 w-3 opacity-70" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-72 p-2 rounded-2xl shadow-2xl border border-gray-100 bg-white/95 backdrop-blur-md z-50">
+                  <div className="px-3 py-1.5 text-[11px] font-bold text-gray-400 uppercase tracking-wider flex items-center justify-between">
+                    <span>Our Web Tools Network</span>
+                    <span className="text-[10px] bg-blue-50 text-blue-600 font-semibold px-1.5 py-0.5 rounded-full">Free Suite</span>
+                  </div>
+                  
+                  <DropdownMenuItem asChild>
+                    <a
+                      href="https://health-hub.calculatorfree.in/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-between p-2.5 rounded-xl cursor-pointer hover:bg-rose-50/80 group transition-all"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center shrink-0">
+                          <Activity className="h-4 w-4" />
+                        </div>
+                        <div>
+                          <div className="text-xs font-bold text-gray-900 group-hover:text-rose-600 flex items-center gap-1">
+                            Health Hub
+                            <ExternalLink className="h-2.5 w-2.5 opacity-50" />
+                          </div>
+                          <div className="text-[11px] text-gray-500">BMI, Calorie, Water & Vitals Hub</div>
+                        </div>
+                      </div>
+                    </a>
+                  </DropdownMenuItem>
+
+                  <DropdownMenuItem asChild>
+                    <a
+                      href="https://financialhub.calculatorfree.in/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-between p-2.5 rounded-xl cursor-pointer hover:bg-emerald-50/80 group transition-all"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
+                          <TrendingUp className="h-4 w-4" />
+                        </div>
+                        <div>
+                          <div className="text-xs font-bold text-gray-900 group-hover:text-emerald-600 flex items-center gap-1">
+                            Financial Hub
+                            <ExternalLink className="h-2.5 w-2.5 opacity-50" />
+                          </div>
+                          <div className="text-[11px] text-gray-500">SIP, EMI, GST, Tax & Salary Tools</div>
+                        </div>
+                      </div>
+                    </a>
+                  </DropdownMenuItem>
+
+                  <DropdownMenuItem asChild>
+                    <a
+                      href="https://engineering.calculatorfree.in/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-between p-2.5 rounded-xl cursor-pointer hover:bg-blue-50/80 group transition-all"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center shrink-0">
+                          <Cpu className="h-4 w-4" />
+                        </div>
+                        <div>
+                          <div className="text-xs font-bold text-gray-900 group-hover:text-blue-600 flex items-center gap-1">
+                            Engg Hub
+                            <ExternalLink className="h-2.5 w-2.5 opacity-50" />
+                          </div>
+                          <div className="text-[11px] text-gray-500">Engineering Formulas & Visualizers</div>
+                        </div>
+                      </div>
+                    </a>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
             <Button
               variant="ghost"
               size="sm"
