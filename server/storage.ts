@@ -1038,6 +1038,33 @@ function generateDefaultTemplates(): InsertInvoiceTemplate[] {
       ],
       notes: 'Credit memorandum applied directly to customer open balance.',
       terms: 'Adjustment will be reflected on next monthly consolidated statement.'
+    },
+    {
+      docType: 'invoice',
+      name: 'Academy Course Tuition & Training Fee',
+      category: 'modern',
+      industry: 'Education & Courses',
+      styleName: 'Modern Studio',
+      font: 'sans-serif',
+      variant: 'modern-studio',
+      primary: '#0284c7',
+      accent: '#38bdf8',
+      bg: '#f0f9ff',
+      company: 'NextGen Academy & Coding Institute',
+      companyEmail: 'admissions@nextgenacademy.edu',
+      companyAddress: 'Tech Tower, Hitech City, Hyderabad 500081',
+      client: 'Pooja Verma (Student ID #NA-2026)',
+      clientEmail: 'pooja.verma@gmail.com',
+      clientAddress: 'Flat 401, Cyber Heights, Madhapur, Hyderabad',
+      currency: 'INR',
+      taxRate: 18,
+      items: [
+        { description: 'Advanced Full-Stack Web Architecture Bootcamp (16 Weeks)', quantity: 1, rate: 38000, taxRate: 18, taxAmount: 6840, amount: 38000 },
+        { description: '1-on-1 Weekly Industry Expert Mentorship & Mock Interviews', quantity: 1, rate: 8000, taxRate: 18, taxAmount: 1440, amount: 8000 },
+        { description: 'Cloud Lab Environment & Official Certification Exam Voucher', quantity: 1, rate: 4000, taxRate: 18, taxAmount: 720, amount: 4000 }
+      ],
+      notes: 'Official fee invoice. Includes lifetime access to LMS and alumni community.',
+      terms: 'Tuition fees are non-refundable after commencement of course batch.'
     }
   ];
 
