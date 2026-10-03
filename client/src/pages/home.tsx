@@ -94,8 +94,8 @@ export default function Home() {
                 <div className="text-sm text-gray-600">Documents Created</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-green-600">100+</div>
-                <div className="text-sm text-gray-600">Premium Templates</div>
+                <div className="text-3xl font-bold text-green-600">{Array.isArray(templates) ? templates.length : 13}</div>
+                <div className="text-sm text-gray-600">Curated Templates</div>
               </div>
               <div className="text-center">
                 <div className="text-3xl font-bold text-purple-600">99.9%</div>
@@ -315,8 +315,8 @@ export default function Home() {
               {[
                 {
                   icon: Zap,
-                  title: '100+ Professional Templates',
-                  description: 'Choose from a vast library of professionally designed templates for all document types',
+                  title: 'Curated Pro Templates',
+                  description: 'Choose from a curated library of professionally designed templates for all document types',
                   gradient: 'from-yellow-500 to-orange-500'
                 },
                 {
@@ -375,11 +375,11 @@ export default function Home() {
             },
             {
               title: 'Templates Available',
-              value: '100+',
+              value: `${Array.isArray(templates) ? templates.length : 13}`,
               icon: Layout,
               gradient: 'from-orange-500 to-orange-600',
               bgGradient: 'from-orange-50 to-orange-100',
-              trend: 'New!'
+              trend: 'Curated'
             }
           ].map((stat, index) => (
             <Card key={index} className={`group hover:shadow-lg transition-shadow duration-200 bg-gradient-to-br ${stat.bgGradient} border-0 shadow-md`}>
@@ -546,7 +546,7 @@ export default function Home() {
                   <FileText className="mr-3 h-6 w-6" />
                   <div className="text-left">
                     <p className="font-medium">Browse Templates</p>
-                    <p className="text-sm text-gray-600">Choose from 100+ designs</p>
+                    <p className="text-sm text-gray-600">Choose from curated pro designs</p>
                   </div>
                 </Button>
 
@@ -584,9 +584,8 @@ export default function Home() {
 
                 <Button
                   onClick={() => setLocation("/templates")}
-                  variant="outline"
                   size="lg"
-                  className="border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-300 backdrop-blur-sm"
+                  className="bg-white/15 hover:bg-white text-white hover:text-blue-700 border-2 border-white px-8 py-4 text-lg font-bold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 backdrop-blur-sm"
                 >
                   <Layout className="mr-2 h-5 w-5" />
                   Explore Templates

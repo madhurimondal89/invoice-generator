@@ -179,7 +179,7 @@ export default function Landing() {
               size="lg"
               className="w-full sm:w-auto border-slate-700 bg-slate-800/60 hover:bg-slate-800 text-white text-base px-8 py-6 rounded-xl backdrop-blur-sm"
             >
-              Explore 100+ Templates
+              Explore Curated Templates
             </Button>
           </div>
 
@@ -273,7 +273,7 @@ export default function Landing() {
           <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-10 gap-4">
             <div>
               <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">Popular Invoice Templates</h2>
-              <p className="text-gray-600 text-sm mt-1">Choose from 100+ curated formats crafted for all industries</p>
+              <p className="text-gray-600 text-sm mt-1">Choose from curated formats crafted for all industries</p>
             </div>
             <Button
               onClick={() => setLocation("/templates")}
