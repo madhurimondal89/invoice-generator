@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { FileText, Plus, DollarSign, Clock, CheckCircle, File, Receipt, ShoppingCart, Layout, ArrowRight, Sparkles, Zap, Globe, Users, TrendingUp } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { useLocation } from "wouter";
+import { motion } from "framer-motion";
 
 export default function Home() {
   const { user, isAuthenticated, isLoading } = useAuth();
@@ -576,8 +577,9 @@ export default function Home() {
                 <Button
                   onClick={() => setLocation("/invoice/new")}
                   size="lg"
-                  className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+                  className="relative group overflow-hidden bg-white text-blue-600 hover:bg-gray-100 px-8 py-4 text-lg font-bold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
                 >
+                  <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-blue-100/60 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out pointer-events-none" />
                   <Plus className="mr-2 h-5 w-5" />
                   Start Creating Now
                 </Button>
