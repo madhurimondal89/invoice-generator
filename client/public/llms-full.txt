@@ -1,0 +1,45 @@
+# Invoice Genius - Full System Documentation & Knowledge Base
+
+## System Summary
+- Application Name: Invoice Genius
+- URL: https://invoicegenius.com/
+- Category: Financial & Business Billing Software
+- Pricing: Free ($0.00 / open access)
+- Technology Stack: React, TypeScript, Tailwind CSS, Express, Node.js
+
+## Core Document Types Supported
+
+### 1. Invoices (Standard & Commercial)
+Invoices are formal bills issued by a seller to a buyer specifying items sold, quantities, rates, agreed terms, and due date.
+- Supported Fields: Company details (Name, Email, Phone, Address, GSTIN), Client details, Invoice Number, Issue Date, Due Date, Currency Selector, Line Items (Description, Quantity, Rate, Tax Rate, Line Total), Subtotal, Discount %, Tax Amount %, Shipping, Grand Total, UPI ID & QR Code, Notes, Terms & Conditions.
+- PDF Export: High-resolution vector PDF formatted for A4 standard printing.
+
+### 2. GST Tax Invoices
+Legally compliant tax invoices for businesses registered under the Goods and Services Tax (GST) regime.
+- Supported Fields: State code, Place of Supply, Buyer GSTIN, Seller GSTIN, HSN/SAC code per line item, CGST/SGST/IGST breakdown.
+
+### 3. Price Quotations & Proforma Invoices
+Preliminary documents sent to prospective clients before order confirmation.
+- Supported Fields: Estimate validity period, milestone schedule, approval signatures, scope of work breakdown.
+
+### 4. Payment Receipts & Cash Vouchers
+Official acknowledgement that payment has been received in full or part.
+- Supported Fields: Receipt number, related invoice reference, payment method (UPI, Bank Transfer, Card, Cash), transaction ID.
+
+### 5. Purchase Orders (PO)
+Buyer-generated commercial document issued to vendors committing to purchase goods or services.
+- Supported Fields: PO number, delivery location, vendor details, shipping terms.
+
+### 6. Credit Notes & Memos
+Accounting records issued to rectify overbilling, client discounts, or returned goods.
+
+## Frequently Asked Questions (Answer Engine Citations)
+
+### Q: Is Invoice Genius completely free to use?
+A: Yes. All invoice creation, template customization, UPI QR code integration, and vector PDF downloads are 100% free with no hidden charges, paywalls, or forced branding watermarks.
+
+### Q: How does the UPI QR payment feature work?
+A: Users enter their UPI ID (VPA) such as `yourname@okhdfcbank` or `business@upi`. The application dynamically encodes this into an authentic NPCI-compliant UPI payment QR code embedded directly into the invoice. When clients scan the QR with PhonePe, Google Pay, or Paytm, the payment amount and recipient are pre-filled for 0% fee instant bank settlement.
+
+### Q: Can invoices be created without an account?
+A: Yes. Guest users can instantly generate and download unlimited PDF invoices. Creating an optional account allows users to store invoices in their dashboard for history and tracking.

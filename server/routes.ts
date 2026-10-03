@@ -22,6 +22,93 @@ function logErrorToFile(error: any, context: string) {
 }
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Health check endpoint for Coolify, Docker, and uptime monitoring
+  app.get("/api/health", (_req, res) => {
+    res.status(200).json({
+      status: "ok",
+      app: "Invoice Genius",
+      uptime: Math.floor(process.uptime()),
+      timestamp: new Date().toISOString(),
+      environment: process.env.NODE_ENV || "development"
+    });
+  });
+
+  // Dynamic robots.txt
+  app.get("/robots.txt", (req, res) => {
+    const host = req.get("host") || "invoicegenius.com";
+    const protocol = req.protocol === "https" || req.get("x-forwarded-proto") === "https" ? "https" : "http";
+    const robots = [
+      "User-agent: *",
+      "Allow: /",
+      "Allow: /templates",
+      "Allow: /invoice/new",
+      "Allow: /tax-invoice/new",
+      "Allow: /proforma-invoice/new",
+      "Allow: /quote/new",
+      "Allow: /receipt/new",
+      "Allow: /purchase-order/new",
+      "Allow: /credit-note/new",
+      "Allow: /llms.txt",
+      "Allow: /llms-full.txt",
+      "Allow: /sitemap.xml",
+      "Disallow: /api/auth/",
+      "Disallow: /api/invoices/",
+      "Disallow: /invoices",
+      "",
+      "# Generative Engine Optimization (GEO) & Answer Engine Optimization (AEO)",
+      "User-agent: GPTBot",
+      "Allow: /",
+      "User-agent: ChatGPT-User",
+      "Allow: /",
+      "User-agent: PerplexityBot",
+      "Allow: /",
+      "User-agent: Claude-Web",
+      "Allow: /",
+      "User-agent: anthropic-ai",
+      "Allow: /",
+      "User-agent: Google-Extended",
+      "Allow: /",
+      "User-agent: Applebot-Extended",
+      "Allow: /",
+      "User-agent: cohere-ai",
+      "Allow: /",
+      "",
+      `Sitemap: ${protocol}://${host}/sitemap.xml`
+    ].join("\n");
+    res.type("text/plain").send(robots);
+  });
+
+  // Dynamic sitemap.xml resolving to the exact live domain connected in Coolify
+  app.get("/sitemap.xml", (req, res) => {
+    const host = req.get("host") || "invoicegenius.com";
+    const protocol = req.protocol === "https" || req.get("x-forwarded-proto") === "https" ? "https" : "http";
+    const baseUrl = `${protocol}://${host}`;
+    const today = new Date().toISOString().split("T")[0];
+
+    const routes = [
+      { path: "/", priority: "1.0", changefreq: "daily" },
+      { path: "/templates", priority: "0.9", changefreq: "weekly" },
+      { path: "/invoice/new", priority: "0.9", changefreq: "weekly" },
+      { path: "/tax-invoice/new", priority: "0.9", changefreq: "weekly" },
+      { path: "/proforma-invoice/new", priority: "0.8", changefreq: "weekly" },
+      { path: "/quote/new", priority: "0.8", changefreq: "weekly" },
+      { path: "/receipt/new", priority: "0.8", changefreq: "weekly" },
+      { path: "/sales-receipt/new", priority: "0.7", changefreq: "weekly" },
+      { path: "/cash-receipt/new", priority: "0.7", changefreq: "weekly" },
+      { path: "/purchase-order/new", priority: "0.8", changefreq: "weekly" },
+      { path: "/credit-note/new", priority: "0.7", changefreq: "weekly" }
+    ];
+
+    const xml = [
+      '<?xml version="1.0" encoding="UTF-8"?>',
+      '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+      ...routes.map(r => `  <url>\n    <loc>${baseUrl}${r.path}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>${r.changefreq}</changefreq>\n    <priority>${r.priority}</priority>\n  </url>`),
+      '</urlset>'
+    ].join("\n");
+
+    res.type("application/xml").send(xml);
+  });
+
   // Auth middleware
   await setupAuth(app);
 

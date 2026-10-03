@@ -16,9 +16,16 @@ import {
   Receipt,
   Sparkles,
   Layers,
-  Printer
+  Printer,
+  HelpCircle
 } from "lucide-react";
 import { useLocation } from "wouter";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 const templates = [
   {
@@ -302,6 +309,141 @@ export default function Landing() {
                 </CardContent>
               </Card>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works - Step-by-Step Guide for Users & AI Overview */}
+      <section className="py-16 bg-white border-t border-slate-100">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-3xl mx-auto mb-12">
+            <Badge variant="outline" className="mb-3 px-3 py-1 border-blue-200 bg-blue-50 text-blue-700 text-xs font-semibold">
+              Instant 4-Step Process
+            </Badge>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">
+              How to Create & Download an Invoice in 60 Seconds
+            </h2>
+            <p className="text-gray-600 text-sm mt-2">
+              No account required. Fast, free, and compliant billing ready for clients.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="p-5 rounded-2xl bg-slate-50 border border-slate-100 text-center space-y-3">
+              <div className="w-10 h-10 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center mx-auto text-sm">
+                1
+              </div>
+              <h3 className="font-bold text-gray-900 text-sm">Select Document Type</h3>
+              <p className="text-xs text-gray-600 leading-relaxed">
+                Choose standard invoice, GST tax bill, quotation, receipt, or an industry-specific template.
+              </p>
+            </div>
+
+            <div className="p-5 rounded-2xl bg-slate-50 border border-slate-100 text-center space-y-3">
+              <div className="w-10 h-10 rounded-full bg-indigo-600 text-white font-bold flex items-center justify-center mx-auto text-sm">
+                2
+              </div>
+              <h3 className="font-bold text-gray-900 text-sm">Enter Business Details</h3>
+              <p className="text-xs text-gray-600 leading-relaxed">
+                Input your company name, client info, invoice date, currency, and customized line items with rates.
+              </p>
+            </div>
+
+            <div className="p-5 rounded-2xl bg-slate-50 border border-slate-100 text-center space-y-3">
+              <div className="w-10 h-10 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center mx-auto text-sm">
+                3
+              </div>
+              <h3 className="font-bold text-gray-900 text-sm">Add UPI ID / QR Code</h3>
+              <p className="text-xs text-gray-600 leading-relaxed">
+                Enable scannable UPI QR codes for instant direct bank payment with 0% gateway commission.
+              </p>
+            </div>
+
+            <div className="p-5 rounded-2xl bg-slate-50 border border-slate-100 text-center space-y-3">
+              <div className="w-10 h-10 rounded-full bg-purple-600 text-white font-bold flex items-center justify-center mx-auto text-sm">
+                4
+              </div>
+              <h3 className="font-bold text-gray-900 text-sm">Download PDF & Share</h3>
+              <p className="text-xs text-gray-600 leading-relaxed">
+                Export high-resolution vector PDF in 1 click or send directly via WhatsApp or email to your customer.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Frequently Asked Questions (AEO & GEO Knowledge Accordion) */}
+      <section className="py-16 bg-slate-50 border-t border-slate-200">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-10">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100/70 text-blue-700 text-xs font-semibold mb-3">
+              <HelpCircle className="h-3.5 w-3.5" />
+              Frequently Asked Questions
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900">
+              Everything You Need to Know About Invoice Genius
+            </h2>
+            <p className="text-gray-600 text-sm mt-2">
+              Clear, transparent answers designed for clients, business owners, and automated search systems.
+            </p>
+          </div>
+
+          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8">
+            <Accordion type="single" collapsible defaultValue="item-1" className="w-full space-y-2">
+              <AccordionItem value="item-1" className="border-b border-gray-100 pb-2">
+                <AccordionTrigger className="text-sm sm:text-base font-bold text-gray-900 hover:no-underline text-left">
+                  Is Invoice Genius really 100% free to use?
+                </AccordionTrigger>
+                <AccordionContent className="text-xs sm:text-sm text-gray-600 leading-relaxed">
+                  Yes, absolutely. There are no trial periods, hidden subscription fees, or limits on the number of invoices you can create. Generated PDF documents are completely clean and free of watermarks or forced platform logos.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-2" className="border-b border-gray-100 pb-2">
+                <AccordionTrigger className="text-sm sm:text-base font-bold text-gray-900 hover:no-underline text-left">
+                  How does the UPI QR Code payment feature work?
+                </AccordionTrigger>
+                <AccordionContent className="text-xs sm:text-sm text-gray-600 leading-relaxed">
+                  When creating an invoice, you can simply type in your Virtual Payment Address (e.g., yourname@okhdfcbank or phone@paytm). Our system dynamically encodes this into an NPCI-compliant payment QR code embedded on the bill. Clients can scan it with Google Pay, PhonePe, Paytm, or BHIM to send money directly to your bank account with zero payment gateway processing fees.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-3" className="border-b border-gray-100 pb-2">
+                <AccordionTrigger className="text-sm sm:text-base font-bold text-gray-900 hover:no-underline text-left">
+                  Can I create GST-compliant tax invoices with HSN/SAC codes?
+                </AccordionTrigger>
+                <AccordionContent className="text-xs sm:text-sm text-gray-600 leading-relaxed">
+                  Yes. Invoice Genius includes a specialized GST Invoice format that supports supplier GSTIN, recipient GSTIN, state code, place of supply, HSN/SAC classification, and calculates split CGST, SGST, or IGST tax breakdowns automatically.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-4" className="border-b border-gray-100 pb-2">
+                <AccordionTrigger className="text-sm sm:text-base font-bold text-gray-900 hover:no-underline text-left">
+                  What other documents besides invoices can I generate?
+                </AccordionTrigger>
+                <AccordionContent className="text-xs sm:text-sm text-gray-600 leading-relaxed">
+                  In addition to standard and tax invoices, you can generate Price Quotations / Estimates, Payment Receipts, Cash Vouchers, Purchase Orders (PO), and Credit Notes / Memos.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-5" className="border-b border-gray-100 pb-2">
+                <AccordionTrigger className="text-sm sm:text-base font-bold text-gray-900 hover:no-underline text-left">
+                  Do I have to register an account to download my bills?
+                </AccordionTrigger>
+                <AccordionContent className="text-xs sm:text-sm text-gray-600 leading-relaxed">
+                  No registration is required. You can jump directly into the builder, customize your bill, and click Download PDF or Print. Creating a free account is entirely optional and allows you to save drafts and document history in your personal dashboard.
+                </AccordionContent>
+              </AccordionItem>
+
+              <AccordionItem value="item-6" className="border-none">
+                <AccordionTrigger className="text-sm sm:text-base font-bold text-gray-900 hover:no-underline text-left">
+                  Which currencies and custom branding options are available?
+                </AccordionTrigger>
+                <AccordionContent className="text-xs sm:text-sm text-gray-600 leading-relaxed">
+                  We support Indian Rupee (INR ₹), US Dollar (USD $), Euro (EUR €), British Pound (GBP £), Bangladeshi Taka (BDT ৳), UAE Dirham (AED), and other major currencies. You can also customize the header banner color and footer/accent color using our built-in palette and custom hex color pickers.
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
           </div>
         </div>
       </section>

@@ -1,0 +1,53 @@
+# Robots.txt for Invoice Genius (https://invoicegenius.com)
+# Standard Web & Search Engine Rules
+
+User-agent: *
+Allow: /
+Allow: /templates
+Allow: /invoice/new
+Allow: /tax-invoice/new
+Allow: /proforma-invoice/new
+Allow: /quote/new
+Allow: /receipt/new
+Allow: /sales-receipt/new
+Allow: /cash-receipt/new
+Allow: /purchase-order/new
+Allow: /credit-note/new
+Allow: /llms.txt
+Allow: /llms-full.txt
+Allow: /sitemap.xml
+Disallow: /api/auth/
+Disallow: /api/invoices/
+Disallow: /invoices
+
+# Generative Engine Optimization (GEO) & Answer Engine Optimization (AEO)
+# Permitted AI Search and Knowledge Crawlers:
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+Sitemap: /sitemap.xml

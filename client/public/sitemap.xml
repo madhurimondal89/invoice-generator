@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Homepage -->
+  <url>
+    <loc>https://invoicegenius.com/</loc>
+    <lastmod>2026-10-03</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Curated Templates Gallery -->
+  <url>
+    <loc>https://invoicegenius.com/templates</loc>
+    <lastmod>2026-10-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Standard Invoice Generator -->
+  <url>
+    <loc>https://invoicegenius.com/invoice/new</loc>
+    <lastmod>2026-10-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- GST Tax Invoice Generator -->
+  <url>
+    <loc>https://invoicegenius.com/tax-invoice/new</loc>
+    <lastmod>2026-10-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Proforma Invoice Generator -->
+  <url>
+    <loc>https://invoicegenius.com/proforma-invoice/new</loc>
+    <lastmod>2026-10-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Price Quote & Estimate Maker -->
+  <url>
+    <loc>https://invoicegenius.com/quote/new</loc>
+    <lastmod>2026-10-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Payment Receipt Generator -->
+  <url>
+    <loc>https://invoicegenius.com/receipt/new</loc>
+    <lastmod>2026-10-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Sales Receipt Maker -->
+  <url>
+    <loc>https://invoicegenius.com/sales-receipt/new</loc>
+    <lastmod>2026-10-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Cash Voucher Receipt -->
+  <url>
+    <loc>https://invoicegenius.com/cash-receipt/new</loc>
+    <lastmod>2026-10-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Purchase Order Generator -->
+  <url>
+    <loc>https://invoicegenius.com/purchase-order/new</loc>
+    <lastmod>2026-10-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Credit Note & Memo Maker -->
+  <url>
+    <loc>https://invoicegenius.com/credit-note/new</loc>
+    <lastmod>2026-10-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+</urlset>
