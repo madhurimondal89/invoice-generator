@@ -19,14 +19,12 @@ import Footer from "@/components/layout/footer";
 
 function Router() {
   const { isAuthenticated, isLoading, user } = useAuth();
-
-  // Always show the authenticated routes in development since we have a mock user
-  const showAuthenticatedRoutes = isAuthenticated || (user && user.id === 'dev-user');
+  const isUserAuthenticated = isAuthenticated || (user && user.id === 'dev-user');
 
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+        <div className="animate-spin rounded-full h-24 w-24 border-b-2 border-primary"></div>
       </div>
     );
   }
@@ -36,30 +34,56 @@ function Router() {
       <Navigation />
       <main className="flex-1">
         <Switch>
-          {showAuthenticatedRoutes ? (
-            <>
-              <Route path="/" component={Home} />
-              <Route path="/invoices" component={Invoices} />
-              <Route path="/invoice/new" component={InvoiceBuilder} />
-              <Route path="/invoice/:id" component={InvoiceBuilder} />
-              <Route path="/quote/new" component={QuoteBuilder} />
-              <Route path="/quote/:id" component={QuoteBuilder} />
-              <Route path="/credit-note/new" component={CreditNoteBuilder} />
-              <Route path="/credit-note/:id" component={CreditNoteBuilder} />
-              <Route path="/purchase-order/new" component={PurchaseOrderBuilder} />
-              <Route path="/purchase-order/:id" component={PurchaseOrderBuilder} />
-              <Route path="/templates" component={Templates} />
-            </>
-          ) : (
-            <>
-              <Route path="/" component={Landing} />
-              <Route path="/templates" component={Templates} />
-            </>
-          )}
+          {/* Home / Landing */}
+          <Route path="/" component={isUserAuthenticated ? Home : Landing} />
+
+          {/* Public & Instant Builders (Accessible to all guests & logged-in users) */}
+          <Route path="/invoice/new" component={() => <InvoiceBuilder documentType="invoice" />} />
+          <Route path="/invoice/:id" component={InvoiceBuilder} />
+
+          <Route path="/tax-invoice/new" component={() => <InvoiceBuilder documentType="tax_invoice" />} />
+          <Route path="/tax-invoice/:id" component={InvoiceBuilder} />
+
+          <Route path="/proforma-invoice/new" component={() => <InvoiceBuilder documentType="proforma_invoice" />} />
+          <Route path="/proforma-invoice/:id" component={InvoiceBuilder} />
+
+          <Route path="/receipt/new" component={() => <InvoiceBuilder documentType="receipt" />} />
+          <Route path="/receipt/:id" component={InvoiceBuilder} />
+
+          <Route path="/sales-receipt/new" component={() => <InvoiceBuilder documentType="sales_receipt" />} />
+          <Route path="/sales-receipt/:id" component={InvoiceBuilder} />
+
+          <Route path="/cash-receipt/new" component={() => <InvoiceBuilder documentType="cash_receipt" />} />
+          <Route path="/cash-receipt/:id" component={InvoiceBuilder} />
+
+          <Route path="/quote/new" component={QuoteBuilder} />
+          <Route path="/quote/:id" component={QuoteBuilder} />
+
+          <Route path="/estimate/new" component={() => <InvoiceBuilder documentType="estimate" />} />
+          <Route path="/estimate/:id" component={InvoiceBuilder} />
+
+          <Route path="/credit-note/new" component={CreditNoteBuilder} />
+          <Route path="/credit-note/:id" component={CreditNoteBuilder} />
+
+          <Route path="/credit-memo/new" component={() => <InvoiceBuilder documentType="credit_memo" />} />
+          <Route path="/credit-memo/:id" component={InvoiceBuilder} />
+
+          <Route path="/purchase-order/new" component={PurchaseOrderBuilder} />
+          <Route path="/purchase-order/:id" component={PurchaseOrderBuilder} />
+
+          <Route path="/delivery-note/new" component={() => <InvoiceBuilder documentType="delivery_note" />} />
+          <Route path="/delivery-note/:id" component={InvoiceBuilder} />
+
+          {/* Templates Gallery */}
+          <Route path="/templates" component={Templates} />
+
+          {/* User Saved Documents Dashboard */}
+          <Route path="/invoices" component={Invoices} />
+
           <Route component={NotFound} />
         </Switch>
       </main>
-      {showAuthenticatedRoutes && <FloatingActionButton />}
+      <FloatingActionButton />
       <Footer />
     </div>
   );

@@ -35,16 +35,16 @@ export default function Header() {
               <span className="logo-accent">home</span>
             </button>
           </div>
-          
+
           <nav className="nav-links">
-            <button 
+            <button
               onClick={() => setLocation("/templates")}
               className="nav-link"
             >
               Templates
             </button>
             {isAuthenticated && (
-              <button 
+              <button
                 onClick={() => setLocation("/invoices")}
                 className="nav-link"
               >
@@ -59,9 +59,7 @@ export default function Header() {
             {isAuthenticated ? (
               <>
                 <div className="hidden md:flex items-center space-x-4">
-                  <span className="text-sm text-gray-600">
-                    {user?.firstName || user?.email}
-                  </span>
+
                   <Button
                     onClick={handleSignOut}
                     variant="ghost"
@@ -116,7 +114,7 @@ export default function Header() {
       {isMobileMenuOpen && (
         <div className="mobile-menu">
           <div className="mobile-menu-content">
-            <button 
+            <button
               onClick={() => {
                 setLocation("/templates");
                 setIsMobileMenuOpen(false);
@@ -126,7 +124,7 @@ export default function Header() {
               Templates
             </button>
             {isAuthenticated && (
-              <button 
+              <button
                 onClick={() => {
                   setLocation("/invoices");
                   setIsMobileMenuOpen(false);
@@ -143,14 +141,14 @@ export default function Header() {
               Support
             </button>
             {isAuthenticated ? (
-              <button 
+              <button
                 onClick={handleSignOut}
                 className="block text-gray-700 hover:text-primary"
               >
                 Sign Out
               </button>
             ) : (
-              <button 
+              <button
                 onClick={handleSignIn}
                 className="block text-gray-700 hover:text-primary"
               >

@@ -104,12 +104,12 @@ export default function TemplateGallery({ onSelectTemplate, selectedTemplateId }
   });
 
   // Use default templates if API fails or returns empty
-  const allTemplates = templates && templates.length > 0 ? templates : defaultTemplates;
+  const allTemplates = Array.isArray(templates) && templates.length > 0 ? templates : defaultTemplates;
 
   const filteredTemplates = allTemplates.filter((template: any) => {
     const matchesCategory = selectedCategory === "all" || template.category === selectedCategory;
     const matchesSearch = template.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         template.description.toLowerCase().includes(searchTerm.toLowerCase());
+      template.description.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
@@ -159,11 +159,10 @@ export default function TemplateGallery({ onSelectTemplate, selectedTemplateId }
       {/* Template Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredTemplates.map((template: any) => (
-          <Card 
-            key={template.id} 
-            className={`template-card cursor-pointer transition-all ${
-              selectedTemplateId === template.id ? 'ring-2 ring-primary' : ''
-            }`}
+          <Card
+            key={template.id}
+            className={`template-card cursor-pointer transition-all ${selectedTemplateId === template.id ? 'ring-2 ring-primary' : ''
+              }`}
             onClick={() => onSelectTemplate(template)}
           >
             <CardContent className="p-0">
@@ -183,7 +182,7 @@ export default function TemplateGallery({ onSelectTemplate, selectedTemplateId }
                   </Button>
                 </div>
               </div>
-              
+
               <div className="p-4">
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="font-semibold text-gray-900">{template.name}</h3>
@@ -191,11 +190,11 @@ export default function TemplateGallery({ onSelectTemplate, selectedTemplateId }
                     {template.category}
                   </Badge>
                 </div>
-                
+
                 <p className="text-sm text-gray-600 mb-4">
                   {template.description}
                 </p>
-                
+
                 <div className="flex items-center justify-between">
                   <Badge className="bg-green-100 text-green-800">
                     Free

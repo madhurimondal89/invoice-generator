@@ -1,407 +1,329 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { FileText, Palette, Calculator, Mail, CreditCard, BarChart3, Check } from "lucide-react";
+import {
+  FileText,
+  Palette,
+  Calculator,
+  QrCode,
+  Share2,
+  Download,
+  CheckCircle,
+  ShieldCheck,
+  Zap,
+  Globe2,
+  ArrowRight,
+  Receipt,
+  Sparkles,
+  Layers,
+  Printer
+} from "lucide-react";
 import { useLocation } from "wouter";
 
 const templates = [
   {
     id: 1,
-    name: "Classic White",
+    name: "Classic Minimalist",
     category: "classic",
-    description: "Clean and professional design perfect for any business",
+    description: "Crisp and corporate layout designed for consultants and freelancers",
     previewImage: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=500",
   },
   {
     id: 2,
-    name: "Modern Blue",
+    name: "Modern Executive",
     category: "modern",
-    description: "Contemporary design with blue accents and modern typography",
+    description: "Contemporary blue gradient accents with scannable UPI QR box",
     previewImage: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=500",
   },
   {
     id: 3,
-    name: "Creative Pro",
+    name: "Creative Agency Pro",
     category: "creative",
-    description: "Bold design for creative professionals and agencies",
+    description: "Vibrant emerald styling for studios, agencies, and creatives",
     previewImage: "https://images.unsplash.com/photo-1586953208448-b95a79798f07?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=500",
   },
   {
     id: 4,
-    name: "Minimal Clean",
-    category: "minimal",
-    description: "Simple and elegant design focusing on essential information",
+    name: "Tax & GST Invoice",
+    category: "tax_invoice",
+    description: "Official format with GSTIN, HSN codes, and itemized tax breakdowns",
     previewImage: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=500",
   },
 ];
 
 const features = [
   {
-    icon: Palette,
-    title: "Custom Branding",
-    description: "Upload your logo and customize colors to match your brand identity perfectly",
+    icon: QrCode,
+    title: "Instant UPI QR Code",
+    description: "Automatically generates scannable GPay, PhonePe, and Paytm QR codes directly on invoices.",
+  },
+  {
+    icon: Download,
+    title: "1-Click PDF & Print",
+    description: "Export high-resolution, vector-crisp PDF documents ready for printing or digital sending.",
+  },
+  {
+    icon: Share2,
+    title: "WhatsApp Direct Share",
+    description: "Send pre-formatted invoice summaries directly to your clients on WhatsApp in one click.",
+  },
+  {
+    icon: Globe2,
+    title: "Multi-Currency Ready",
+    description: "Full native support for INR (₹), USD ($), EUR (€), GBP (£), BDT (৳), AED, and 160+ world currencies.",
   },
   {
     icon: Calculator,
-    title: "Auto Calculations",
-    description: "Automatic tax calculations, discounts, and totals with support for multiple currencies",
+    title: "Automatic GST & Discounts",
+    description: "Zero manual math. Auto-calculates tax rates, line item taxes, custom discounts, and shipping.",
   },
   {
-    icon: FileText,
-    title: "PDF Generation",
-    description: "Generate high-quality PDF invoices for printing or digital distribution",
-  },
-  {
-    icon: Mail,
-    title: "Email Delivery",
-    description: "Send invoices directly to clients via email with delivery tracking",
-  },
-  {
-    icon: CreditCard,
-    title: "Online Payments",
-    description: "Accept payments via PayPal, Stripe, and major credit cards",
-  },
-  {
-    icon: BarChart3,
-    title: "Analytics Dashboard",
-    description: "Track payment status, revenue trends, and client insights",
+    icon: Zap,
+    title: "Zero Sign-up Friction",
+    description: "Create, live preview, and download professional bills immediately without mandatory signups.",
   },
 ];
 
-const steps = [
+const documentTypes = [
   {
-    number: 1,
-    title: "Choose Template",
-    description: "Select from 100+ professionally designed invoice templates that match your brand",
-    icon: Palette,
+    title: "Standard Invoices",
+    path: "/invoice/new",
+    desc: "For general billing, freelance work, and service delivery.",
+    color: "bg-blue-50 text-blue-700 border-blue-200 hover:border-blue-400",
+    icon: FileText
   },
   {
-    number: 2,
-    title: "Customize Details",
-    description: "Add your logo, client information, line items, and payment terms with our easy editor",
-    icon: FileText,
+    title: "GST Tax Invoices",
+    path: "/tax-invoice/new",
+    desc: "With GSTIN numbers, state codes, and itemized tax rows.",
+    color: "bg-indigo-50 text-indigo-700 border-indigo-200 hover:border-indigo-400",
+    icon: Layers
   },
   {
-    number: 3,
-    title: "Send & Get Paid",
-    description: "Email your invoice as PDF or get paid instantly with integrated payment options",
-    icon: Mail,
+    title: "Quotes & Estimates",
+    path: "/quote/new",
+    desc: "Send price estimates and project proposals to win clients.",
+    color: "bg-emerald-50 text-emerald-700 border-emerald-200 hover:border-emerald-400",
+    icon: Sparkles
+  },
+  {
+    title: "Payment Receipts",
+    path: "/receipt/new",
+    desc: "Acknowledge received payments and cash transactions instantly.",
+    color: "bg-sky-50 text-sky-700 border-sky-200 hover:border-sky-400",
+    icon: Receipt
+  },
+  {
+    title: "Credit Notes",
+    path: "/credit-note/new",
+    desc: "Handle returns, adjustments, and refunds effortlessly.",
+    color: "bg-rose-50 text-rose-700 border-rose-200 hover:border-rose-400",
+    icon: FileText
+  },
+  {
+    title: "Purchase Orders",
+    path: "/purchase-order/new",
+    desc: "Vendor procurement orders and item quantity tracking.",
+    color: "bg-purple-50 text-purple-700 border-purple-200 hover:border-purple-400",
+    icon: FileText
   },
 ];
 
 export default function Landing() {
   const [, setLocation] = useLocation();
 
-  const handleCreateInvoice = () => {
-    window.location.href = "/api/login";
-  };
-
-  const handleSignIn = () => {
-    window.location.href = "/api/login";
-  };
-
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="hero">
-        <div className="hero-content">
-          <div className="hero-grid">
-            <div>
-              <h1 className="hero-title">Professional Document Templates</h1>
-              <p className="hero-description">
-                Create professional business documents in minutes. Generate invoices, quotes, credit notes, 
-                and purchase orders from 100+ beautiful templates with custom branding and payment integration.
-              </p>
-              
-              <div className="hero-actions">
-                <Button
-                  onClick={handleCreateInvoice}
-                  className="btn-accent text-lg px-8 py-4"
-                >
-                  <FileText className="mr-2 h-5 w-5" />
-                  Create Document Now
-                </Button>
-                <Button
-                  onClick={() => setLocation("/templates")}
-                  variant="outline"
-                  className="border-2 border-white text-white hover:bg-white hover:text-primary text-lg px-8 py-4"
-                >
-                  View Templates
-                </Button>
-              </div>
+      <section className="relative overflow-hidden bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-900 text-white py-20 lg:py-28">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e1b4b15_1px,transparent_1px),linear-gradient(to_bottom,#1e1b4b15_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-30"></div>
 
-              <div className="hero-features">
-                <div className="hero-feature">
-                  <Check className="mr-2 h-5 w-5" />
-                  <span>100% Free</span>
-                </div>
-                <div className="hero-feature">
-                  <Check className="mr-2 h-5 w-5" />
-                  <span>PDF Download</span>
-                </div>
-                <div className="hero-feature">
-                  <Check className="mr-2 h-5 w-5" />
-                  <span>Email Delivery</span>
-                </div>
-              </div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <Badge className="bg-primary/20 text-primary-foreground border-primary/30 px-3.5 py-1 text-xs sm:text-sm font-semibold mb-6 inline-flex items-center gap-1.5 backdrop-blur-md">
+            <Sparkles className="h-3.5 w-3.5 text-blue-400" />
+            100% Free Professional Invoice & Billing Generator
+          </Badge>
+
+          <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-white max-w-4xl mx-auto leading-tight sm:leading-tight">
+            Create Stunning Invoices with{" "}
+            <span className="bg-gradient-to-r from-blue-400 via-teal-300 to-indigo-300 bg-clip-text text-transparent">
+              UPI QR Codes & Instant PDF
+            </span>
+          </h1>
+
+          <p className="mt-6 text-lg sm:text-xl text-slate-300 max-w-2xl mx-auto leading-relaxed">
+            Generate professional GST invoices, quotes, receipts, and purchase orders in seconds. Zero signup required. Download high-resolution PDFs or share directly on WhatsApp.
+          </p>
+
+          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Button
+              onClick={() => setLocation("/invoice/new")}
+              size="lg"
+              className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-white font-semibold text-base px-8 py-6 rounded-xl shadow-xl shadow-blue-500/20 hover:scale-105 transition-all gap-2"
+            >
+              <FileText className="h-5 w-5" />
+              Create Free Invoice Now
+              <ArrowRight className="h-4 w-4" />
+            </Button>
+
+            <Button
+              onClick={() => setLocation("/templates")}
+              variant="outline"
+              size="lg"
+              className="w-full sm:w-auto border-slate-700 bg-slate-800/60 hover:bg-slate-800 text-white text-base px-8 py-6 rounded-xl backdrop-blur-sm"
+            >
+              Explore 100+ Templates
+            </Button>
+          </div>
+
+          {/* Trust Badges */}
+          <div className="mt-12 flex flex-wrap items-center justify-center gap-6 sm:gap-10 text-xs sm:text-sm text-slate-400 font-medium">
+            <div className="flex items-center gap-2">
+              <CheckCircle className="h-4 w-4 text-emerald-400" /> No Account Needed
             </div>
-
-            <div className="hero-image">
-              <img
-                src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1200&h=800"
-                alt="Professional invoice creation interface"
-                className="w-full h-auto"
-              />
-              <div className="hero-badge">
-                <FileText className="h-8 w-8" />
-              </div>
+            <div className="flex items-center gap-2">
+              <QrCode className="h-4 w-4 text-teal-400" /> Dynamic UPI QR Code
+            </div>
+            <div className="flex items-center gap-2">
+              <Share2 className="h-4 w-4 text-blue-400" /> WhatsApp Direct Share
+            </div>
+            <div className="flex items-center gap-2">
+              <ShieldCheck className="h-4 w-4 text-purple-400" /> 100% Free & Secure
             </div>
           </div>
         </div>
       </section>
-      {/* How It Works Section */}
-      <section className="py-16 bg-white">
+
+      {/* Quick Document Creators Grid */}
+      <section className="py-16 bg-slate-50 border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">How It Works</h2>
-            <p className="text-xl text-gray-600">Create professional documents in just 3 simple steps</p>
+          <div className="text-center max-w-3xl mx-auto mb-12">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">
+              Pick a Document to Create Instantly
+            </h2>
+            <p className="mt-2 text-gray-600 text-sm sm:text-base">
+              Select any document type below to open the dedicated builder with instant live preview.
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {steps.map((step) => (
-              <div key={step.number} className="text-center">
-                <div className="bg-primary text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-bold">
-                  {step.number}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {documentTypes.map((doc, idx) => (
+              <div
+                key={idx}
+                onClick={() => setLocation(doc.path)}
+                className={`p-6 rounded-2xl border transition-all duration-200 cursor-pointer shadow-sm hover:shadow-md hover:-translate-y-1 bg-white ${doc.color}`}
+              >
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="p-2.5 rounded-xl bg-white shadow-sm border border-inherit">
+                    <doc.icon className="h-5 w-5" />
+                  </div>
+                  <h3 className="font-bold text-base text-gray-900">{doc.title}</h3>
                 </div>
-                <div className="mb-4">
-                  <step.icon className="h-12 w-12 text-primary mx-auto mb-4" />
+                <p className="text-xs text-gray-600 mb-4">{doc.desc}</p>
+                <div className="flex items-center gap-1.5 text-xs font-semibold text-primary">
+                  Create now <ArrowRight className="h-3 w-3" />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">{step.title}</h3>
-                <p className="text-gray-600">{step.description}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
-      
-      {/* Document Types Section */}
-      <section className="py-16 bg-gray-50">
+
+      {/* Key Features Section */}
+      <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">All Your Business Documents</h2>
-            <p className="text-xl text-gray-600">One platform for all your professional document needs</p>
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <Badge variant="outline" className="text-primary border-primary/30 mb-3">
+              Powerful Features
+            </Badge>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900">
+              Built for Modern Businesses & Freelancers
+            </h2>
+            <p className="mt-3 text-lg text-gray-600">
+              Everything you need to create, customize, and deliver polished financial documents to clients.
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Card className="hover:shadow-lg transition-shadow cursor-pointer border-blue-200 bg-blue-50">
-              <CardContent className="p-6 text-center">
-                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <FileText className="h-8 w-8 text-blue-600" />
-                </div>
-                <h3 className="text-xl font-bold mb-2 text-blue-900">Invoices</h3>
-                <p className="text-gray-600 text-sm mb-3">Professional billing documents for completed work or delivered services</p>
-                <Button onClick={handleCreateInvoice} variant="outline" size="sm" className="border-blue-300 text-blue-700 hover:bg-blue-100">
-                  Create Invoice
-                </Button>
-              </CardContent>
-            </Card>
-            
-            <Card className="hover:shadow-lg transition-shadow cursor-pointer border-green-200 bg-green-50">
-              <CardContent className="p-6 text-center">
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <FileText className="h-8 w-8 text-green-600" />
-                </div>
-                <h3 className="text-xl font-bold mb-2 text-green-900">Quotes</h3>
-                <p className="text-gray-600 text-sm mb-3">Professional estimates and proposals for potential clients and projects</p>
-                <Button onClick={handleCreateInvoice} variant="outline" size="sm" className="border-green-300 text-green-700 hover:bg-green-100">
-                  Create Quote
-                </Button>
-              </CardContent>
-            </Card>
-            
-            <Card className="hover:shadow-lg transition-shadow cursor-pointer border-red-200 bg-red-50">
-              <CardContent className="p-6 text-center">
-                <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <FileText className="h-8 w-8 text-red-600" />
-                </div>
-                <h3 className="text-xl font-bold mb-2 text-red-900">Credit Notes</h3>
-                <p className="text-gray-600 text-sm mb-3">Professional refunds, returns, and billing adjustments for customers</p>
-                <Button onClick={handleCreateInvoice} variant="outline" size="sm" className="border-red-300 text-red-700 hover:bg-red-100">
-                  Create Credit Note
-                </Button>
-              </CardContent>
-            </Card>
-            
-            <Card className="hover:shadow-lg transition-shadow cursor-pointer border-purple-200 bg-purple-50">
-              <CardContent className="p-6 text-center">
-                <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <FileText className="h-8 w-8 text-purple-600" />
-                </div>
-                <h3 className="text-xl font-bold mb-2 text-purple-900">Purchase Orders</h3>
-                <p className="text-gray-600 text-sm mb-3">Official requests to suppliers for goods and services with order tracking</p>
-                <Button onClick={handleCreateInvoice} variant="outline" size="sm" className="border-purple-300 text-purple-700 hover:bg-purple-100">
-                  Create Purchase Order
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* Template Gallery Section */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Choose Your Document Template</h2>
-            <p className="text-xl text-gray-600">Professional designs for every business type and document</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {templates.map((template) => (
-              <Card key={template.id} className="template-card">
-                <CardContent className="p-4">
-                  <img
-                    src={template.previewImage}
-                    alt={`${template.name} invoice template`}
-                    className="template-preview mb-4"
-                  />
-                  <h3 className="template-name">{template.name}</h3>
-                  <p className="template-description">{template.description}</p>
-                  <div className="template-actions">
-                    <Badge className="template-price">Free</Badge>
-                    <Button
-                      onClick={handleCreateInvoice}
-                      variant="ghost"
-                      className="template-use-btn"
-                    >
-                      Use Template
-                    </Button>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {features.map((feat, index) => (
+              <Card key={index} className="border border-gray-100 shadow-sm hover:shadow-md transition-shadow rounded-2xl">
+                <CardContent className="p-6 space-y-3">
+                  <div className="w-12 h-12 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-primary">
+                    <feat.icon className="h-6 w-6" />
                   </div>
+                  <h3 className="text-lg font-bold text-gray-900">{feat.title}</h3>
+                  <p className="text-sm text-gray-600 leading-relaxed">{feat.description}</p>
                 </CardContent>
               </Card>
             ))}
           </div>
-
-          <div className="text-center mt-8">
-            <Button
-              onClick={() => setLocation("/templates")}
-              className="btn-primary"
-            >
-              View All 100+ Templates
-            </Button>
-          </div>
         </div>
       </section>
-      {/* Features Section */}
-      <section className="py-16 bg-white">
+
+      {/* Popular Templates Showcase */}
+      <section className="py-16 bg-slate-50 border-t border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Powerful Features for Professional Invoicing</h2>
-            <p className="text-xl text-gray-600">Everything you need to create, send, and manage invoices</p>
+          <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-10 gap-4">
+            <div>
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">Popular Invoice Templates</h2>
+              <p className="text-gray-600 text-sm mt-1">Choose from 100+ curated formats crafted for all industries</p>
+            </div>
+            <Button
+              onClick={() => setLocation("/templates")}
+              variant="outline"
+              className="gap-1.5"
+            >
+              Browse All Templates <ArrowRight className="h-4 w-4" />
+            </Button>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((feature) => (
-              <div key={feature.title} className="text-center p-6 rounded-lg hover:shadow-md transition-shadow">
-                <div className="bg-primary text-white w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <feature.icon className="h-8 w-8" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {templates.map((tpl) => (
+              <Card
+                key={tpl.id}
+                onClick={() => setLocation(`/invoice/new?template=${tpl.id}`)}
+                className="group cursor-pointer overflow-hidden border border-gray-200 shadow-sm hover:shadow-xl transition-all duration-300 rounded-2xl bg-white"
+              >
+                <div className="aspect-[4/5] overflow-hidden bg-slate-100 relative">
+                  <img
+                    src={tpl.previewImage}
+                    alt={tpl.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
+                    <Button size="sm" className="bg-white text-slate-900 hover:bg-slate-100 font-semibold shadow-lg">
+                      Use Template
+                    </Button>
+                  </div>
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">{feature.title}</h3>
-                <p className="text-gray-600">{feature.description}</p>
-              </div>
+                <CardContent className="p-4">
+                  <h4 className="font-bold text-sm text-gray-900">{tpl.name}</h4>
+                  <p className="text-xs text-gray-500 mt-1 line-clamp-2">{tpl.description}</p>
+                </CardContent>
+              </Card>
             ))}
           </div>
         </div>
       </section>
-      {/* Payment Gateways Section */}
-      <section className="py-12 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-8">
-            <h3 className="text-2xl font-bold text-gray-900 mb-4">Supported Payment Gateways</h3>
-            <p className="text-gray-600">Accept payments from clients worldwide</p>
-          </div>
-          
-          <div className="flex flex-wrap justify-center items-center gap-8">
-            <div className="bg-white p-4 rounded-lg shadow-sm">
-              <span className="text-blue-600 font-bold text-xl">PayPal</span>
-            </div>
-            <div className="bg-white p-4 rounded-lg shadow-sm">
-              <span className="text-purple-600 font-bold text-xl">Stripe</span>
-            </div>
-            <div className="bg-white p-4 rounded-lg shadow-sm">
-              <span className="text-red-600 font-bold text-xl">Square</span>
-            </div>
-            <div className="bg-white p-4 rounded-lg shadow-sm">
-              <span className="text-green-600 font-bold text-xl">Razorpay</span>
-            </div>
-          </div>
-        </div>
-      </section>
-      {/* Mobile App Section */}
-      <section className="py-16 bg-primary text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-3xl font-bold mb-6">Invoicing on the go!</h2>
-              <p className="text-xl text-blue-100 mb-8">
-                Create and send invoices from anywhere with our mobile apps. Available on iOS and Android.
-              </p>
-              
-              <div className="space-y-4 mb-8">
-                <div className="flex items-center">
-                  <Check className="mr-3 h-5 w-5 text-accent" />
-                  <span>Create invoices on mobile</span>
-                </div>
-                <div className="flex items-center">
-                  <Check className="mr-3 h-5 w-5 text-accent" />
-                  <span>Sync with desktop account</span>
-                </div>
-                <div className="flex items-center">
-                  <Check className="mr-3 h-5 w-5 text-accent" />
-                  <span>Offline access</span>
-                </div>
-                <div className="flex items-center">
-                  <Check className="mr-3 h-5 w-5 text-accent" />
-                  <span>Cloud backup</span>
-                </div>
-              </div>
 
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Button variant="secondary" className="btn-secondary">
-                  Download on App Store
-                </Button>
-                <Button variant="secondary" className="btn-secondary">
-                  Get it on Google Play
-                </Button>
-              </div>
-            </div>
-
-            <div className="text-center">
-              <img
-                src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=700"
-                alt="Mobile app screenshots"
-                className="rounded-2xl shadow-2xl mx-auto"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-      {/* CTA Section */}
-      <section className="py-16 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">
-            Ready to Create Your First Invoice?
+      {/* Call to Action Banner */}
+      <section className="py-20 bg-gradient-to-r from-blue-600 to-indigo-700 text-white">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
+          <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight">
+            Ready to Generate Your First Invoice?
           </h2>
-          <p className="text-xl text-gray-600 mb-8">
-            Join thousands of businesses using InvoiceHome to get paid faster
+          <p className="text-lg text-blue-100 max-w-2xl mx-auto">
+            Join thousands of freelancers, agencies, and small businesses who bill clients faster with InvoiceGenius.
           </p>
-          <Button
-            onClick={handleCreateInvoice}
-            className="btn-accent text-lg px-8 py-4"
-          >
-            <FileText className="mr-2 h-5 w-5" />
-            Create Invoice Now - It's Free!
-          </Button>
+          <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Button
+              onClick={() => setLocation("/invoice/new")}
+              size="lg"
+              className="bg-white text-blue-700 hover:bg-slate-100 font-bold px-8 py-6 rounded-xl shadow-lg hover:scale-105 transition-all text-base gap-2"
+            >
+              <Sparkles className="h-5 w-5 text-blue-600" /> Start Generating for Free
+            </Button>
+          </div>
         </div>
       </section>
     </div>

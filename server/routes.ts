@@ -1,9 +1,25 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { setupAuth, isAuthenticated } from "./replitAuth";
+import { setupAuth, isAuthenticated } from "./auth";
 import { insertInvoiceSchema, insertInvoiceLineItemSchema } from "@shared/schema";
 import { z } from "zod";
+import * as fs from 'fs';
+import * as path from 'path';
+
+function logErrorToFile(error: any, context: string) {
+  const logPath = path.join(process.cwd(), 'server_error.log');
+  const timestamp = new Date().toISOString();
+  const errorMessage = error instanceof Error ? error.message : String(error);
+  const stack = error instanceof Error ? error.stack : '';
+  const logEntry = `[${timestamp}] [${context}] ${errorMessage}\n${stack}\n-------------------\n`;
+
+  try {
+    fs.appendFileSync(logPath, logEntry);
+  } catch (e) {
+    console.error("Failed to write to log file:", e);
+  }
+}
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Auth middleware
@@ -17,7 +33,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const mockUser = {
           id: "dev-user",
           email: "dev@example.com",
-          firstName: "Developer",
+          firstName: "Guest",
           lastName: "User",
           profileImageUrl: null,
           createdAt: new Date(),
@@ -25,11 +41,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         };
         return res.json(mockUser);
       }
-      
+
       if (!req.isAuthenticated()) {
         return res.status(401).json({ message: "Unauthorized" });
       }
-      
+
       const userId = req.user.claims.sub;
       const user = await storage.getUser(userId);
       res.json(user);
@@ -54,15 +70,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/invoices", async (req: any, res) => {
     try {
       let userId = "dev-user";
-      
+
       if (req.isAuthenticated() && req.user?.claims?.sub) {
         userId = req.user.claims.sub;
       }
-      
+
       const invoices = await storage.getInvoices(userId);
       res.json(invoices);
     } catch (error) {
       console.error("Error fetching invoices:", error);
+      logErrorToFile(error, "GET /api/invoices");
       res.status(500).json({ message: "Failed to fetch invoices" });
     }
   });
@@ -75,15 +92,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       const invoiceId = parseInt(req.params.id);
       const invoice = await storage.getInvoice(invoiceId, userId);
-      
+
       if (!invoice) {
         return res.status(404).json({ message: "Invoice not found" });
       }
-      
+
       const lineItems = await storage.getInvoiceLineItems(invoiceId);
       res.json({ ...invoice, lineItems });
     } catch (error) {
       console.error("Error fetching invoice:", error);
+      logErrorToFile(error, `GET /api/invoices/${req.params.id}`);
       res.status(500).json({ message: "Failed to fetch invoice" });
     }
   });
@@ -99,9 +117,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         userId,
         invoiceNumber: req.body.invoiceNumber || `INV-${Date.now()}`,
       });
-      
+
       const invoice = await storage.createInvoice(invoiceData);
-      
+
       // Create line items if provided
       if (req.body.lineItems && Array.isArray(req.body.lineItems)) {
         for (const lineItem of req.body.lineItems) {
@@ -112,10 +130,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
           await storage.createInvoiceLineItem(lineItemData);
         }
       }
-      
+
       res.json(invoice);
     } catch (error) {
       console.error("Error creating invoice:", error);
+      logErrorToFile(error, "POST /api/invoices");
       if (error instanceof z.ZodError) {
         return res.status(400).json({ message: "Invalid invoice data", errors: error.errors });
       }
@@ -127,19 +146,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const userId = req.user.claims.sub;
       const invoiceId = parseInt(req.params.id);
-      
+
       // Check if invoice exists and belongs to user
       const existingInvoice = await storage.getInvoice(invoiceId, userId);
       if (!existingInvoice) {
         return res.status(404).json({ message: "Invoice not found" });
       }
-      
+
       const invoiceData = insertInvoiceSchema.partial().parse(req.body);
       const updatedInvoice = await storage.updateInvoice(invoiceId, invoiceData);
-      
+
       res.json(updatedInvoice);
     } catch (error) {
       console.error("Error updating invoice:", error);
+      logErrorToFile(error, `PUT /api/invoices/${req.params.id}`);
       if (error instanceof z.ZodError) {
         return res.status(400).json({ message: "Invalid invoice data", errors: error.errors });
       }
@@ -151,12 +171,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const userId = req.user.claims.sub;
       const invoiceId = parseInt(req.params.id);
-      
+
       const success = await storage.deleteInvoice(invoiceId, userId);
       if (!success) {
         return res.status(404).json({ message: "Invoice not found" });
       }
-      
+
       res.json({ message: "Invoice deleted successfully" });
     } catch (error) {
       console.error("Error deleting invoice:", error);
@@ -169,18 +189,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const userId = req.user.claims.sub;
       const invoiceId = parseInt(req.params.id);
-      
+
       // Check if invoice exists and belongs to user
       const invoice = await storage.getInvoice(invoiceId, userId);
       if (!invoice) {
         return res.status(404).json({ message: "Invoice not found" });
       }
-      
+
       const lineItemData = insertInvoiceLineItemSchema.parse({
         ...req.body,
         invoiceId,
       });
-      
+
       const lineItem = await storage.createInvoiceLineItem(lineItemData);
       res.json(lineItem);
     } catch (error) {
@@ -196,7 +216,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const lineItemId = parseInt(req.params.id);
       const lineItemData = insertInvoiceLineItemSchema.partial().parse(req.body);
-      
+
       const updatedLineItem = await storage.updateInvoiceLineItem(lineItemId, lineItemData);
       res.json(updatedLineItem);
     } catch (error) {
@@ -212,11 +232,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const lineItemId = parseInt(req.params.id);
       const success = await storage.deleteInvoiceLineItem(lineItemId);
-      
+
       if (!success) {
         return res.status(404).json({ message: "Line item not found" });
       }
-      
+
       res.json({ message: "Line item deleted successfully" });
     } catch (error) {
       console.error("Error deleting line item:", error);
@@ -239,11 +259,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const templateId = parseInt(req.params.id);
       const template = await storage.getInvoiceTemplate(templateId);
-      
+
       if (!template) {
         return res.status(404).json({ message: "Template not found" });
       }
-      
+
       res.json(template);
     } catch (error) {
       console.error("Error fetching template:", error);
@@ -256,17 +276,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const userId = req.user.claims.sub;
       const invoiceId = parseInt(req.params.id);
-      
+
       const invoice = await storage.getInvoice(invoiceId, userId);
       if (!invoice) {
         return res.status(404).json({ message: "Invoice not found" });
       }
-      
+
       const { to, subject, message } = req.body;
-      
+
       // Import email service 
       const { sendEmail } = await import("./ses-email");
-      
+
       // Create HTML email content
       const htmlContent = `
         <!DOCTYPE html>
@@ -305,10 +325,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (!emailSuccess) {
         return res.status(500).json({ message: "Failed to send email via Amazon SES" });
       }
-      
-      res.json({ 
-        success: true, 
-        message: "Invoice email sent successfully via Amazon SES" 
+
+      res.json({
+        success: true,
+        message: "Invoice email sent successfully via Amazon SES"
       });
     } catch (error) {
       console.error("Error sending invoice email:", error);
@@ -327,7 +347,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Import email service 
       const { sendEmail } = await import("./ses-email");
-      
+
       // Create HTML email content
       const htmlContent = `
         <!DOCTYPE html>
@@ -368,9 +388,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (!emailSuccess) {
         return res.status(500).json({ message: "Failed to send email via Amazon SES" });
       }
-      
-      res.json({ 
-        success: true, 
+
+      res.json({
+        success: true,
         message: "Invoice email sent successfully via Amazon SES",
         emailId: `ses_${Date.now()}`
       });

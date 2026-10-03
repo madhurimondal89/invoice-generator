@@ -15,7 +15,6 @@ import { z } from "zod";
 import { relations } from "drizzle-orm";
 
 // Session storage table.
-// (IMPORTANT) This table is mandatory for Replit Auth, don't drop it.
 export const sessions = pgTable(
   "sessions",
   {
@@ -27,7 +26,6 @@ export const sessions = pgTable(
 );
 
 // User storage table.
-// (IMPORTANT) This table is mandatory for Replit Auth, don't drop it.
 export const users = pgTable("users", {
   id: varchar("id").primaryKey().notNull(),
   email: varchar("email").unique(),
@@ -59,18 +57,19 @@ export const invoices = pgTable("invoices", {
   templateId: integer("template_id").references(() => invoiceTemplates.id),
   invoiceNumber: varchar("invoice_number", { length: 100 }).notNull(),
   status: varchar("status", { length: 50 }).default("draft"),
-  
+  documentType: varchar("document_type", { length: 50 }).default("invoice"),
+
   // Company information
   companyName: varchar("company_name", { length: 255 }),
   companyEmail: varchar("company_email", { length: 255 }),
   companyAddress: text("company_address"),
   companyLogo: varchar("company_logo"),
-  
+
   // Client information
   clientName: varchar("client_name", { length: 255 }),
   clientEmail: varchar("client_email", { length: 255 }),
   clientAddress: text("client_address"),
-  
+
   // Shipping information
   shipToName: varchar("ship_to_name", { length: 255 }),
   shipToEmail: varchar("ship_to_email", { length: 255 }),
@@ -79,11 +78,11 @@ export const invoices = pgTable("invoices", {
   shipToState: varchar("ship_to_state", { length: 100 }),
   shipToZip: varchar("ship_to_zip", { length: 20 }),
   shipToCountry: varchar("ship_to_country", { length: 100 }),
-  
+
   // Invoice details
   issueDate: timestamp("issue_date"),
   dueDate: timestamp("due_date"),
-  
+
   // Financial information
   currency: varchar("currency", { length: 3 }).default("USD"),
   subtotal: decimal("subtotal", { precision: 10, scale: 2 }).default("0.00"),
@@ -92,18 +91,19 @@ export const invoices = pgTable("invoices", {
   discount: decimal("discount", { precision: 10, scale: 2 }).default("0.00"),
   shippingCost: decimal("shipping_cost", { precision: 10, scale: 2 }).default("0.00"),
   total: decimal("total", { precision: 10, scale: 2 }).default("0.00"),
-  
+
   // Payment information
   paymentStatus: varchar("payment_status", { length: 50 }).default("pending"),
   paymentMethod: varchar("payment_method", { length: 100 }),
   paymentDate: timestamp("payment_date"),
   paymentDetails: text("payment_details"),
-  
+
   // Notes and terms
   notes: text("notes"),
   terms: text("terms"),
   termsConditions: text("terms_conditions"),
-  
+  metadata: jsonb("metadata"),
+
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });

@@ -23,7 +23,7 @@ export default function Home() {
   useEffect(() => {
     if (!isLoading && !isAuthenticated && process.env.NODE_ENV !== 'development') {
       toast({
-        title: "Unauthorized", 
+        title: "Unauthorized",
         description: "You are logged out. Logging in again...",
         variant: "destructive",
       });
@@ -52,43 +52,40 @@ export default function Home() {
     );
   }
 
-  const recentInvoices = invoices?.slice(0, 5) || [];
-  const totalInvoices = invoices?.length || 0;
-  const paidInvoices = invoices?.filter((inv: any) => inv.paymentStatus === 'paid').length || 0;
-  const pendingInvoices = invoices?.filter((inv: any) => inv.paymentStatus === 'pending').length || 0;
-  const totalRevenue = invoices?.reduce((sum: number, inv: any) => sum + parseFloat(inv.total || 0), 0) || 0;
+  const invoicesList = Array.isArray(invoices) ? invoices : [];
+  const recentInvoices = invoicesList.slice(0, 5);
+  const totalInvoices = invoicesList.length;
+  const paidInvoices = invoicesList.filter((inv: any) => inv.paymentStatus === 'paid').length;
+  const pendingInvoices = invoicesList.filter((inv: any) => inv.paymentStatus === 'pending').length;
+  const totalRevenue = invoicesList.reduce((sum: number, inv: any) => sum + parseFloat(inv.total || 0), 0);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 relative overflow-hidden">
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-400/20 to-purple-600/20 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-green-400/20 to-blue-600/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-purple-400/10 to-pink-600/10 rounded-full blur-3xl animate-pulse delay-500"></div>
+    <div className="min-h-screen bg-slate-50 relative overflow-hidden">
+      {/* Background Gradients */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-40">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-blue-400/20 to-purple-600/20 rounded-full blur-3xl"></div>
+        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-green-400/20 to-blue-600/20 rounded-full blur-3xl"></div>
       </div>
 
       {/* Hero Section */}
       <div className="relative z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-8">
-          <div className={`text-center transition-all duration-1000 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
-            <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-600/10 to-purple-600/10 rounded-full border border-blue-200/50 backdrop-blur-sm mb-6">
-              <Sparkles className="w-4 h-4 text-blue-600 mr-2" />
-              <span className="text-sm font-medium text-blue-700">Welcome back, {user?.firstName || user?.email || 'User'}!</span>
-            </div>
-            
+          <div className="text-center">
+
+
             <h1 className="text-5xl md:text-7xl font-black bg-gradient-to-r from-gray-900 via-blue-900 to-purple-900 bg-clip-text text-transparent mb-6 leading-tight">
               Professional Documents
               <br />
               <span className="text-4xl md:text-6xl bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Made Simple</span>
             </h1>
-            
+
             <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-4xl mx-auto leading-relaxed">
-              Create stunning invoices, quotes, credit notes, and purchase orders with 
-              <span className="font-semibold text-blue-600"> world-class templates</span> and 
+              Create stunning invoices, quotes, credit notes, and purchase orders with
+              <span className="font-semibold text-blue-600"> world-class templates</span> and
               <span className="font-semibold text-purple-600"> lightning-fast generation</span>
             </p>
 
-            
+
 
             {/* Live Stats */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-2xl mx-auto">
@@ -116,13 +113,14 @@ export default function Home() {
               Choose Your Document Type
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              Professional templates designed for modern businesses. Each document type is carefully crafted 
+              Professional templates designed for modern businesses. Each document type is carefully crafted
               for maximum impact and seamless workflow integration.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
+              // Invoice Group (Blue)
               {
                 type: 'invoice',
                 icon: FileText,
@@ -131,72 +129,172 @@ export default function Home() {
                 bgGradient: 'from-blue-50 to-blue-100',
                 description: 'Professional billing documents for completed work or services',
                 features: ['Payment requests', 'Due dates', 'Tax calculations'],
+                btnText: 'Create Invoice',
                 route: '/invoice/new'
               },
+              {
+                type: 'tax_invoice',
+                icon: FileText,
+                title: 'Tax Invoice',
+                gradient: 'from-blue-500 to-blue-600',
+                bgGradient: 'from-blue-50 to-blue-100',
+                description: 'Tax-compliant invoices for registered businesses',
+                features: ['GST/VAT details', 'Tax breakdown', 'Legal compliance'],
+                btnText: 'Create Tax Invoice',
+                route: '/tax-invoice/new'
+              },
+              {
+                type: 'proforma_invoice',
+                icon: FileText,
+                title: 'Proforma Invoice',
+                gradient: 'from-blue-500 to-blue-600',
+                bgGradient: 'from-blue-50 to-blue-100',
+                description: 'Preliminary bill of sale sent to buyers in advance',
+                features: ['Draft invoice', 'Customs declaration', 'Pre-payment'],
+                btnText: 'Create Proforma',
+                route: '/proforma-invoice/new'
+              },
+
+              // Estimate Group (Green)
               {
                 type: 'quote',
                 icon: File,
                 title: 'Quote',
                 gradient: 'from-green-500 to-green-600',
                 bgGradient: 'from-green-50 to-green-100',
-                description: 'Estimates and proposals for potential clients and projects',
-                features: ['Price estimates', 'Project scope', 'Terms & conditions'],
+                description: 'Fixed price offers for a specific project or order',
+                features: ['Price fixing', 'Validity period', 'Terms & conditions'],
+                btnText: 'Create Quote',
                 route: '/quote/new'
               },
               {
-                type: 'credit-note',
+                type: 'estimate',
+                icon: File,
+                title: 'Estimate',
+                gradient: 'from-green-500 to-green-600',
+                bgGradient: 'from-green-50 to-green-100',
+                description: 'Approximate calculation of costs for a project',
+                features: ['Cost approximation', 'Flexible pricing', 'Project scope'],
+                btnText: 'Create Estimate',
+                route: '/estimate/new'
+              },
+
+              // Receipt Group (Emerald)
+              {
+                type: 'receipt',
+                icon: Receipt,
+                title: 'Receipt',
+                gradient: 'from-emerald-500 to-emerald-600',
+                bgGradient: 'from-emerald-50 to-emerald-100',
+                description: 'Written acknowledgment of having received payment',
+                features: ['Payment proof', 'Date recording', 'Transaction ID'],
+                btnText: 'Create Receipt',
+                route: '/receipt/new'
+              },
+              {
+                type: 'sales_receipt',
+                icon: Receipt,
+                title: 'Sales Receipt',
+                gradient: 'from-emerald-500 to-emerald-600',
+                bgGradient: 'from-emerald-50 to-emerald-100',
+                description: 'Record of a sale and payment made at point of sale',
+                features: ['Instant payment', 'Itemized list', 'Sales record'],
+                btnText: 'Create Sales Receipt',
+                route: '/sales-receipt/new'
+              },
+              {
+                type: 'cash_receipt',
+                icon: Receipt,
+                title: 'Cash Receipt',
+                gradient: 'from-emerald-500 to-emerald-600',
+                bgGradient: 'from-emerald-50 to-emerald-100',
+                description: 'Proof of cash payment received from a customer',
+                features: ['Cash tracking', 'Signature line', 'Amount verification'],
+                btnText: 'Create Cash Receipt',
+                route: '/cash-receipt/new'
+              },
+
+              // Credit Group (Red)
+              {
+                type: 'credit_note',
                 icon: Receipt,
                 title: 'Credit Note',
                 gradient: 'from-red-500 to-red-600',
                 bgGradient: 'from-red-50 to-red-100',
-                description: 'Refunds, returns, and billing adjustments for customers',
-                features: ['Refund processing', 'Error corrections', 'Account credits'],
+                description: 'Document issued to refund or credit a customer',
+                features: ['Return processing', 'Billing error fix', 'Account credit'],
+                btnText: 'Create Credit Note',
                 route: '/credit-note/new'
               },
               {
-                type: 'purchase-order',
+                type: 'credit_memo',
+                icon: Receipt,
+                title: 'Credit Memo',
+                gradient: 'from-red-500 to-red-600',
+                bgGradient: 'from-red-50 to-red-100',
+                description: 'Internal document for price adjustments or refunds',
+                features: ['Internal record', 'Adjustment tracking', 'Balance update'],
+                btnText: 'Create Credit Memo',
+                route: '/credit-memo/new'
+              },
+
+              // Order Group (Purple/Orange)
+              {
+                type: 'purchase_order',
                 icon: ShoppingCart,
                 title: 'Purchase Order',
                 gradient: 'from-purple-500 to-purple-600',
                 bgGradient: 'from-purple-50 to-purple-100',
-                description: 'Official requests to suppliers for goods and services',
-                features: ['Supplier orders', 'Inventory management', 'Budget control'],
+                description: 'Commercial document issued by a buyer to a seller',
+                features: ['Order placement', 'Agreed prices', 'Delivery terms'],
+                btnText: 'Create Purchase Order',
                 route: '/purchase-order/new'
+              },
+              {
+                type: 'delivery_note',
+                icon: ShoppingCart,
+                title: 'Delivery Note',
+                gradient: 'from-orange-500 to-orange-600',
+                bgGradient: 'from-orange-50 to-orange-100',
+                description: 'Document accompanying a shipment of goods',
+                features: ['Goods checklist', 'Receiver signature', 'Shipment detail'],
+                btnText: 'Create Delivery Note',
+                route: '/delivery-note/new'
               }
             ].map((doc, index) => (
               <div
                 key={doc.type}
-                className={`group cursor-pointer transition-all duration-500 delay-${index * 100} transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
+                className={`group cursor-pointer transition-all duration-500 delay-${(index % 4) * 100} transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}
                 onMouseEnter={() => setHoveredCard(doc.type)}
                 onMouseLeave={() => setHoveredCard(null)}
                 onClick={() => setLocation(doc.route)}
               >
-                <Card className={`h-full border-0 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 bg-gradient-to-br ${doc.bgGradient} backdrop-blur-sm relative overflow-hidden`}>
-                  {/* Hover glow effect */}
-                  <div className={`absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-500 bg-gradient-to-br ${doc.gradient} blur-xl`}></div>
-                  
-                  <CardContent className="p-8 text-center relative z-10">
-                    <div className={`w-20 h-20 bg-gradient-to-br ${doc.gradient} rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                      <doc.icon className="h-10 w-10 text-white" />
+                <Card className={`h-full border-0 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 bg-white relative overflow-hidden`}>
+                  {/* Top Color Bar */}
+                  <div className={`h-2 w-full bg-gradient-to-r ${doc.gradient}`}></div>
+
+                  <CardContent className="p-6 flex flex-col h-full relative z-10 pt-8">
+                    <div className={`w-16 h-16 bg-gradient-to-br ${doc.gradient} rounded-2xl flex items-center justify-center mb-6 shadow-md group-hover:scale-110 transition-transform duration-300`}>
+                      <doc.icon className="h-8 w-8 text-white" />
                     </div>
-                    
-                    <h3 className="text-2xl font-bold mb-3 text-gray-900">{doc.title}</h3>
-                    <p className="text-gray-600 text-sm mb-4 leading-relaxed">{doc.description}</p>
-                    
-                    <div className="space-y-2">
+
+                    <h3 className="text-xl font-bold mb-2 text-gray-900 group-hover:text-blue-600 transition-colors">{doc.title}</h3>
+                    <p className="text-gray-500 text-sm mb-6 leading-relaxed flex-grow">{doc.description}</p>
+
+                    <div className="space-y-2 mb-6">
                       {doc.features.map((feature, idx) => (
-                        <div key={idx} className="flex items-center justify-center text-xs text-gray-500">
-                          <div className={`w-1 h-1 bg-gradient-to-r ${doc.gradient} rounded-full mr-2`}></div>
+                        <div key={idx} className="flex items-center text-xs text-gray-500">
+                          <div className={`w-1.5 h-1.5 bg-gradient-to-r ${doc.gradient} rounded-full mr-2`}></div>
                           {feature}
                         </div>
                       ))}
                     </div>
 
-                    <Button 
-                      className={`mt-6 bg-gradient-to-r ${doc.gradient} hover:shadow-lg transform hover:scale-105 transition-all duration-300 text-white border-0`}
+                    <Button
+                      className={`w-full bg-gradient-to-r ${doc.gradient} hover:shadow-lg text-white border-0 mt-auto`}
                       size="sm"
                     >
-                      Create {doc.title}
+                      {doc.btnText}
                       <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
                     </Button>
                   </CardContent>
@@ -212,7 +310,7 @@ export default function Home() {
             <h2 className="text-4xl font-bold text-center bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-12">
               Why Choose Invoice Pro?
             </h2>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
               {[
                 {
@@ -284,10 +382,10 @@ export default function Home() {
               trend: 'New!'
             }
           ].map((stat, index) => (
-            <Card key={index} className={`group hover:shadow-2xl transition-all duration-500 transform hover:scale-105 bg-gradient-to-br ${stat.bgGradient} border-0 shadow-xl backdrop-blur-sm`}>
+            <Card key={index} className={`group hover:shadow-lg transition-shadow duration-200 bg-gradient-to-br ${stat.bgGradient} border-0 shadow-md`}>
               <CardContent className="p-8">
                 <div className="flex items-center justify-between mb-4">
-                  <div className={`w-12 h-12 bg-gradient-to-br ${stat.gradient} rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                  <div className={`w-12 h-12 bg-gradient-to-br ${stat.gradient} rounded-xl flex items-center justify-center shadow-md`}>
                     <stat.icon className="h-6 w-6 text-white" />
                   </div>
                   <span className={`text-xs font-semibold px-2 py-1 bg-gradient-to-r ${stat.gradient} text-white rounded-full`}>
@@ -303,16 +401,16 @@ export default function Home() {
           ))}
         </div>
 
-        <div className={`grid grid-cols-1 lg:grid-cols-2 gap-12 transition-all duration-1000 delay-1000 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Document Guide - Modern Glass Card */}
-          <Card className="bg-white/70 backdrop-blur-md shadow-2xl border-0 rounded-3xl overflow-hidden">
-            <CardHeader className="bg-gradient-to-r from-gray-50 to-gray-100 pb-8">
-              <CardTitle className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+          <Card className="bg-white shadow-md border rounded-2xl overflow-hidden">
+            <CardHeader className="bg-gray-50/80 border-b pb-6">
+              <CardTitle className="text-xl font-bold text-gray-900">
                 Document Types Guide
               </CardTitle>
             </CardHeader>
-            <CardContent className="p-8">
-              <div className="space-y-6">
+            <CardContent className="p-6">
+              <div className="space-y-4">
                 {[
                   {
                     title: 'Invoice',
@@ -339,12 +437,12 @@ export default function Home() {
                     bgGradient: 'from-purple-50 to-purple-100'
                   }
                 ].map((doc, index) => (
-                  <div key={index} className={`group p-4 rounded-2xl bg-gradient-to-r ${doc.bgGradient} hover:shadow-lg transition-all duration-300 transform hover:scale-105`}>
-                    <div className="flex items-start space-x-4">
-                      <div className={`w-3 h-3 bg-gradient-to-r ${doc.gradient} rounded-full mt-2 group-hover:scale-125 transition-transform duration-300`}></div>
+                  <div key={index} className={`p-4 rounded-xl bg-gradient-to-r ${doc.bgGradient} hover:shadow-sm transition-shadow`}>
+                    <div className="flex items-start space-x-3">
+                      <div className={`w-2.5 h-2.5 bg-gradient-to-r ${doc.gradient} rounded-full mt-2 shrink-0`}></div>
                       <div>
-                        <h4 className="font-bold text-lg text-gray-900 mb-2">{doc.title}</h4>
-                        <p className="text-gray-600 leading-relaxed">{doc.description}</p>
+                        <h4 className="font-bold text-base text-gray-900 mb-1">{doc.title}</h4>
+                        <p className="text-sm text-gray-600 leading-relaxed">{doc.description}</p>
                       </div>
                     </div>
                   </div>
@@ -354,10 +452,10 @@ export default function Home() {
           </Card>
 
           {/* Recent Documents - Modern Design */}
-          <Card className="bg-white/70 backdrop-blur-md shadow-2xl border-0 rounded-3xl overflow-hidden">
-            <CardHeader className="bg-gradient-to-r from-gray-50 to-gray-100 pb-8">
+          <Card className="bg-white shadow-md border rounded-2xl overflow-hidden">
+            <CardHeader className="bg-gray-50/80 border-b pb-6">
               <CardTitle className="flex items-center justify-between">
-                <span className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+                <span className="text-xl font-bold text-gray-900">
                   Recent Documents
                 </span>
                 <Button
@@ -390,13 +488,12 @@ export default function Home() {
                       </div>
                       <div className="text-right">
                         <p className="font-bold text-2xl text-gray-900">${invoice.total}</p>
-                        <span className={`inline-block px-3 py-1 text-xs font-semibold rounded-full shadow-sm ${
-                          invoice.paymentStatus === 'paid' 
-                            ? 'bg-gradient-to-r from-green-500 to-green-600 text-white'
-                            : invoice.paymentStatus === 'pending'
+                        <span className={`inline-block px-3 py-1 text-xs font-semibold rounded-full shadow-sm ${invoice.paymentStatus === 'paid'
+                          ? 'bg-gradient-to-r from-green-500 to-green-600 text-white'
+                          : invoice.paymentStatus === 'pending'
                             ? 'bg-gradient-to-r from-yellow-500 to-yellow-600 text-white'
                             : 'bg-gradient-to-r from-gray-500 to-gray-600 text-white'
-                        }`}>
+                          }`}>
                           {invoice.paymentStatus || 'draft'}
                         </span>
                       </div>
@@ -466,7 +563,7 @@ export default function Home() {
             <div className="absolute top-0 left-0 w-full h-full opacity-50" style={{
               backgroundImage: "url(\"data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E\")"
             }}></div>
-            
+
             <div className="relative z-10">
               <h3 className="text-4xl font-bold text-white mb-4">
                 Ready to Create Professional Documents?
@@ -474,9 +571,9 @@ export default function Home() {
               <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
                 Join thousands of businesses worldwide who trust Invoice Pro for their document needs
               </p>
-              
+
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <Button 
+                <Button
                   onClick={() => setLocation("/invoice/new")}
                   size="lg"
                   className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
@@ -484,8 +581,8 @@ export default function Home() {
                   <Plus className="mr-2 h-5 w-5" />
                   Start Creating Now
                 </Button>
-                
-                <Button 
+
+                <Button
                   onClick={() => setLocation("/templates")}
                   variant="outline"
                   size="lg"
@@ -507,7 +604,7 @@ export default function Home() {
           <div className="absolute top-10 left-10 w-32 h-32 bg-blue-500/10 rounded-full blur-xl"></div>
           <div className="absolute bottom-10 right-10 w-40 h-40 bg-purple-500/10 rounded-full blur-xl"></div>
         </div>
-        
+
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h3 className="text-3xl font-bold text-white mb-4">
@@ -517,7 +614,7 @@ export default function Home() {
               Choose from our comprehensive suite of business document templates
             </p>
           </div>
-          
+
           {/* Document Types Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
             {/* Invoice */}
@@ -528,7 +625,7 @@ export default function Home() {
               <h4 className="text-xl font-bold text-white mb-2 text-center">Invoices</h4>
               <p className="text-blue-100 text-center text-sm">Professional billing documents for your clients and customers</p>
             </div>
-            
+
             {/* Quote */}
             <div className="group bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-105">
               <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:shadow-lg group-hover:shadow-green-500/25 transition-all duration-300">
@@ -537,7 +634,7 @@ export default function Home() {
               <h4 className="text-xl font-bold text-white mb-2 text-center">Quotes</h4>
               <p className="text-blue-100 text-center text-sm">Professional estimates and proposals for potential projects</p>
             </div>
-            
+
             {/* Credit Note */}
             <div className="group bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-105">
               <div className="w-16 h-16 bg-gradient-to-r from-red-500 to-red-600 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:shadow-lg group-hover:shadow-red-500/25 transition-all duration-300">
@@ -546,7 +643,7 @@ export default function Home() {
               <h4 className="text-xl font-bold text-white mb-2 text-center">Credit Notes</h4>
               <p className="text-blue-100 text-center text-sm">Professional refunds and billing adjustments for customers</p>
             </div>
-            
+
             {/* Purchase Order */}
             <div className="group bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 hover:bg-white/20 transition-all duration-300 hover:scale-105">
               <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-purple-600 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:shadow-lg group-hover:shadow-purple-500/25 transition-all duration-300">
@@ -556,7 +653,7 @@ export default function Home() {
               <p className="text-blue-100 text-center text-sm">Official requests to suppliers for goods and services</p>
             </div>
           </div>
-          
+
           {/* Footer Info */}
           <div className="text-center border-t border-white/20 pt-8">
             <div className="flex items-center justify-center space-x-1 mb-4">

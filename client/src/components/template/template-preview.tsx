@@ -1,5 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { formatCurrency } from "@shared/currencies";
+import { getDocumentConfig } from "@/lib/document-config";
 
 interface TemplatePreviewProps {
   template: any;
@@ -7,218 +9,119 @@ interface TemplatePreviewProps {
 }
 
 export default function TemplatePreview({ template, className = "" }: TemplatePreviewProps) {
-  const templateData = template.templateData || {};
-  
-  // Get styling based on template category and document type
-  const getPreviewStyles = () => {
-    const baseStyles = {
-      headerBg: "bg-white",
-      headerText: "text-gray-900",
-      accentColor: "text-blue-600",
-      borderColor: "border-gray-200",
-      primaryFont: "font-sans",
-      cardBg: "bg-white",
-      tableHeaderBg: "bg-gray-50"
-    };
-    
-    // Document type specific styling first
-    if (template.documentType === 'credit_note') {
-      const creditStyles = {
-        ...baseStyles,
-        headerBg: "bg-gradient-to-r from-red-50 to-red-100",
-        accentColor: "text-red-600",
-        borderColor: "border-red-200",
-        tableHeaderBg: "bg-red-50"
-      };
-      
-      // Combine with category styling
-      if (template.category === "modern") {
-        return { ...creditStyles, headerBg: "bg-gradient-to-br from-red-100 to-red-200" };
-      } else if (template.category === "creative") {
-        return { ...creditStyles, headerBg: "bg-gradient-to-r from-red-100 via-pink-50 to-red-100", primaryFont: "font-serif" };
-      } else if (template.category === "minimal") {
-        return { ...creditStyles, headerBg: "bg-red-50", borderColor: "border-red-100" };
-      }
-      return creditStyles;
-      
-    } else if (template.documentType === 'quote') {
-      const quoteStyles = {
-        ...baseStyles,
-        headerBg: "bg-gradient-to-r from-green-50 to-green-100",
-        accentColor: "text-green-600",
-        borderColor: "border-green-200",
-        tableHeaderBg: "bg-green-50"
-      };
-      
-      if (template.category === "modern") {
-        return { ...quoteStyles, headerBg: "bg-gradient-to-br from-green-100 to-green-200" };
-      } else if (template.category === "creative") {
-        return { ...quoteStyles, headerBg: "bg-gradient-to-r from-green-100 via-emerald-50 to-green-100", primaryFont: "font-serif" };
-      } else if (template.category === "minimal") {
-        return { ...quoteStyles, headerBg: "bg-green-50", borderColor: "border-green-100" };
-      }
-      return quoteStyles;
-      
-    } else if (template.documentType === 'purchase_order') {
-      const poStyles = {
-        ...baseStyles,
-        headerBg: "bg-gradient-to-r from-purple-50 to-purple-100",
-        accentColor: "text-purple-600",
-        borderColor: "border-purple-200",
-        tableHeaderBg: "bg-purple-50"
-      };
-      
-      if (template.category === "modern") {
-        return { ...poStyles, headerBg: "bg-gradient-to-br from-purple-100 to-purple-200" };
-      } else if (template.category === "creative") {
-        return { ...poStyles, headerBg: "bg-gradient-to-r from-purple-100 via-pink-50 to-purple-100", primaryFont: "font-serif" };
-      } else if (template.category === "minimal") {
-        return { ...poStyles, headerBg: "bg-purple-50", borderColor: "border-purple-100" };
-      }
-      return poStyles;
-    }
-    
-    // Category specific styling for invoices
-    if (template.category === "modern") {
-      return {
-        ...baseStyles,
-        headerBg: "bg-gradient-to-br from-blue-100 to-blue-200",
-        accentColor: "text-blue-600",
-        borderColor: "border-blue-200",
-        tableHeaderBg: "bg-blue-50"
-      };
-    } else if (template.category === "creative") {
-      return {
-        ...baseStyles,
-        headerBg: "bg-gradient-to-r from-purple-100 via-pink-50 to-purple-100",
-        accentColor: "text-purple-600",
-        borderColor: "border-purple-200",
-        primaryFont: "font-serif",
-        tableHeaderBg: "bg-purple-50"
-      };
-    } else if (template.category === "minimal") {
-      return {
-        ...baseStyles,
-        headerBg: "bg-gray-50",
-        accentColor: "text-gray-600",
-        borderColor: "border-gray-100",
-        tableHeaderBg: "bg-gray-50"
-      };
-    }
-    
-    return baseStyles;
-  };
-  
-  const styles = getPreviewStyles();
-  const documentLabel = templateData.documentLabel || 'INVOICE';
-  
+  const docConfig = getDocumentConfig(template.documentType);
+  const data = template.templateData || {};
+  const primaryColor = data.primaryColor || "#2563eb";
+  const accentColor = data.accentColor || "#60a5fa";
+  const currency = data.currency || "USD";
+  const companyName = data.companyName || "Acme Digital Studio";
+  const clientName = data.clientName || "Apex Enterprises";
+  const industry = data.industry || "General Business";
+  const items = data.sampleItems && data.sampleItems.length > 0
+    ? data.sampleItems
+    : [
+        { description: "Consulting & Professional Services", quantity: 1, rate: 850, amount: 850 },
+        { description: "Implementation & Technical Setup", quantity: 1, rate: 250, amount: 250 }
+      ];
+
+  const subtotal = items.reduce((sum: number, it: any) => sum + (it.amount || ((it.quantity || 1) * (it.rate || 0))), 0);
+  const taxRate = data.taxRate || 0;
+  const taxAmount = (subtotal * taxRate) / 100;
+  const total = subtotal + taxAmount;
+
+  const docLabel = docConfig.title;
+
   return (
-    <Card className={`${className} shadow-sm`}>
+    <Card className={`${className} shadow-sm overflow-hidden border border-gray-200/80 bg-white`}>
       <CardContent className="p-0">
-        <div className="bg-white text-xs scale-[0.6] origin-top-left transform w-[167%] h-[167%]">
-          {/* Header */}
-          <div className={`${styles.headerBg} p-6 ${styles.borderColor} border-b`}>
-            <div className="flex justify-between items-start">
-              <div>
-                <div className="w-12 h-12 bg-gray-200 rounded border-2 border-dashed border-gray-300 flex items-center justify-center mb-3">
-                  <span className="text-[10px] text-gray-500">LOGO</span>
+        <div className="bg-white text-xs scale-[0.62] origin-top-left transform w-[162%] h-[162%] font-sans select-none pointer-events-none">
+          {/* Header Banner */}
+          <div
+            className="p-5 text-white flex justify-between items-center"
+            style={{ backgroundColor: primaryColor }}
+          >
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <div className="w-6 h-6 rounded bg-white/20 flex items-center justify-center font-bold text-[11px] text-white">
+                  {companyName.charAt(0)}
                 </div>
-                <h1 className={`text-lg font-bold ${styles.headerText} ${styles.primaryFont}`}>
-                  Your Company Name
-                </h1>
-                <p className="text-gray-600 text-sm mt-1">
-                  123 Business Street<br />
-                  City, State 12345<br />
-                  contact@company.com
-                </p>
+                <span className="font-bold text-sm tracking-tight text-white">{companyName}</span>
               </div>
-              <div className="text-right">
-                <h2 className={`text-xl font-bold ${styles.accentColor} mb-2 ${styles.primaryFont}`}>
-                  {documentLabel}
-                </h2>
-                <div className="text-sm text-gray-600">
-                  <div><strong>#{documentLabel.slice(0,3)}-001</strong></div>
-                  <div>Date: Jan 15, 2024</div>
-                  <div>Due: Feb 14, 2024</div>
-                </div>
-              </div>
+              <span className="text-[10px] text-white/80 uppercase tracking-wider font-semibold block">
+                {industry}
+              </span>
+            </div>
+
+            <div className="text-right">
+              <span className="text-base font-black tracking-wider uppercase block text-white">
+                {docLabel}
+              </span>
+              <span className="text-[10px] text-white/80 font-mono">
+                #{docLabel.slice(0, 3)}-2026
+              </span>
             </div>
           </div>
-          
-          {/* Client Info */}
-          <div className="p-6 grid grid-cols-2 gap-6">
+
+          {/* Subheader / Parties Info */}
+          <div className="p-4 bg-slate-50/70 border-b border-gray-200/60 grid grid-cols-2 gap-4 text-[11px]">
             <div>
-              <h3 className={`text-sm font-medium ${styles.accentColor} mb-2`}>From:</h3>
-              <div className="text-sm text-gray-600">
-                <p className="font-medium">Your Company Name</p>
-                <p>123 Business Street</p>
-                <p>your@company.com</p>
-              </div>
+              <span className="text-[9px] font-bold uppercase tracking-wider text-gray-400 block mb-0.5 truncate">
+                {docConfig.partyHeaders.to}:
+              </span>
+              <p className="font-semibold text-gray-800 truncate">{clientName}</p>
+              <p className="text-gray-500 text-[10px]">{data.clientEmail || 'client@business.com'}</p>
             </div>
-            <div>
-              <h3 className={`text-sm font-medium ${styles.accentColor} mb-2`}>To:</h3>
-              <div className="text-sm text-gray-600">
-                <p className="font-medium">Client Company Inc.</p>
-                <p>456 Client Avenue</p>
-                <p>client@company.com</p>
-              </div>
+            <div className="text-right">
+              <span className="text-[9px] font-bold uppercase tracking-wider text-gray-400 block mb-0.5">
+                Payment Info:
+              </span>
+              <span
+                className="inline-block px-1.5 py-0.5 rounded text-[9px] font-bold text-white uppercase"
+                style={{ backgroundColor: primaryColor }}
+              >
+                {currency} • {taxRate > 0 ? `${taxRate}% Tax` : 'Direct'}
+              </span>
             </div>
           </div>
-          
+
           {/* Items Table */}
-          <div className="p-6 pt-0">
-            <table className="w-full text-sm">
+          <div className="p-4 pt-2">
+            <table className="w-full text-[11px]">
               <thead>
-                <tr className={`${styles.tableHeaderBg} ${styles.borderColor} border-b`}>
-                  <th className="text-left py-2 text-gray-600 font-medium">Description</th>
-                  <th className="text-right py-2 text-gray-600 font-medium">Qty</th>
-                  <th className="text-right py-2 text-gray-600 font-medium">Rate</th>
-                  <th className="text-right py-2 text-gray-600 font-medium">Amount</th>
+                <tr className="border-b border-gray-200 text-gray-500 text-[9px] uppercase font-bold tracking-wider">
+                  <th className="text-left py-1.5">Description</th>
+                  <th className="text-center py-1.5 w-12">Qty</th>
+                  <th className="text-right py-1.5 w-20">Amount</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr className={`${styles.borderColor} border-b`}>
-                  <td className="py-2">Web Design Service</td>
-                  <td className="text-right py-2">1</td>
-                  <td className="text-right py-2">$500.00</td>
-                  <td className="text-right py-2">$500.00</td>
-                </tr>
-                <tr className={`${styles.borderColor} border-b`}>
-                  <td className="py-2">Development Hours</td>
-                  <td className="text-right py-2">10</td>
-                  <td className="text-right py-2">$75.00</td>
-                  <td className="text-right py-2">$750.00</td>
-                </tr>
-                <tr className={`${styles.borderColor} border-b`}>
-                  <td className="py-2">Consultation</td>
-                  <td className="text-right py-2">2</td>
-                  <td className="text-right py-2">$100.00</td>
-                  <td className="text-right py-2">$200.00</td>
-                </tr>
+              <tbody className="divide-y divide-gray-100">
+                {items.slice(0, 3).map((item: any, idx: number) => (
+                  <tr key={idx} className="text-gray-700">
+                    <td className="py-1.5 font-medium truncate max-w-[140px]">
+                      {item.description}
+                    </td>
+                    <td className="py-1.5 text-center text-gray-500">
+                      {item.quantity || 1}
+                    </td>
+                    <td className="py-1.5 text-right font-mono font-semibold text-gray-900">
+                      {formatCurrency(item.amount || ((item.quantity || 1) * (item.rate || 0)), currency)}
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
-          
-          {/* Total */}
-          <div className="p-6 pt-0">
-            <div className="text-right space-y-2 text-sm">
-              <div className="flex justify-between">
-                <span>Subtotal:</span>
-                <span>$1,450.00</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Tax (10%):</span>
-                <span>$145.00</span>
-              </div>
-              <div className={`flex justify-between font-bold ${styles.accentColor} text-base border-t ${styles.borderColor} pt-2`}>
-                <span>Total:</span>
-                <span>$1,595.00</span>
-              </div>
-            </div>
-            
-            {/* Footer */}
-            <div className="mt-4 text-xs text-gray-500">
-              <p>Payment is due within 30 days of invoice date</p>
+
+          {/* Total Bar */}
+          <div className="px-4 py-3 bg-gray-50/90 border-t border-gray-200 flex justify-between items-center text-[11px]">
+            <span className="text-gray-500 text-[10px] italic truncate max-w-[150px]">
+              {data.notes || "Professional auto-calculated document"}
+            </span>
+            <div className="text-right">
+              <span className="text-[10px] text-gray-500 mr-2 uppercase font-bold">Total:</span>
+              <span className="text-sm font-black font-mono text-gray-900" style={{ color: primaryColor }}>
+                {formatCurrency(total, currency)}
+              </span>
             </div>
           </div>
         </div>

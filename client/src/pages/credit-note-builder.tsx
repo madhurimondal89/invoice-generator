@@ -3,161 +3,139 @@ import { useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Download, Eye } from "lucide-react";
+import { ArrowLeft, Sparkles } from "lucide-react";
 import InvoiceForm from "@/components/invoice/invoice-form";
 import InvoicePreview from "@/components/invoice/invoice-preview";
-import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
-import { isUnauthorizedError } from "@/lib/authUtils";
 
 export default function CreditNoteBuilder() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
-  const { isAuthenticated, isLoading: authLoading } = useAuth();
-  const [showPreview, setShowPreview] = useState(false);
-  const [creditNoteData, setCreditNoteData] = useState({
+  const [creditNoteData, setCreditNoteData] = useState<any>({
     documentType: 'credit_note',
-    invoiceNumber: '',
-    date: new Date().toISOString().split('T')[0],
-    dueDate: '',
-    fromName: '',
-    fromEmail: '',
-    fromAddress: '',
-    toName: '',
-    toEmail: '',
-    toAddress: '',
-    items: [{ description: '', quantity: 1, rate: 0, amount: 0 }],
+    invoiceNumber: `CN-${Math.floor(1000 + Math.random() * 9000)}`,
+    issueDate: new Date().toISOString().split('T')[0],
+    dueDate: new Date().toISOString().split('T')[0],
+    companyName: '',
+    companyEmail: '',
+    companyAddress: '',
+    clientName: '',
+    clientEmail: '',
+    clientAddress: '',
+    lineItems: [{ description: '', quantity: 1, rate: 0, amount: 0 }],
     subtotal: 0,
-    tax: 0,
+    taxRate: 0,
+    taxAmount: 0,
     total: 0,
     notes: '',
-    logoUrl: ''
+    logoPreview: ''
   });
 
-  // Get template from URL params
   const urlParams = new URLSearchParams(window.location.search);
   const templateId = urlParams.get('template');
 
-  // Fetch template data if templateId exists
-  const { data: template, isLoading: templateLoading } = useQuery({
+  const { data: template, isLoading: templateLoading } = useQuery<any>({
     queryKey: ['/api/templates', templateId],
     enabled: !!templateId,
   });
 
-  // Redirect if not authenticated
-  useEffect(() => {
-    if (!authLoading && !isAuthenticated) {
-      toast({
-        title: "Unauthorized",
-        description: "You are logged out. Logging in again...",
-        variant: "destructive",
-      });
-      setTimeout(() => {
-        window.location.href = "/api/login";
-      }, 500);
-      return;
-    }
-  }, [isAuthenticated, authLoading, toast]);
-
-  // Apply template when loaded
   useEffect(() => {
     if (template && template.templateData) {
-      setCreditNoteData(prev => ({
+      setCreditNoteData((prev: any) => ({
         ...prev,
         ...template.templateData,
-        documentType: 'credit_note'
+        documentType: 'credit_note',
+        primaryColor: template.templateData.primaryColor
       }));
     }
   }, [template]);
 
-  const handleDataChange = (newData: any) => {
-    setCreditNoteData(newData);
+  const handleDownload = async () => {
+    try {
+      const { generateInvoicePDF } = await import("@/lib/pdf-generator");
+      await generateInvoicePDF({
+        ...creditNoteData,
+        documentType: 'credit_note',
+        primaryColor: creditNoteData.primaryColor || template?.templateData?.primaryColor
+      });
+      toast({
+        title: "Credit Note PDF Generated",
+        description: "Your credit note has been downloaded successfully",
+      });
+    } catch (error) {
+      console.error(error);
+      toast({
+        title: "Error",
+        description: "Failed to generate PDF",
+        variant: "destructive",
+      });
+    }
   };
 
-  const handleDownload = () => {
-    // TODO: Implement PDF download
-    toast({
-      title: "Download Started",
-      description: "Your credit note PDF is being generated...",
-    });
-  };
-
-  if (authLoading || templateLoading) {
+  if (templateLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+        <div className="animate-spin rounded-full h-24 w-24 border-b-2 border-primary"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-6">
+    <div className="min-h-screen bg-slate-50">
+      <div className="w-full max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-6">
+        <div className="flex items-center justify-between mb-6 no-print">
           <div className="flex items-center">
             <Button
               variant="ghost"
               size="sm"
               onClick={() => setLocation('/templates')}
-              className="mr-4"
+              className="mr-4 text-gray-600 hover:text-gray-900"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back to Templates
             </Button>
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Credit Note Builder</h1>
-              <p className="text-gray-600">Create professional credit notes for refunds and adjustments</p>
+              <div className="flex items-center gap-2">
+                <h1 className="text-2xl font-bold text-gray-900">Credit Note Maker</h1>
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-rose-100 text-rose-800">
+                  <Sparkles className="w-3 h-3" /> Free Mode
+                </span>
+              </div>
+              <p className="text-gray-500 text-xs mt-0.5">
+                Generate credit notes and adjustment receipts in high-resolution PDF
+              </p>
             </div>
-          </div>
-          <div className="flex items-center space-x-3">
-            <Button
-              variant="outline"
-              onClick={() => setShowPreview(!showPreview)}
-              className="flex items-center"
-            >
-              <Eye className="h-4 w-4 mr-2" />
-              {showPreview ? 'Edit' : 'Preview'}
-            </Button>
-            <Button onClick={handleDownload} className="flex items-center">
-              <Download className="h-4 w-4 mr-2" />
-              Download PDF
-            </Button>
           </div>
         </div>
 
-        {/* Main Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Form Section */}
-          <div className={showPreview ? "hidden lg:block" : ""}>
-            <Card>
-              <CardHeader>
-                <CardTitle>Credit Note Details</CardTitle>
+        {/* Desktop Split Layout (Full Width Workspace) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 xl:gap-10 items-start">
+          <div className="lg:col-span-6 xl:col-span-6 no-print">
+            <Card className="border-0 shadow-sm ring-1 ring-gray-200">
+              <CardHeader className="bg-gray-50/50 border-b pb-4">
+                <CardTitle className="text-lg font-semibold text-gray-900">Credit Note Details</CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="p-6">
                 <InvoiceForm
-                  data={creditNoteData}
-                  onChange={handleDataChange}
+                  template={template}
                   documentType="credit_note"
+                  onDataChange={(data) => setCreditNoteData((prev: any) => ({ ...prev, ...data }))}
+                  onLineItemsChange={(items) => setCreditNoteData((prev: any) => ({ ...prev, lineItems: items }))}
+                  onLogoChange={(logo) => setCreditNoteData((prev: any) => ({ ...prev, logoPreview: logo }))}
+                  onDownload={handleDownload}
                 />
               </CardContent>
             </Card>
           </div>
 
-          {/* Preview Section */}
-          <div className={showPreview ? "" : "hidden lg:block"}>
-            <Card>
-              <CardHeader>
-                <CardTitle>Live Preview</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <InvoicePreview 
-                  data={creditNoteData} 
-                  template={template}
-                  documentType="credit_note"
-                />
-              </CardContent>
-            </Card>
+          <div className="lg:col-span-6 xl:col-span-6 lg:sticky lg:top-6 w-full">
+            <InvoicePreview
+              formData={creditNoteData}
+              lineItems={creditNoteData.lineItems || []}
+              logoPreview={creditNoteData.logoPreview}
+              template={template}
+              documentType="credit_note"
+            />
           </div>
         </div>
       </div>

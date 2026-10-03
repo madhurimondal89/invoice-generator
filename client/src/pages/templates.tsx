@@ -76,24 +76,38 @@ const defaultTemplates = [
   },
 ];
 
-const categories = [
-  { value: "all", label: "All Templates" },
-  { value: "classic", label: "Classic" },
-  { value: "modern", label: "Modern" },
-  { value: "creative", label: "Creative" },
-  { value: "minimal", label: "Minimal" },
+const industries = [
+  { value: "all", label: "All Industries" },
+  { value: "Tech & SaaS", label: "💻 Tech & SaaS" },
+  { value: "Freelance & Dev", label: "⚡ Freelance & Dev" },
+  { value: "Creative & Design", label: "🎨 Creative & Design" },
+  { value: "Legal & CA", label: "⚖️ Legal & CA" },
+  { value: "Construction & Trades", label: "🏗️ Construction & Trades" },
+  { value: "Retail & POS", label: "🛍️ Retail & POS" },
+  { value: "Medical & Healthcare", label: "🩺 Medical & Clinic" },
+  { value: "Logistics & Cargo", label: "📦 Logistics & Cargo" },
+  { value: "Photography & Media", label: "📸 Photo & Media" },
+  { value: "Education & Courses", label: "🎓 Education & Courses" },
 ];
 
 const documentTypes = [
-  { value: "all", label: "All Documents" },
-  { value: "invoice", label: "Invoice Templates" },
-  { value: "quote", label: "Quote Templates" },
-  { value: "credit_note", label: "Credit Note Templates" },
-  { value: "purchase_order", label: "Purchase Order Templates" },
+  { value: "all", label: "🌟 All Documents", desc: "View all document templates" },
+  { value: "invoice", label: "📄 Standard Invoices", desc: "For general client billing" },
+  { value: "tax_invoice", label: "🏛️ GST Tax Invoices", desc: "Compliant with HSN & GST" },
+  { value: "proforma_invoice", label: "💼 Proforma Invoices", desc: "Preliminary estimates & terms" },
+  { value: "quote", label: "💬 Price Quotes", desc: "Client proposals & rate cards" },
+  { value: "estimate", label: "📊 Project Estimates", desc: "Budget & milestone forecasts" },
+  { value: "purchase_order", label: "📦 Purchase Orders (PO)", desc: "Vendor orders & procurement" },
+  { value: "delivery_note", label: "🚚 Delivery Challans", desc: "Packing & item dispatch without payment" },
+  { value: "receipt", label: "🧾 Payment Receipts", desc: "Payment proof & acknowledgment" },
+  { value: "sales_receipt", label: "🛍️ Sales Receipts", desc: "Point of sale & counter receipts" },
+  { value: "cash_receipt", label: "💵 Cash Receipts", desc: "Instant cash payment vouchers" },
+  { value: "credit_note", label: "💳 Credit Notes", desc: "Returns, refunds & adjustments" },
+  { value: "credit_memo", label: "📝 Credit Memos", desc: "Account credit adjustments" },
 ];
 
 export default function Templates() {
-  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedIndustry, setSelectedIndustry] = useState("all");
   const [selectedDocumentType, setSelectedDocumentType] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
   const [, setLocation] = useLocation();
@@ -104,31 +118,39 @@ export default function Templates() {
     retry: false,
   });
 
-  // Use templates from API (they're now properly loaded)
-  const allTemplates = templates || [];
+  // Use templates from API
+  const allTemplates: any[] = Array.isArray(templates) ? templates : [];
 
   const filteredTemplates = allTemplates.filter((template: any) => {
-    const matchesCategory = selectedCategory === "all" || template.category === selectedCategory;
+    const td = template.templateData || {};
+    const matchesIndustry = selectedIndustry === "all" || td.industry === selectedIndustry;
     const matchesDocumentType = selectedDocumentType === "all" || template.documentType === selectedDocumentType;
     const matchesSearch = template.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         template.description.toLowerCase().includes(searchTerm.toLowerCase());
-    return matchesCategory && matchesDocumentType && matchesSearch;
+      (template.description || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (td.industry || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (td.companyName || '').toLowerCase().includes(searchTerm.toLowerCase());
+
+    return matchesIndustry && matchesDocumentType && matchesSearch;
   });
 
   const handleUseTemplate = (templateId: number, documentType: string) => {
-    if (isAuthenticated) {
-      // Route to appropriate document builder based on document type
-      const routes = {
-        'invoice': '/invoice/new',
-        'quote': '/quote/new',
-        'credit_note': '/credit-note/new',
-        'purchase_order': '/purchase-order/new'
-      };
-      const route = routes[documentType as keyof typeof routes] || '/invoice/new';
-      setLocation(`${route}?template=${templateId}`);
-    } else {
-      window.location.href = "/api/login";
-    }
+    // Route to appropriate document builder based on document type
+    const routes: Record<string, string> = {
+      'invoice': '/invoice/new',
+      'tax_invoice': '/tax-invoice/new',
+      'proforma_invoice': '/proforma-invoice/new',
+      'quote': '/quote/new',
+      'estimate': '/estimate/new',
+      'receipt': '/receipt/new',
+      'sales_receipt': '/sales-receipt/new',
+      'cash_receipt': '/cash-receipt/new',
+      'credit_note': '/credit-note/new',
+      'credit_memo': '/credit-memo/new',
+      'purchase_order': '/purchase-order/new',
+      'delivery_note': '/delivery-note/new'
+    };
+    const route = routes[documentType] || '/invoice/new';
+    setLocation(`${route}?template=${templateId}`);
   };
 
   if (isLoading) {
@@ -140,138 +162,188 @@ export default function Templates() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-slate-50">
       {/* Header */}
       <div className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="text-center">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              Document Templates
+        <div className="w-full max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-8">
+          <div className="text-center max-w-3xl mx-auto space-y-2">
+            <Badge className="bg-blue-50 text-blue-700 border-blue-200 gap-1 text-xs">
+              Curated Pro Templates
+            </Badge>
+            <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight">
+              Industry-Tailored Document Templates
             </h1>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Choose from our collection of professional templates for invoices, quotes, credit notes, and purchase orders
+            <p className="text-sm sm:text-base text-gray-600">
+              Pick from 12+ industries (Tech, Freelancers, CA & Legal, Construction, Medical, Retail). Pre-configured with realistic line items, taxes, and instant UPI QR payments.
             </p>
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="w-full max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-8 space-y-6">
         {/* Filters */}
-        <div className="mb-8 space-y-4">
+        <div className="bg-white p-5 sm:p-6 rounded-2xl shadow-sm border border-slate-200/80 space-y-5">
+          {/* Top Row: Search & Count */}
           <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
-            {/* Search */}
-            <div className="relative flex-1 max-w-md">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <div className="relative w-full sm:max-w-md">
+              <Search className="absolute left-3.5 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
               <Input
-                placeholder="Search templates..."
+                placeholder="Search by industry, item name, or layout style..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
+                className="pl-10 h-11 rounded-xl bg-slate-50/50 border-slate-200"
               />
             </div>
-
-            {/* Category filters */}
-            <div className="flex flex-wrap gap-2">
-              {categories.map((category) => (
-                <Button
-                  key={category.value}
-                  variant={selectedCategory === category.value ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setSelectedCategory(category.value)}
-                  className={selectedCategory === category.value ? "bg-primary text-white" : ""}
-                >
-                  {category.label}
-                </Button>
-              ))}
+            <div className="text-xs text-gray-500 font-medium self-end sm:self-center">
+              Total <strong>{allTemplates.length}</strong> Templates available across <strong>12 Document Types</strong>
             </div>
           </div>
-          
-          {/* Document Type filters */}
-          <div className="flex flex-wrap gap-2 justify-center">
-            {documentTypes.map((docType) => (
-              <Button
-                key={docType.value}
-                variant={selectedDocumentType === docType.value ? "default" : "outline"}
-                size="sm"
-                onClick={() => setSelectedDocumentType(docType.value)}
-                className={selectedDocumentType === docType.value ? "bg-blue-600 text-white" : ""}
-              >
-                {docType.label}
-              </Button>
-            ))}
+
+          {/* Document Type Selector (Primary Tabs) */}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 block">
+                1. Select Document Type:
+              </span>
+              {selectedDocumentType !== 'all' && (
+                <span className="text-xs text-indigo-600 font-medium">
+                  {documentTypes.find(d => d.value === selectedDocumentType)?.desc}
+                </span>
+              )}
+            </div>
+            <div className="flex flex-wrap gap-1.5 sm:gap-2">
+              {documentTypes.map((docType) => {
+                const count = docType.value === 'all' 
+                  ? allTemplates.length 
+                  : allTemplates.filter((t: any) => t.documentType === docType.value).length;
+                const isSelected = selectedDocumentType === docType.value;
+                return (
+                  <button
+                    key={docType.value}
+                    onClick={() => setSelectedDocumentType(docType.value)}
+                    className={`px-3 py-2 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 border ${
+                      isSelected
+                        ? "bg-indigo-600 text-white border-indigo-600 shadow-sm shadow-indigo-200"
+                        : "bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-200/80"
+                    }`}
+                  >
+                    <span>{docType.label}</span>
+                    <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${
+                      isSelected ? "bg-white/20 text-white" : "bg-slate-200/80 text-slate-600"
+                    }`}>
+                      {count}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Industry Filter Pills (Secondary) */}
+          <div className="border-t border-slate-100 pt-3 space-y-2">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 block">
+              2. Filter by Industry / Profession (Optional):
+            </span>
+            <div className="flex flex-wrap gap-1.5">
+              {industries.map((ind) => (
+                <button
+                  key={ind.value}
+                  onClick={() => setSelectedIndustry(ind.value)}
+                  className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-all ${
+                    selectedIndustry === ind.value
+                      ? "bg-slate-900 text-white shadow-sm"
+                      : "bg-slate-100 hover:bg-slate-200 text-slate-600"
+                  }`}
+                >
+                  {ind.label}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
         {/* Results count */}
-        <div className="mb-6">
-          <p className="text-gray-600">
-            Showing {filteredTemplates.length} of {allTemplates.length} templates
+        <div className="flex items-center justify-between">
+          <p className="text-xs text-gray-600 font-medium">
+            Showing <strong className="text-gray-900">{(filteredTemplates as any[]).length}</strong> templates
           </p>
+          {(selectedIndustry !== 'all' || selectedDocumentType !== 'all' || searchTerm) && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                setSelectedIndustry('all');
+                setSelectedDocumentType('all');
+                setSearchTerm('');
+              }}
+              className="text-xs text-blue-600 hover:text-blue-700 h-7"
+            >
+              Reset Filters
+            </Button>
+          )}
         </div>
 
-        {/* Template grid */}
+        {/* Template Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filteredTemplates.map((template: any) => (
-            <Card key={template.id} className="template-card group">
-              <CardContent className="p-0">
-                <div className="relative overflow-hidden rounded-t-lg h-48 bg-gray-50">
-                  <TemplatePreview 
-                    template={template} 
-                    className="w-full h-full"
-                  />
-                  <div className="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
-                    <Button
-                      onClick={() => handleUseTemplate(template.id, template.documentType)}
-                      className="bg-white text-gray-900 hover:bg-gray-100"
-                    >
-                      <FileText className="mr-2 h-4 w-4" />
-                      Use Template
-                    </Button>
-                  </div>
-                </div>
-                
-                <div className="p-4">
-                  <div className="flex items-center justify-between mb-2">
-                    <h3 className="font-semibold text-gray-900">{template.name}</h3>
-                    <div className="flex gap-2">
-                      <Badge variant="secondary" className="text-xs capitalize">
-                        {template.category}
-                      </Badge>
-                      <Badge 
-                        variant="outline" 
-                        className={`text-xs ${
-                          template.documentType === 'invoice' ? 'bg-blue-50 text-blue-600 border-blue-200' :
-                          template.documentType === 'quote' ? 'bg-green-50 text-green-600 border-green-200' :
-                          template.documentType === 'credit_note' ? 'bg-red-50 text-red-600 border-red-200' :
-                          'bg-purple-50 text-purple-600 border-purple-200'
-                        }`}
+          {filteredTemplates.map((template: any) => {
+            const td = template.templateData || {};
+            return (
+              <Card key={template.id} className="group overflow-hidden rounded-2xl border border-gray-200/80 shadow-sm hover:shadow-md transition-all duration-200 flex flex-col bg-white">
+                <CardContent className="p-0 flex-1 flex flex-col">
+                  {/* Miniature Interactive Preview */}
+                  <div className="relative overflow-hidden h-52 bg-slate-50 border-b border-gray-100">
+                    <TemplatePreview
+                      template={template}
+                      className="w-full h-full border-0 rounded-none shadow-none"
+                    />
+                    <div className="absolute inset-0 bg-slate-950/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center p-4">
+                      <Button
+                        onClick={() => handleUseTemplate(template.id, template.documentType)}
+                        className="bg-white text-slate-900 hover:bg-slate-100 font-semibold shadow-lg text-xs gap-1.5 h-9 rounded-xl"
                       >
-                        {template.documentType?.replace('_', ' ').toUpperCase() || 'INVOICE'}
-                      </Badge>
+                        <FileText className="h-4 w-4 text-blue-600" />
+                        Use This Template
+                      </Button>
                     </div>
                   </div>
-                  
-                  <p className="text-sm text-gray-600 mb-4 line-clamp-2">
-                    {template.description}
-                  </p>
-                  
-                  <div className="flex items-center justify-between">
-                    <Badge className="bg-green-100 text-green-800">
-                      Free
-                    </Badge>
-                    <Button
-                      onClick={() => handleUseTemplate(template.id, template.documentType)}
-                      variant="ghost"
-                      size="sm"
-                      className="text-primary hover:text-blue-700"
-                    >
-                      Use Template
-                    </Button>
+
+                  {/* Card Details */}
+                  <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
+                    <div className="space-y-1.5">
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200/60">
+                          {template.documentType ? template.documentType.replace(/_/g, ' ') : 'Invoice'}
+                        </span>
+                        <span className="text-[10px] font-medium text-slate-600 bg-slate-100 px-2 py-0.5 rounded-full">
+                          {td.industry || 'Business'}
+                        </span>
+                      </div>
+
+                      <h3 className="font-bold text-sm text-gray-900 group-hover:text-indigo-600 transition-colors leading-snug">
+                        {template.name}
+                      </h3>
+                      <p className="text-xs text-gray-500 line-clamp-2">
+                        {template.description}
+                      </p>
+                    </div>
+
+                    <div className="pt-2 border-t border-gray-100 flex items-center justify-between">
+                      <span className="text-[11px] text-emerald-600 font-semibold">
+                        {td.currency === 'INR' ? '₹ INR GST Ready' : `${td.currency || 'USD'} Multi-Currency`}
+                      </span>
+                      <Button
+                        onClick={() => handleUseTemplate(template.id, template.documentType)}
+                        size="sm"
+                        className="bg-indigo-600 hover:bg-indigo-700 text-white text-xs h-7 px-3 rounded-lg font-medium shadow-sm"
+                      >
+                        Use Template →
+                      </Button>
+                    </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
 
         {/* No results */}
@@ -285,7 +357,7 @@ export default function Templates() {
             <Button
               onClick={() => {
                 setSearchTerm("");
-                setSelectedCategory("all");
+                setSelectedIndustry("all");
                 setSelectedDocumentType("all");
               }}
               variant="outline"
@@ -304,7 +376,7 @@ export default function Templates() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
-                onClick={() => handleUseTemplate(1)}
+                onClick={() => handleUseTemplate(1, 'invoice')}
                 className="bg-accent text-white hover:bg-yellow-600"
               >
                 <FileText className="mr-2 h-4 w-4" />

@@ -64,8 +64,17 @@ app.use((req, res, next) => {
   server.listen({
     port,
     host: "0.0.0.0",
-    reusePort: true,
+    // reusePort: true, // Removed as it can cause issues on Windows
   }, () => {
     log(`serving on port ${port}`);
+  });
+
+  server.on('error', (e: any) => {
+    if (e.code === 'EADDRINUSE') {
+      console.error(`Port ${port} is already in use`);
+    } else {
+      console.error('Server error:', e);
+    }
+    process.exit(1);
   });
 })();

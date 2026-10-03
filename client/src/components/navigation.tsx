@@ -1,18 +1,16 @@
-import { useState } from "react";
 import { useLocation } from "wouter";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { 
-  FileText, 
-  File, 
-  Receipt, 
-  ShoppingCart, 
-  Plus, 
-  ChevronDown, 
-  Home, 
-  List,
-  LogOut 
+import {
+  FileText,
+  Receipt,
+  Plus,
+  ChevronDown,
+  Home,
+  LayoutGrid,
+  Sparkles,
+  QrCode,
+  LogIn
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -22,156 +20,133 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export default function Navigation() {
-  const { user, isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuth();
   const [, setLocation] = useLocation();
 
-  if (!isAuthenticated) {
-    return null;
-  }
-
   return (
-    <nav className="bg-white shadow-sm border-b">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <nav className="bg-white/95 backdrop-blur-md sticky top-0 z-50 shadow-sm border-b border-gray-100 no-print">
+      <div className="w-full max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
         <div className="flex justify-between items-center h-16">
-          {/* Logo/Brand */}
-          <div className="flex items-center">
+          {/* Logo / Brand */}
+          <div className="flex items-center gap-6">
             <button
               onClick={() => setLocation("/")}
-              className="flex items-center space-x-1 hover:opacity-80 transition-opacity"
+              className="flex items-center space-x-2 hover:opacity-90 transition-opacity"
             >
-              <span className="text-2xl font-bold text-blue-600">invoice</span>
-              <span className="bg-purple-600 text-white px-2 py-1 rounded font-bold text-lg">Pro</span>
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-blue-500/20">
+                <FileText className="h-5 w-5" />
+              </div>
+              <div className="flex items-baseline gap-1">
+                <span className="text-xl font-black tracking-tight text-gray-900">Invoice</span>
+                <span className="text-xl font-black tracking-tight bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">Genius</span>
+              </div>
             </button>
+
+            <div className="hidden lg:flex items-center gap-1 pl-4 border-l border-gray-200">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setLocation("/invoice/new")}
+                className="text-xs text-gray-600 hover:text-primary font-medium"
+              >
+                Instant Invoice
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setLocation("/tax-invoice/new")}
+                className="text-xs text-gray-600 hover:text-primary font-medium"
+              >
+                GST Invoice
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setLocation("/quote/new")}
+                className="text-xs text-gray-600 hover:text-primary font-medium"
+              >
+                Quote Maker
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setLocation("/receipt/new")}
+                className="text-xs text-gray-600 hover:text-primary font-medium"
+              >
+                Receipt
+              </Button>
+            </div>
           </div>
 
-          {/* Main Navigation */}
-          <div className="hidden md:flex items-center space-x-4">
+          {/* Main Actions */}
+          <div className="flex items-center space-x-3">
             <Button
               variant="ghost"
-              onClick={() => setLocation("/")}
-              className="flex items-center"
-            >
-              <Home className="mr-2 h-4 w-4" />
-              Dashboard
-            </Button>
-            
-            <Button
-              variant="ghost"
-              onClick={() => setLocation("/invoices")}
-              className="flex items-center"
-            >
-              <List className="mr-2 h-4 w-4" />
-              Invoices
-            </Button>
-            
-            <Button
-              variant="ghost"
+              size="sm"
               onClick={() => setLocation("/templates")}
-              className="flex items-center"
+              className="hidden sm:flex items-center text-gray-700 hover:text-primary gap-1.5 text-xs font-medium"
             >
-              <FileText className="mr-2 h-4 w-4" />
+              <LayoutGrid className="h-3.5 w-3.5" />
               Templates
             </Button>
+
+            {isAuthenticated ? (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setLocation("/invoices")}
+                className="flex items-center text-gray-700 gap-1.5 text-xs font-medium"
+              >
+                <Home className="h-3.5 w-3.5" />
+                My Invoices
+              </Button>
+            ) : null}
 
             {/* Create Document Dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button className="btn-accent">
-                  <Plus className="mr-2 h-4 w-4" />
-                  Create
-                  <ChevronDown className="ml-2 h-4 w-4" />
+                <Button className="bg-primary hover:bg-primary/90 text-white text-xs h-9 px-3.5 font-medium shadow-sm gap-1.5">
+                  <Plus className="h-3.5 w-3.5" />
+                  <span>Create Bill</span>
+                  <ChevronDown className="h-3 w-3 opacity-80" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuItem onClick={() => setLocation("/invoice/new")}>
+              <DropdownMenuContent align="end" className="w-56 p-2 rounded-xl shadow-xl border border-gray-100">
+                <div className="px-2 py-1 text-[11px] font-bold text-gray-400 uppercase tracking-wider">Invoices & Tax</div>
+                <DropdownMenuItem onClick={() => setLocation("/invoice/new")} className="cursor-pointer">
                   <FileText className="mr-2 h-4 w-4 text-blue-600" />
-                  <div>
-                    <div className="font-medium">Invoice</div>
-                    <div className="text-sm text-gray-500">Bill your clients</div>
-                  </div>
+                  <span>Standard Invoice</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setLocation("/quote/new")}>
-                  <File className="mr-2 h-4 w-4 text-green-600" />
-                  <div>
-                    <div className="font-medium">Quote</div>
-                    <div className="text-sm text-gray-500">Send estimates</div>
-                  </div>
+                <DropdownMenuItem onClick={() => setLocation("/tax-invoice/new")} className="cursor-pointer">
+                  <FileText className="mr-2 h-4 w-4 text-indigo-600" />
+                  <span>GST Tax Invoice</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setLocation("/credit-note/new")}>
-                  <Receipt className="mr-2 h-4 w-4 text-red-600" />
-                  <div>
-                    <div className="font-medium">Credit Note</div>
-                    <div className="text-sm text-gray-500">Issue refunds</div>
-                  </div>
+                <DropdownMenuItem onClick={() => setLocation("/proforma-invoice/new")} className="cursor-pointer">
+                  <FileText className="mr-2 h-4 w-4 text-slate-600" />
+                  <span>Proforma Invoice</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setLocation("/purchase-order/new")}>
-                  <ShoppingCart className="mr-2 h-4 w-4 text-purple-600" />
-                  <div>
-                    <div className="font-medium">Purchase Order</div>
-                    <div className="text-sm text-gray-500">Order supplies</div>
-                  </div>
+
+                <div className="px-2 py-1 text-[11px] font-bold text-gray-400 uppercase tracking-wider mt-2">Quotes & Receipts</div>
+                <DropdownMenuItem onClick={() => setLocation("/quote/new")} className="cursor-pointer">
+                  <Sparkles className="mr-2 h-4 w-4 text-emerald-600" />
+                  <span>Quotation / Estimate</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setLocation("/receipt/new")} className="cursor-pointer">
+                  <Receipt className="mr-2 h-4 w-4 text-sky-600" />
+                  <span>Payment Receipt</span>
+                </DropdownMenuItem>
+
+                <div className="px-2 py-1 text-[11px] font-bold text-gray-400 uppercase tracking-wider mt-2">Orders & Credits</div>
+                <DropdownMenuItem onClick={() => setLocation("/purchase-order/new")} className="cursor-pointer">
+                  <FileText className="mr-2 h-4 w-4 text-purple-600" />
+                  <span>Purchase Order</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setLocation("/credit-note/new")} className="cursor-pointer">
+                  <FileText className="mr-2 h-4 w-4 text-rose-600" />
+                  <span>Credit Note</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-          </div>
-
-          {/* User Menu */}
-          <div className="flex items-center space-x-4">
-            <div className="hidden md:block">
-              <span className="text-sm text-gray-700">
-                {user?.firstName || user?.email}
-              </span>
-            </div>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => window.location.href = "/api/logout"}
-            >
-              <LogOut className="h-4 w-4" />
-            </Button>
-          </div>
-        </div>
-      </div>
-      {/* Mobile Menu */}
-      <div className="md:hidden border-t">
-        <div className="px-4 py-3 space-y-2">
-          <div className="grid grid-cols-2 gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setLocation("/invoice/new")}
-              className="flex items-center justify-center"
-            >
-              <FileText className="mr-2 h-4 w-4 text-blue-600" />
-              Invoice
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setLocation("/quote/new")}
-              className="flex items-center justify-center"
-            >
-              <File className="mr-2 h-4 w-4 text-green-600" />
-              Quote
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setLocation("/credit-note/new")}
-              className="flex items-center justify-center"
-            >
-              <Receipt className="mr-2 h-4 w-4 text-red-600" />
-              Credit Note
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setLocation("/purchase-order/new")}
-              className="flex items-center justify-center"
-            >
-              <ShoppingCart className="mr-2 h-4 w-4 text-purple-600" />
-              Purchase Order
-            </Button>
           </div>
         </div>
       </div>
