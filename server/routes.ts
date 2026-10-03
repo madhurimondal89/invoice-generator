@@ -316,7 +316,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const emailSuccess = await sendEmail({
         to,
-        from: process.env.SES_FROM_EMAIL || invoice.companyEmail || 'noreply@invoicehome.com',
+        from: process.env.SES_FROM_EMAIL || invoice.companyEmail || 'noreply@invoicegenius.com',
         subject,
         text: message,
         html: htmlContent
@@ -379,7 +379,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const emailSuccess = await sendEmail({
         to,
-        from: process.env.SES_FROM_EMAIL || invoice?.companyEmail || 'noreply@invoicehome.com',
+        from: process.env.SES_FROM_EMAIL || invoice?.companyEmail || 'noreply@invoicegenius.com',
         subject,
         text: message,
         html: htmlContent

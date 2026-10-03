@@ -308,7 +308,7 @@ export default function Home() {
         <div className="mb-16">
           <div className={`bg-white/70 backdrop-blur-md rounded-3xl shadow-2xl border border-white/20 p-12 transition-all duration-1000 delay-600 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
             <h2 className="text-4xl font-bold text-center bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-12">
-              Why Choose Invoice Pro?
+              Why Choose Invoice Genius?
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
@@ -569,7 +569,7 @@ export default function Home() {
                 Ready to Create Professional Documents?
               </h3>
               <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-                Join thousands of businesses worldwide who trust Invoice Pro for their document needs
+                Join thousands of businesses worldwide who trust Invoice Genius for their document needs
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -656,12 +656,12 @@ export default function Home() {
 
           {/* Footer Info */}
           <div className="text-center border-t border-white/20 pt-8">
-            <div className="flex items-center justify-center space-x-1 mb-4">
-              <span className="text-2xl font-bold text-blue-400">invoice</span>
-              <span className="bg-purple-600 text-white px-2 py-1 rounded font-bold text-lg">Pro</span>
+            <div className="flex items-center justify-center space-x-2 mb-4">
+              <span className="text-2xl font-black tracking-tight text-white">Invoice</span>
+              <span className="text-2xl font-black tracking-tight text-blue-400">Genius</span>
             </div>
             <p className="text-blue-100 text-sm">
-              © 2025 Invoice Pro. Professional document generation made simple.
+              © {new Date().getFullYear()} InvoiceGenius. Professional document generation made simple.
             </p>
           </div>
         </div>
