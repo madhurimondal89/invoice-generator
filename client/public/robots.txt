@@ -1,4 +1,4 @@
-# Robots.txt for Invoice Genius (https://invoicegenius.com)
+# Robots.txt for Invoice Genius (https://invoicegenius.in)
 # Standard Web & Search Engine Rules
 
 User-agent: *

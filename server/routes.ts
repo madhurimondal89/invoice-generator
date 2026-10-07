@@ -35,7 +35,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Dynamic robots.txt
   app.get("/robots.txt", (req, res) => {
-    const host = req.get("host") || "invoicegenius.com";
+    const host = req.get("host") || "invoicegenius.in";
     const protocol = req.protocol === "https" || req.get("x-forwarded-proto") === "https" ? "https" : "http";
     const robots = [
       "User-agent: *",
@@ -80,7 +80,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Dynamic sitemap.xml resolving to the exact live domain connected in Coolify
   app.get("/sitemap.xml", (req, res) => {
-    const host = req.get("host") || "invoicegenius.com";
+    const host = req.get("host") || "invoicegenius.in";
     const protocol = req.protocol === "https" || req.get("x-forwarded-proto") === "https" ? "https" : "http";
     const baseUrl = `${protocol}://${host}`;
     const today = new Date().toISOString().split("T")[0];
@@ -403,7 +403,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const emailSuccess = await sendEmail({
         to,
-        from: process.env.SES_FROM_EMAIL || invoice.companyEmail || 'noreply@invoicegenius.com',
+        from: process.env.SES_FROM_EMAIL || invoice.companyEmail || 'noreply@invoicegenius.in',
         subject,
         text: message,
         html: htmlContent
@@ -466,7 +466,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const emailSuccess = await sendEmail({
         to,
-        from: process.env.SES_FROM_EMAIL || invoice?.companyEmail || 'noreply@invoicegenius.com',
+        from: process.env.SES_FROM_EMAIL || invoice?.companyEmail || 'noreply@invoicegenius.in',
         subject,
         text: message,
         html: htmlContent

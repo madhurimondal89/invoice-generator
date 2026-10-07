@@ -2,7 +2,7 @@
 
 ## System Summary
 - Application Name: Invoice Genius
-- URL: https://invoicegenius.com/
+- URL: https://invoicegenius.in/
 - Category: Financial & Business Billing Software
 - Pricing: Free ($0.00 / open access)
 - Technology Stack: React, TypeScript, Tailwind CSS, Express, Node.js
