@@ -79,7 +79,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Dynamic sitemap.xml resolving to the exact live domain connected in Coolify
-  app.get("/sitemap.xml", (req, res) => {
+  app.get(["/sitemap.xml", "/sitemap"], (req, res) => {
     const host = req.get("host") || "invoicegenius.in";
     const protocol = req.protocol === "https" || req.get("x-forwarded-proto") === "https" ? "https" : "http";
     const baseUrl = `${protocol}://${host}`;
@@ -106,7 +106,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       '</urlset>'
     ].join("\n");
 
-    res.type("application/xml").send(xml);
+    res.set("Content-Type", "application/xml; charset=utf-8");
+    res.send(xml);
   });
 
   // Auth middleware
