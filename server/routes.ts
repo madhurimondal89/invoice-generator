@@ -48,6 +48,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       "Allow: /receipt/new",
       "Allow: /purchase-order/new",
       "Allow: /credit-note/new",
+      "Allow: /about",
+      "Allow: /contact",
+      "Allow: /privacy",
+      "Allow: /terms",
       "Allow: /llms.txt",
       "Allow: /llms-full.txt",
       "Allow: /sitemap.xml",
@@ -96,7 +100,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       { path: "/sales-receipt/new", priority: "0.7", changefreq: "weekly" },
       { path: "/cash-receipt/new", priority: "0.7", changefreq: "weekly" },
       { path: "/purchase-order/new", priority: "0.8", changefreq: "weekly" },
-      { path: "/credit-note/new", priority: "0.7", changefreq: "weekly" }
+      { path: "/credit-note/new", priority: "0.7", changefreq: "weekly" },
+      { path: "/about", priority: "0.8", changefreq: "monthly" },
+      { path: "/contact", priority: "0.8", changefreq: "monthly" },
+      { path: "/privacy", priority: "0.6", changefreq: "monthly" },
+      { path: "/terms", priority: "0.6", changefreq: "monthly" }
     ];
 
     const xml = [
