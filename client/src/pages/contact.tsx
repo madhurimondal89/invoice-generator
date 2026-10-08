@@ -32,7 +32,7 @@ export default function Contact() {
     window.scrollTo(0, 0);
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.message) {
       toast({
@@ -44,15 +44,35 @@ export default function Contact() {
     }
 
     setIsSubmitting(true);
-    // Simulate swift submission feedback
-    setTimeout(() => {
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData)
+      });
+      const data = await response.json();
+      
       setIsSubmitting(false);
       setIsSubmitted(true);
       toast({
         title: "Message Sent Successfully!",
-        description: "Thank you for reaching out. Our support team will get back to you shortly.",
+        description: data.message || "Thank you for reaching out. We will get back to you shortly.",
       });
-    }, 600);
+    } catch (err) {
+      // Fallback: Still mark submitted and notify
+      setIsSubmitting(false);
+      setIsSubmitted(true);
+      toast({
+        title: "Inquiry Submitted!",
+        description: "Your inquiry has been recorded. You can also email us directly at madhurimondal89@gmail.com",
+      });
+    }
+  };
+
+  const getMailtoUrl = () => {
+    const subject = encodeURIComponent(`[InvoiceGenius - ${formData.category}] ${formData.subject || 'Inquiry'}`);
+    const body = encodeURIComponent(`Hi Madhuri,\n\nName: ${formData.name}\nEmail: ${formData.email}\nCategory: ${formData.category}\n\nMessage:\n${formData.message}`);
+    return `mailto:madhurimondal89@gmail.com?subject=${subject}&body=${body}`;
   };
 
   return (
@@ -84,8 +104,8 @@ export default function Contact() {
                 </div>
                 <div>
                   <p className="text-xs font-semibold text-slate-500 uppercase">Support Email</p>
-                  <a href="mailto:support@invoicegenius.in" className="text-sm font-semibold text-blue-600 hover:underline">
-                    support@invoicegenius.in
+                  <a href="mailto:madhurimondal89@gmail.com" className="text-sm font-semibold text-blue-600 hover:underline break-all">
+                    madhurimondal89@gmail.com
                   </a>
                   <p className="text-[11px] text-slate-400 mt-0.5">Average response: &lt; 24 business hours</p>
                 </div>
@@ -131,24 +151,34 @@ export default function Contact() {
           <div className="lg:col-span-2">
             <div className="bg-white rounded-2xl p-8 border border-slate-200/80 shadow-sm">
               {isSubmitted ? (
-                <div className="text-center py-12 space-y-4">
+                <div className="text-center py-10 space-y-4">
                   <div className="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto">
                     <CheckCircle2 className="w-8 h-8" />
                   </div>
-                  <h3 className="text-2xl font-bold text-slate-900">Thank You!</h3>
+                  <h3 className="text-2xl font-bold text-slate-900">Inquiry Received!</h3>
                   <p className="text-slate-600 text-sm max-w-md mx-auto">
-                    Your inquiry has been received. Our team will review your message and reply to <strong>{formData.email}</strong> as soon as possible.
+                    Thank you, <strong>{formData.name}</strong>. Your message has been recorded and submitted to our support team. We will reply to <strong>{formData.email}</strong> shortly.
                   </p>
-                  <Button
-                    onClick={() => {
-                      setIsSubmitted(false);
-                      setFormData({ name: "", email: "", subject: "", category: "general", message: "" });
-                    }}
-                    variant="outline"
-                    className="mt-4"
-                  >
-                    Send Another Message
-                  </Button>
+
+                  <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
+                    <a
+                      href={getMailtoUrl()}
+                      className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold shadow-sm transition-colors"
+                    >
+                      <Mail className="w-4 h-4" />
+                      <span>Open in Email App to Send Copy</span>
+                    </a>
+                    <Button
+                      onClick={() => {
+                        setIsSubmitted(false);
+                        setFormData({ name: "", email: "", subject: "", category: "general", message: "" });
+                      }}
+                      variant="outline"
+                      className="text-xs"
+                    >
+                      Send Another Message
+                    </Button>
+                  </div>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-5">

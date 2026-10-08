@@ -137,7 +137,7 @@ export default function TermsOfService() {
             <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
                 <p className="font-semibold text-slate-900">Legal & Support Queries</p>
-                <p className="text-slate-600 text-xs">Email: <a href="mailto:support@invoicegenius.in" className="text-blue-600 underline font-medium">support@invoicegenius.in</a></p>
+                <p className="text-slate-600 text-xs">Email: <a href="mailto:madhurimondal89@gmail.com" className="text-blue-600 underline font-medium">madhurimondal89@gmail.com</a></p>
               </div>
               <Link href="/contact" className="inline-flex items-center justify-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-medium transition-colors shadow-sm">
                 Contact Support

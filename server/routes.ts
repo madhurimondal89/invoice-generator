@@ -118,6 +118,60 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.send(xml);
   });
 
+  // Contact Form Inquiry Submission Endpoint
+  app.post("/api/contact", async (req, res) => {
+    try {
+      const { name, email, subject, category, message } = req.body;
+      if (!name || !email || !message) {
+        return res.status(400).json({ success: false, message: "Name, email, and message are required" });
+      }
+
+      console.log(`[Contact Inquiry] From: ${name} <${email}> | Category: ${category} | Subject: ${subject}`);
+
+      // Try sending via Amazon SES if configured
+      let emailSent = false;
+      try {
+        const { sendEmail } = await import("./ses-email");
+        emailSent = await sendEmail({
+          to: "madhurimondal89@gmail.com",
+          from: process.env.SES_FROM_EMAIL || "madhurimondal89@gmail.com",
+          subject: `[InvoiceGenius Inquiry - ${category || 'General'}] ${subject || 'New Message from ' + name}`,
+          text: `You received a new inquiry from InvoiceGenius Contact Form:\n\nName: ${name}\nEmail: ${email}\nCategory: ${category}\nSubject: ${subject}\n\nMessage:\n${message}`,
+          html: `<div style="font-family: sans-serif; padding: 20px; line-height: 1.6;">
+            <h2 style="color: #2563eb;">New Inquiry from InvoiceGenius</h2>
+            <p><strong>Name:</strong> ${name}</p>
+            <p><strong>Sender Email:</strong> <a href="mailto:${email}">${email}</a></p>
+            <p><strong>Category:</strong> ${category}</p>
+            <p><strong>Subject:</strong> ${subject || 'N/A'}</p>
+            <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 16px 0;" />
+            <p><strong>Message:</strong></p>
+            <p style="background: #f8fafc; padding: 12px; border-radius: 8px; white-space: pre-wrap;">${message}</p>
+          </div>`
+        });
+      } catch (sesError) {
+        console.warn("SES email delivery failed or not configured:", sesError);
+      }
+
+      // Always log inquiry to file so site owner never misses any message
+      try {
+        const inquiryLog = path.join(process.cwd(), 'inquiries.log');
+        const entry = `[${new Date().toISOString()}] Name: ${name} | Email: ${email} | Category: ${category} | Subject: ${subject}\nMessage:\n${message}\n----------------------------------------\n`;
+        fs.appendFileSync(inquiryLog, entry);
+      } catch (logErr) {
+        console.error("Failed to append to inquiries.log:", logErr);
+      }
+
+      res.json({
+        success: true,
+        emailSent,
+        message: "Your inquiry has been received. Thank you!"
+      });
+    } catch (err) {
+      console.error("Error processing contact submission:", err);
+      res.status(500).json({ success: false, message: "Internal server error" });
+    }
+  });
+
   // Auth middleware
   await setupAuth(app);
 

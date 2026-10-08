@@ -54,8 +54,8 @@ export default function Footer() {
                 <Facebook className="h-4 w-4" />
               </a>
               <a
-                href="mailto:support@invoicegenius.in"
-                title="Email Support"
+                href="mailto:madhurimondal89@gmail.com"
+                title="Email Support (madhurimondal89@gmail.com)"
                 aria-label="Email Support"
                 className="text-gray-400 hover:text-white transition-colors"
               >
