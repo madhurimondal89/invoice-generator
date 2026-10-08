@@ -158,9 +158,8 @@ export default function About() {
               Generate Invoice
             </Button>
             <Button
-              variant="outline"
               onClick={() => setLocation("/contact")}
-              className="border-white/30 text-white hover:bg-white/10"
+              className="bg-white/10 hover:bg-white/25 text-white border border-white/40 font-semibold px-6 shadow-sm transition-all"
             >
               Contact Support
             </Button>
