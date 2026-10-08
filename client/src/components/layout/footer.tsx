@@ -23,21 +23,52 @@ export default function Footer() {
               The modern, instant business document generator. Create compliant invoices, quotes, receipts, and purchase orders in seconds with UPI QR code payments.
             </p>
             <div className="flex space-x-3.5">
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <Facebook className="h-4 w-4" />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              <a
+                href="https://twitter.com/intent/tweet?text=Create%20free%20professional%20invoices%20with%20InvoiceGenius&url=https://invoicegenius.in"
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Share on Twitter"
+                aria-label="Share on Twitter"
+                className="text-gray-400 hover:text-blue-400 transition-colors"
+              >
                 <Twitter className="h-4 w-4" />
               </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              <a
+                href="https://www.linkedin.com/sharing/share-offsite/?url=https://invoicegenius.in"
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Share on LinkedIn"
+                aria-label="Share on LinkedIn"
+                className="text-gray-400 hover:text-blue-400 transition-colors"
+              >
                 <Linkedin className="h-4 w-4" />
               </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              <a
+                href="https://www.facebook.com/sharer/sharer.php?u=https://invoicegenius.in"
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Share on Facebook"
+                aria-label="Share on Facebook"
+                className="text-gray-400 hover:text-blue-400 transition-colors"
+              >
+                <Facebook className="h-4 w-4" />
+              </a>
+              <a
+                href="mailto:support@invoicegenius.in"
+                title="Email Support"
+                aria-label="Email Support"
+                className="text-gray-400 hover:text-white transition-colors"
+              >
                 <Instagram className="h-4 w-4" />
               </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              <button
+                onClick={() => setLocation("/contact")}
+                title="Support Desk"
+                aria-label="Support Desk"
+                className="text-gray-400 hover:text-white transition-colors"
+              >
                 <Youtube className="h-4 w-4" />
-              </a>
+              </button>
             </div>
           </div>
 
@@ -225,22 +256,34 @@ export default function Footer() {
             <h3 className="text-xs font-bold uppercase tracking-wider text-gray-300 mb-4">Company</h3>
             <ul className="space-y-2.5 text-xs">
               <li>
-                <button className="text-gray-400 hover:text-white transition-colors text-left">
+                <button 
+                  onClick={() => setLocation("/about")}
+                  className="text-gray-400 hover:text-white transition-colors text-left"
+                >
                   About InvoiceGenius
                 </button>
               </li>
               <li>
-                <button className="text-gray-400 hover:text-white transition-colors text-left">
+                <button 
+                  onClick={() => setLocation("/contact")}
+                  className="text-gray-400 hover:text-white transition-colors text-left"
+                >
                   Contact Support
                 </button>
               </li>
               <li>
-                <button className="text-gray-400 hover:text-white transition-colors text-left">
+                <button 
+                  onClick={() => setLocation("/privacy")}
+                  className="text-gray-400 hover:text-white transition-colors text-left"
+                >
                   Privacy Policy
                 </button>
               </li>
               <li>
-                <button className="text-gray-400 hover:text-white transition-colors text-left">
+                <button 
+                  onClick={() => setLocation("/terms")}
+                  className="text-gray-400 hover:text-white transition-colors text-left"
+                >
                   Terms of Service
                 </button>
               </li>
@@ -253,13 +296,22 @@ export default function Footer() {
             © {new Date().getFullYear()} InvoiceGenius. All rights reserved.
           </p>
           <div className="flex items-center space-x-6">
-            <button className="hover:text-white transition-colors">
+            <button 
+              onClick={() => setLocation("/privacy")}
+              className="hover:text-white transition-colors"
+            >
               Privacy Policy
             </button>
-            <button className="hover:text-white transition-colors">
+            <button 
+              onClick={() => setLocation("/terms")}
+              className="hover:text-white transition-colors"
+            >
               Terms of Use
             </button>
-            <button className="hover:text-white transition-colors">
+            <button 
+              onClick={() => setLocation("/invoice/new")}
+              className="hover:text-white transition-colors"
+            >
               Free Invoice Generator
             </button>
           </div>

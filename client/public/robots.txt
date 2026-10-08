@@ -13,6 +13,10 @@ Allow: /sales-receipt/new
 Allow: /cash-receipt/new
 Allow: /purchase-order/new
 Allow: /credit-note/new
+Allow: /about
+Allow: /contact
+Allow: /privacy
+Allow: /terms
 Allow: /llms.txt
 Allow: /llms-full.txt
 Allow: /sitemap.xml

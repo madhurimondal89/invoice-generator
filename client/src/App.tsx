@@ -12,6 +12,10 @@ import CreditNoteBuilder from "@/pages/credit-note-builder";
 import PurchaseOrderBuilder from "@/pages/purchase-order-builder";
 import Templates from "@/pages/templates";
 import Invoices from "@/pages/invoices";
+import About from "@/pages/about";
+import Contact from "@/pages/contact";
+import PrivacyPolicy from "@/pages/privacy";
+import TermsOfService from "@/pages/terms";
 import NotFound from "@/pages/not-found";
 import Navigation from "@/components/navigation";
 import FloatingActionButton from "@/components/floating-action-button";
@@ -79,6 +83,12 @@ function Router() {
 
           {/* User Saved Documents Dashboard */}
           <Route path="/invoices" component={Invoices} />
+
+          {/* AdSense & Legal Pages */}
+          <Route path="/about" component={About} />
+          <Route path="/contact" component={Contact} />
+          <Route path="/privacy" component={PrivacyPolicy} />
+          <Route path="/terms" component={TermsOfService} />
 
           <Route component={NotFound} />
         </Switch>
