@@ -86,6 +86,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.type("text/plain").send(robots);
   });
 
+  // Bing Webmaster Verification Endpoint
+  app.get("/BingSiteAuth.xml", (_req, res) => {
+    res.type("application/xml").send(`<?xml version="1.0"?>\n<users>\n\t<user>E6181F33C27945E62059EB5C4AE281C2</user>\n</users>`);
+  });
+
   // Dynamic sitemap.xml resolving to the exact live domain connected in Coolify
   app.get(["/sitemap.xml", "/sitemap"], (req, res) => {
     const host = req.get("host") || "invoicegenius.in";
