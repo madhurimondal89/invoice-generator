@@ -96,3 +96,4 @@
 - [ ] Run `npm run build` to confirm zero TypeScript or bundler errors.
 - [ ] Verify HTTP 200 and schema tags on `/guides`, `/guides/gst-invoice-format`, `/guides/upi-qr-code-invoice`, `/guides/proforma-vs-tax-invoice`.
 - [ ] Commit and push changes to GitHub.
+
