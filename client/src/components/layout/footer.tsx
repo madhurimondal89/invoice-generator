@@ -1,4 +1,4 @@
-import { Facebook, Twitter, Linkedin, Instagram, Youtube, FileText, ExternalLink } from "lucide-react";
+import { Facebook, Twitter, Linkedin, Instagram, Youtube, FileText, ExternalLink, Star } from "lucide-react";
 import { Link, useLocation } from "wouter";
 
 export default function Footer() {
@@ -69,6 +69,28 @@ export default function Footer() {
               >
                 <Youtube className="h-4 w-4" />
               </button>
+            </div>
+
+            {/* Trustpilot Review Badge */}
+            <div className="mt-5 pt-4 border-t border-gray-800/80">
+              <a
+                href="https://www.trustpilot.com/review/invoicegenius.in"
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Review InvoiceGenius on Trustpilot"
+                className="inline-flex items-center gap-2.5 px-3 py-2 rounded-lg bg-gray-900 border border-gray-800 hover:border-[#00b67a]/60 hover:bg-gray-850 transition-all duration-200 group shadow-sm"
+              >
+                <div className="w-6 h-6 rounded bg-[#00b67a] flex items-center justify-center text-white text-xs font-bold shadow">
+                  ★
+                </div>
+                <div className="flex flex-col text-left">
+                  <span className="text-[10px] text-gray-400 uppercase tracking-wider font-medium leading-none">Review us on</span>
+                  <div className="flex items-center gap-1.5 mt-0.5">
+                    <span className="text-xs font-bold text-white group-hover:text-[#00b67a] transition-colors">Trustpilot</span>
+                    <span className="text-[#00b67a] text-[10px] tracking-tight font-black">★★★★★</span>
+                  </div>
+                </div>
+              </a>
             </div>
           </div>
 
@@ -294,6 +316,17 @@ export default function Footer() {
                 >
                   Terms of Service
                 </Link>
+              </li>
+              <li>
+                <a
+                  href="https://www.trustpilot.com/review/invoicegenius.in"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-[#00b67a] transition-colors flex items-center gap-1.5 text-left group"
+                >
+                  <span>Review on Trustpilot</span>
+                  <span className="text-[#00b67a] text-xs font-bold">★</span>
+                </a>
               </li>
             </ul>
           </div>
