@@ -1,5 +1,5 @@
 import { Facebook, Twitter, Linkedin, Instagram, Youtube, FileText, ExternalLink } from "lucide-react";
-import { useLocation } from "wouter";
+import { Link, useLocation } from "wouter";
 
 export default function Footer() {
   const [, setLocation] = useLocation();
@@ -10,7 +10,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
           {/* Brand Info */}
           <div className="lg:col-span-1">
-            <div className="flex items-center space-x-2.5 mb-4 cursor-pointer" onClick={() => setLocation("/")}>
+            <Link href="/" className="flex items-center space-x-2.5 mb-4 hover:opacity-90 transition-opacity">
               <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-blue-500/20">
                 <FileText className="h-4.5 w-4.5" />
               </div>
@@ -18,7 +18,7 @@ export default function Footer() {
                 <span className="text-2xl font-black tracking-tight text-white">Invoice</span>
                 <span className="text-2xl font-black tracking-tight text-blue-400">Genius</span>
               </div>
-            </div>
+            </Link>
             <p className="text-gray-400 text-xs mb-4 leading-relaxed">
               The modern, instant business document generator. Create compliant invoices, quotes, receipts, and purchase orders in seconds with UPI QR code payments.
             </p>
@@ -77,40 +77,40 @@ export default function Footer() {
             <h3 className="text-xs font-bold uppercase tracking-wider text-gray-300 mb-4">Document Generators</h3>
             <ul className="space-y-2.5 text-xs">
               <li>
-                <button 
-                  onClick={() => setLocation("/invoice/new")}
-                  className="text-gray-400 hover:text-white transition-colors text-left"
-                >Standard Invoices</button>
+                <Link 
+                  href="/invoice/new"
+                  className="text-gray-400 hover:text-white transition-colors block text-left"
+                >Standard Invoices</Link>
               </li>
               <li>
-                <button 
-                  onClick={() => setLocation("/tax-invoice/new")}
-                  className="text-gray-400 hover:text-white transition-colors text-left"
-                >GST Tax Invoices</button>
+                <Link 
+                  href="/tax-invoice/new"
+                  className="text-gray-400 hover:text-white transition-colors block text-left"
+                >GST Tax Invoices</Link>
               </li>
               <li>
-                <button 
-                  onClick={() => setLocation("/quote/new")}
-                  className="text-gray-400 hover:text-white transition-colors text-left"
-                >Price Quotes & Estimates</button>
+                <Link 
+                  href="/quote/new"
+                  className="text-gray-400 hover:text-white transition-colors block text-left"
+                >Price Quotes & Estimates</Link>
               </li>
               <li>
-                <button 
-                  onClick={() => setLocation("/receipt/new")}
-                  className="text-gray-400 hover:text-white transition-colors text-left"
-                >Payment Receipts</button>
+                <Link 
+                  href="/receipt/new"
+                  className="text-gray-400 hover:text-white transition-colors block text-left"
+                >Payment Receipts</Link>
               </li>
               <li>
-                <button 
-                  onClick={() => setLocation("/purchase-order/new")}
-                  className="text-gray-400 hover:text-white transition-colors text-left"
-                >Purchase Orders</button>
+                <Link 
+                  href="/purchase-order/new"
+                  className="text-gray-400 hover:text-white transition-colors block text-left"
+                >Purchase Orders</Link>
               </li>
               <li>
-                <button 
-                  onClick={() => setLocation("/credit-note/new")}
-                  className="text-gray-400 hover:text-white transition-colors text-left"
-                >Credit Notes & Memos</button>
+                <Link 
+                  href="/credit-note/new"
+                  className="text-gray-400 hover:text-white transition-colors block text-left"
+                >Credit Notes & Memos</Link>
               </li>
             </ul>
           </div>
@@ -217,36 +217,36 @@ export default function Footer() {
             <h3 className="text-xs font-bold uppercase tracking-wider text-gray-300 mb-4">Templates & Features</h3>
             <ul className="space-y-2.5 text-xs">
               <li>
-                <button 
-                  onClick={() => setLocation("/templates")}
-                  className="text-gray-400 hover:text-white transition-colors text-left"
+                <Link 
+                  href="/templates"
+                  className="text-gray-400 hover:text-white transition-colors block text-left"
                 >
                   Curated Pro Templates
-                </button>
+                </Link>
               </li>
               <li>
-                <button 
-                  onClick={() => setLocation("/invoices")}
-                  className="text-gray-400 hover:text-white transition-colors text-left"
+                <Link 
+                  href="/invoices"
+                  className="text-gray-400 hover:text-white transition-colors block text-left"
                 >
                   Saved Documents
-                </button>
+                </Link>
               </li>
               <li>
-                <button 
-                  onClick={() => setLocation("/templates")}
-                  className="text-gray-400 hover:text-white transition-colors text-left"
+                <Link 
+                  href="/tax-invoice/new"
+                  className="text-gray-400 hover:text-white transition-colors block text-left"
                 >
                   UPI QR Payment Setup
-                </button>
+                </Link>
               </li>
               <li>
-                <button 
-                  onClick={() => setLocation("/templates")}
-                  className="text-gray-400 hover:text-white transition-colors text-left"
+                <Link 
+                  href="/templates"
+                  className="text-gray-400 hover:text-white transition-colors block text-left"
                 >
                   Multi-Currency Support
-                </button>
+                </Link>
               </li>
             </ul>
           </div>
@@ -256,36 +256,36 @@ export default function Footer() {
             <h3 className="text-xs font-bold uppercase tracking-wider text-gray-300 mb-4">Company</h3>
             <ul className="space-y-2.5 text-xs">
               <li>
-                <button 
-                  onClick={() => setLocation("/about")}
-                  className="text-gray-400 hover:text-white transition-colors text-left"
+                <Link 
+                  href="/about"
+                  className="text-gray-400 hover:text-white transition-colors block text-left"
                 >
                   About InvoiceGenius
-                </button>
+                </Link>
               </li>
               <li>
-                <button 
-                  onClick={() => setLocation("/contact")}
-                  className="text-gray-400 hover:text-white transition-colors text-left"
+                <Link 
+                  href="/contact"
+                  className="text-gray-400 hover:text-white transition-colors block text-left"
                 >
                   Contact Support
-                </button>
+                </Link>
               </li>
               <li>
-                <button 
-                  onClick={() => setLocation("/privacy")}
-                  className="text-gray-400 hover:text-white transition-colors text-left"
+                <Link 
+                  href="/privacy"
+                  className="text-gray-400 hover:text-white transition-colors block text-left"
                 >
                   Privacy Policy
-                </button>
+                </Link>
               </li>
               <li>
-                <button 
-                  onClick={() => setLocation("/terms")}
-                  className="text-gray-400 hover:text-white transition-colors text-left"
+                <Link 
+                  href="/terms"
+                  className="text-gray-400 hover:text-white transition-colors block text-left"
                 >
                   Terms of Service
-                </button>
+                </Link>
               </li>
             </ul>
           </div>
@@ -296,24 +296,24 @@ export default function Footer() {
             © {new Date().getFullYear()} InvoiceGenius. All rights reserved.
           </p>
           <div className="flex items-center space-x-6">
-            <button 
-              onClick={() => setLocation("/privacy")}
+            <Link 
+              href="/privacy"
               className="hover:text-white transition-colors"
             >
               Privacy Policy
-            </button>
-            <button 
-              onClick={() => setLocation("/terms")}
+            </Link>
+            <Link 
+              href="/terms"
               className="hover:text-white transition-colors"
             >
               Terms of Use
-            </button>
-            <button 
-              onClick={() => setLocation("/invoice/new")}
+            </Link>
+            <Link 
+              href="/invoice/new"
               className="hover:text-white transition-colors"
             >
               Free Invoice Generator
-            </button>
+            </Link>
           </div>
         </div>
       </div>

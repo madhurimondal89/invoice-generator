@@ -5,6 +5,7 @@ import { createServer as createViteServer, createLogger } from "vite";
 import { type Server } from "http";
 import viteConfig from "../vite.config";
 import { nanoid } from "nanoid";
+import { injectSeo } from "./seo";
 
 const viteLogger = createLogger();
 
@@ -43,6 +44,9 @@ export async function setupVite(app: Express, server: Server) {
   app.use(vite.middlewares);
   app.use("*", async (req, res, next) => {
     const url = req.originalUrl;
+    if (url.startsWith("/api")) {
+      return next();
+    }
 
     try {
       const clientTemplate = path.resolve(
@@ -59,7 +63,8 @@ export async function setupVite(app: Express, server: Server) {
         `src="/src/main.tsx?v=${nanoid()}"`,
       );
       const page = await vite.transformIndexHtml(url, template);
-      res.status(200).set({ "Content-Type": "text/html" }).end(page);
+      const { html: injectedPage, status } = injectSeo(page, url);
+      res.status(status).set({ "Content-Type": "text/html" }).end(injectedPage);
     } catch (e) {
       vite.ssrFixStacktrace(e as Error);
       next(e);
@@ -76,10 +81,45 @@ export function serveStatic(app: Express) {
     );
   }
 
-  app.use(express.static(distPath));
+  // Serve static assets with smart cache headers
+  app.use(
+    express.static(distPath, {
+      maxAge: "1d",
+      setHeaders(res, filePath) {
+        // Long-term immutable caching for Vite build chunks in /assets
+        if (filePath.includes(`${path.sep}assets${path.sep}`)) {
+          res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
+        }
+      },
+    }),
+  );
 
-  // fall through to index.html if the file doesn't exist
-  app.use("*", (_req, res) => {
-    res.sendFile(path.resolve(distPath, "index.html"));
+  // Serve HTML with per-route SEO metadata & proper HTTP status (200 / 404)
+  let cachedIndexHtml: string | null = null;
+
+  app.use("*", async (req, res, next) => {
+    if (req.originalUrl.startsWith("/api")) {
+      return next();
+    }
+
+    try {
+      if (!cachedIndexHtml) {
+        cachedIndexHtml = await fs.promises.readFile(
+          path.resolve(distPath, "index.html"),
+          "utf-8",
+        );
+      }
+
+      const { html: injectedHtml, status } = injectSeo(cachedIndexHtml, req.originalUrl);
+      res
+        .status(status)
+        .set({
+          "Content-Type": "text/html",
+          "Cache-Control": "no-cache, no-store, must-revalidate",
+        })
+        .end(injectedHtml);
+    } catch (e) {
+      next(e);
+    }
   });
 }

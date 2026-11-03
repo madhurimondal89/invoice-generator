@@ -36,6 +36,9 @@ Allow: /
 User-agent: PerplexityBot
 Allow: /
 
+User-agent: ClaudeBot
+Allow: /
+
 User-agent: Claude-Web
 Allow: /
 
@@ -54,4 +57,4 @@ Allow: /
 User-agent: Bytespider
 Allow: /
 
-Sitemap: /sitemap.xml
+Sitemap: https://invoicegenius.in/sitemap.xml

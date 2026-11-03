@@ -1,4 +1,4 @@
-import { useLocation } from "wouter";
+import { Link, useLocation } from "wouter";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import {
@@ -34,8 +34,8 @@ export default function Navigation() {
         <div className="flex justify-between items-center h-16">
           {/* Logo / Brand */}
           <div className="flex items-center gap-6">
-            <button
-              onClick={() => setLocation("/")}
+            <Link
+              href="/"
               className="flex items-center space-x-2 hover:opacity-90 transition-opacity"
             >
               <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-blue-500/20">
@@ -45,41 +45,33 @@ export default function Navigation() {
                 <span className="text-xl font-black tracking-tight text-gray-900">Invoice</span>
                 <span className="text-xl font-black tracking-tight bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">Genius</span>
               </div>
-            </button>
+            </Link>
 
             <div className="hidden lg:flex items-center gap-1 pl-4 border-l border-gray-200">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setLocation("/invoice/new")}
-                className="text-xs text-gray-600 hover:text-primary font-medium"
+              <Link
+                href="/invoice/new"
+                className="text-xs text-gray-600 hover:text-primary font-medium px-2.5 py-1.5 rounded-md hover:bg-gray-100 transition-colors"
               >
                 Instant Invoice
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setLocation("/tax-invoice/new")}
-                className="text-xs text-gray-600 hover:text-primary font-medium"
+              </Link>
+              <Link
+                href="/tax-invoice/new"
+                className="text-xs text-gray-600 hover:text-primary font-medium px-2.5 py-1.5 rounded-md hover:bg-gray-100 transition-colors"
               >
                 GST Invoice
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setLocation("/quote/new")}
-                className="text-xs text-gray-600 hover:text-primary font-medium"
+              </Link>
+              <Link
+                href="/quote/new"
+                className="text-xs text-gray-600 hover:text-primary font-medium px-2.5 py-1.5 rounded-md hover:bg-gray-100 transition-colors"
               >
                 Quote Maker
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setLocation("/receipt/new")}
-                className="text-xs text-gray-600 hover:text-primary font-medium"
+              </Link>
+              <Link
+                href="/receipt/new"
+                className="text-xs text-gray-600 hover:text-primary font-medium px-2.5 py-1.5 rounded-md hover:bg-gray-100 transition-colors"
               >
                 Receipt
-              </Button>
+              </Link>
 
               {/* Web Tools Dropdown (Desktop) */}
               <DropdownMenu>
@@ -260,26 +252,22 @@ export default function Navigation() {
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setLocation("/templates")}
-              className="hidden sm:flex items-center text-gray-700 hover:text-primary gap-1.5 text-xs font-medium"
+            <Link
+              href="/templates"
+              className="hidden sm:flex items-center text-gray-700 hover:text-primary gap-1.5 text-xs font-medium px-2.5 py-1.5 rounded-md hover:bg-gray-100 transition-colors"
             >
               <LayoutGrid className="h-3.5 w-3.5" />
               Templates
-            </Button>
+            </Link>
 
             {isAuthenticated ? (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setLocation("/invoices")}
-                className="flex items-center text-gray-700 gap-1.5 text-xs font-medium"
+              <Link
+                href="/invoices"
+                className="flex items-center text-gray-700 gap-1.5 text-xs font-medium px-2.5 py-1.5 rounded-md hover:bg-gray-100 transition-colors"
               >
                 <Home className="h-3.5 w-3.5" />
                 My Invoices
-              </Button>
+              </Link>
             ) : null}
 
             {/* Create Document Dropdown */}
@@ -293,37 +281,51 @@ export default function Navigation() {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56 p-2 rounded-xl shadow-xl border border-gray-100">
                 <div className="px-2 py-1 text-[11px] font-bold text-gray-400 uppercase tracking-wider">Invoices & Tax</div>
-                <DropdownMenuItem onClick={() => setLocation("/invoice/new")} className="cursor-pointer">
-                  <FileText className="mr-2 h-4 w-4 text-blue-600" />
-                  <span>Standard Invoice</span>
+                <DropdownMenuItem asChild>
+                  <Link href="/invoice/new" className="flex items-center w-full cursor-pointer">
+                    <FileText className="mr-2 h-4 w-4 text-blue-600" />
+                    <span>Standard Invoice</span>
+                  </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setLocation("/tax-invoice/new")} className="cursor-pointer">
-                  <FileText className="mr-2 h-4 w-4 text-indigo-600" />
-                  <span>GST Tax Invoice</span>
+                <DropdownMenuItem asChild>
+                  <Link href="/tax-invoice/new" className="flex items-center w-full cursor-pointer">
+                    <FileText className="mr-2 h-4 w-4 text-indigo-600" />
+                    <span>GST Tax Invoice</span>
+                  </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setLocation("/proforma-invoice/new")} className="cursor-pointer">
-                  <FileText className="mr-2 h-4 w-4 text-slate-600" />
-                  <span>Proforma Invoice</span>
+                <DropdownMenuItem asChild>
+                  <Link href="/proforma-invoice/new" className="flex items-center w-full cursor-pointer">
+                    <FileText className="mr-2 h-4 w-4 text-slate-600" />
+                    <span>Proforma Invoice</span>
+                  </Link>
                 </DropdownMenuItem>
 
                 <div className="px-2 py-1 text-[11px] font-bold text-gray-400 uppercase tracking-wider mt-2">Quotes & Receipts</div>
-                <DropdownMenuItem onClick={() => setLocation("/quote/new")} className="cursor-pointer">
-                  <Sparkles className="mr-2 h-4 w-4 text-emerald-600" />
-                  <span>Quotation / Estimate</span>
+                <DropdownMenuItem asChild>
+                  <Link href="/quote/new" className="flex items-center w-full cursor-pointer">
+                    <Sparkles className="mr-2 h-4 w-4 text-emerald-600" />
+                    <span>Quotation / Estimate</span>
+                  </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setLocation("/receipt/new")} className="cursor-pointer">
-                  <Receipt className="mr-2 h-4 w-4 text-sky-600" />
-                  <span>Payment Receipt</span>
+                <DropdownMenuItem asChild>
+                  <Link href="/receipt/new" className="flex items-center w-full cursor-pointer">
+                    <Receipt className="mr-2 h-4 w-4 text-sky-600" />
+                    <span>Payment Receipt</span>
+                  </Link>
                 </DropdownMenuItem>
 
                 <div className="px-2 py-1 text-[11px] font-bold text-gray-400 uppercase tracking-wider mt-2">Orders & Credits</div>
-                <DropdownMenuItem onClick={() => setLocation("/purchase-order/new")} className="cursor-pointer">
-                  <FileText className="mr-2 h-4 w-4 text-purple-600" />
-                  <span>Purchase Order</span>
+                <DropdownMenuItem asChild>
+                  <Link href="/purchase-order/new" className="flex items-center w-full cursor-pointer">
+                    <FileText className="mr-2 h-4 w-4 text-purple-600" />
+                    <span>Purchase Order</span>
+                  </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setLocation("/credit-note/new")} className="cursor-pointer">
-                  <FileText className="mr-2 h-4 w-4 text-rose-600" />
-                  <span>Credit Note</span>
+                <DropdownMenuItem asChild>
+                  <Link href="/credit-note/new" className="flex items-center w-full cursor-pointer">
+                    <FileText className="mr-2 h-4 w-4 text-rose-600" />
+                    <span>Credit Note</span>
+                  </Link>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

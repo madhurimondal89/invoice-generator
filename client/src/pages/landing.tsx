@@ -23,7 +23,7 @@ import {
   Star,
   Clock
 } from "lucide-react";
-import { useLocation } from "wouter";
+import { Link, useLocation } from "wouter";
 import {
   Accordion,
   AccordionContent,
@@ -201,9 +201,9 @@ export default function Landing() {
             transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
             className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-white max-w-4xl mx-auto leading-[1.1] sm:leading-[1.1]"
           >
-            Create Polished Bills with{" "}
+            Free Online Invoice &amp; GST Generator with{" "}
             <span className="bg-gradient-to-r from-blue-400 via-cyan-300 to-indigo-300 bg-clip-text text-transparent">
-              UPI QR Payments & Instant PDF
+              UPI QR Payments &amp; Instant PDF
             </span>
           </motion.h1>
 
@@ -225,22 +225,26 @@ export default function Landing() {
             className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
           >
             <Button
-              onClick={() => setLocation("/invoice/new")}
+              asChild
               size="lg"
               className="relative group overflow-hidden w-full sm:w-auto bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold text-base px-9 py-6 rounded-2xl shadow-xl shadow-blue-500/25 transition-all duration-300 hover:scale-105 gap-2 border border-blue-400/30"
             >
-              <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out pointer-events-none" />
-              <FileText className="h-5 w-5" />
-              <span>Create Free Invoice</span>
-              <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+              <Link href="/invoice/new">
+                <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out pointer-events-none" />
+                <FileText className="h-5 w-5" />
+                <span>Create Free Invoice</span>
+                <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
             </Button>
 
             <Button
-              onClick={() => setLocation("/templates")}
+              asChild
               size="lg"
               className="w-full sm:w-auto bg-white/10 hover:bg-white text-white hover:text-blue-700 border-2 border-white/40 hover:border-white text-base font-bold px-8 py-6 rounded-2xl backdrop-blur-md shadow-md hover:shadow-xl transition-all duration-300 hover:scale-105"
             >
-              Explore Curated Templates
+              <Link href="/templates">
+                Explore Curated Templates
+              </Link>
             </Button>
           </motion.div>
 
@@ -360,34 +364,36 @@ export default function Landing() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {documentTypes.map((doc, idx) => (
-              <motion.div
-                key={idx}
-                whileHover={{ y: -6, scale: 1.01 }}
-                transition={{ type: "spring", stiffness: 350, damping: 25 }}
-                onClick={() => setLocation(doc.path)}
-                className="group relative p-6 rounded-2xl border border-gray-200/80 hover:border-blue-400/80 transition-all duration-300 cursor-pointer shadow-sm hover:shadow-xl hover:shadow-blue-500/10 bg-white overflow-hidden"
-              >
-                <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-blue-500/5 to-transparent rounded-bl-full pointer-events-none"></div>
-
-                <div className="flex items-center gap-3.5 mb-4">
-                  <div className={`w-11 h-11 rounded-xl bg-gradient-to-tr ${doc.gradient} flex items-center justify-center text-white shadow-md shadow-blue-500/20 group-hover:scale-110 transition-transform`}>
-                    <doc.icon className="h-5 w-5" />
-                  </div>
+              <Link key={idx} href={doc.path} className="block no-underline">
+                <motion.div
+                  whileHover={{ y: -6, scale: 1.01 }}
+                  transition={{ type: "spring", stiffness: 350, damping: 25 }}
+                  className="group relative p-6 rounded-2xl border border-gray-200/80 hover:border-blue-400/80 transition-all duration-300 cursor-pointer shadow-sm hover:shadow-xl hover:shadow-blue-500/10 bg-white overflow-hidden h-full flex flex-col justify-between"
+                >
                   <div>
-                    <h3 className="font-bold text-base text-gray-900 group-hover:text-blue-600 transition-colors">{doc.title}</h3>
-                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${doc.badgeColor}`}>
-                      Fast Builder
-                    </span>
+                    <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-blue-500/5 to-transparent rounded-bl-full pointer-events-none"></div>
+
+                    <div className="flex items-center gap-3.5 mb-4">
+                      <div className={`w-11 h-11 rounded-xl bg-gradient-to-tr ${doc.gradient} flex items-center justify-center text-white shadow-md shadow-blue-500/20 group-hover:scale-110 transition-transform`}>
+                        <doc.icon className="h-5 w-5" />
+                      </div>
+                      <div>
+                        <h3 className="font-bold text-base text-gray-900 group-hover:text-blue-600 transition-colors">{doc.title}</h3>
+                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${doc.badgeColor}`}>
+                          Fast Builder
+                        </span>
+                      </div>
+                    </div>
+
+                    <p className="text-xs text-gray-600 mb-5 leading-relaxed">{doc.desc}</p>
                   </div>
-                </div>
 
-                <p className="text-xs text-gray-600 mb-5 leading-relaxed">{doc.desc}</p>
-
-                <div className="flex items-center justify-between pt-3 border-t border-gray-100 text-xs font-bold text-blue-600 group-hover:text-blue-700">
-                  <span>Start with fresh blank</span>
-                  <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1.5 transition-transform" />
-                </div>
-              </motion.div>
+                  <div className="flex items-center justify-between pt-3 border-t border-gray-100 text-xs font-bold text-blue-600 group-hover:text-blue-700">
+                    <span>Start with fresh blank</span>
+                    <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1.5 transition-transform" />
+                  </div>
+                </motion.div>
+              </Link>
             ))}
           </div>
         </div>

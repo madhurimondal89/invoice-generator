@@ -66,6 +66,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       "Allow: /",
       "User-agent: PerplexityBot",
       "Allow: /",
+      "User-agent: ClaudeBot",
+      "Allow: /",
       "User-agent: Claude-Web",
       "Allow: /",
       "User-agent: anthropic-ai",
@@ -75,6 +77,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       "User-agent: Applebot-Extended",
       "Allow: /",
       "User-agent: cohere-ai",
+      "Allow: /",
+      "User-agent: Bytespider",
       "Allow: /",
       "",
       `Sitemap: ${protocol}://${host}/sitemap.xml`

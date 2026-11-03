@@ -3,6 +3,26 @@ import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 
 const app = express();
+
+// Canonical redirects: www -> non-www and http -> https in production
+app.use((req, res, next) => {
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("X-Frame-Options", "SAMEORIGIN");
+  res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
+  res.setHeader("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
+
+  const host = req.headers.host || "";
+  if (host.startsWith("www.invoicegenius.in")) {
+    return res.redirect(301, `https://invoicegenius.in${req.originalUrl}`);
+  }
+  if (
+    process.env.NODE_ENV === "production" &&
+    req.headers["x-forwarded-proto"] === "http"
+  ) {
+    return res.redirect(301, `https://${host}${req.originalUrl}`);
+  }
+  next();
+});
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
