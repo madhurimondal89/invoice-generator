@@ -9,6 +9,7 @@ import InvoiceForm from "@/components/invoice/invoice-form";
 import InvoicePreview from "@/components/invoice/invoice-preview";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Sparkles } from "lucide-react";
+import BuilderSeoFooter from "@/components/invoice/builder-seo-footer";
 
 export default function InvoiceBuilder({ documentType = 'invoice', ...props }: { documentType?: string } & Record<string, any>) {
   const { isAuthenticated, isLoading: authLoading } = useAuth();
@@ -190,6 +191,9 @@ export default function InvoiceBuilder({ documentType = 'invoice', ...props }: {
             />
           </div>
         </div>
+
+        {/* SEO, AEO & Compliance Footer with Contextual FAQs */}
+        <BuilderSeoFooter documentType={activeDocumentType} />
       </div>
     </div>
   );

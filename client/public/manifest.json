@@ -1,0 +1,24 @@
+{
+  "name": "Invoice Genius - Free GST Invoice & Receipt Generator",
+  "short_name": "InvoiceGenius",
+  "description": "Create 100% free GST invoices, quotes, receipts, and purchase orders in seconds with dynamic UPI QR codes and instant vector PDF download.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0f172a",
+  "theme_color": "#2563eb",
+  "categories": ["finance", "productivity", "business"],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/og-image.png",
+      "sizes": "1200x630",
+      "type": "image/png"
+    }
+  ]
+}

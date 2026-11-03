@@ -7,6 +7,7 @@ import { ArrowLeft, Download, Eye, Sparkles } from "lucide-react";
 import InvoiceForm from "@/components/invoice/invoice-form";
 import InvoicePreview from "@/components/invoice/invoice-preview";
 import { useToast } from "@/hooks/use-toast";
+import BuilderSeoFooter from "@/components/invoice/builder-seo-footer";
 
 export default function QuoteBuilder() {
   const [, setLocation] = useLocation();
@@ -139,6 +140,9 @@ export default function QuoteBuilder() {
             />
           </div>
         </div>
+
+        {/* SEO & FAQs Footer */}
+        <BuilderSeoFooter documentType="quote" />
       </div>
     </div>
   );

@@ -8,6 +8,7 @@ import {
   ChevronDown,
   Home,
   LayoutGrid,
+  BookOpen,
   Sparkles,
   QrCode,
   LogIn,
@@ -258,6 +259,13 @@ export default function Navigation() {
             >
               <LayoutGrid className="h-3.5 w-3.5" />
               Templates
+            </Link>
+            <Link
+              href="/guides"
+              className="hidden md:flex items-center text-gray-700 hover:text-primary gap-1.5 text-xs font-medium px-2.5 py-1.5 rounded-md hover:bg-gray-100 transition-colors"
+            >
+              <BookOpen className="h-3.5 w-3.5" />
+              Guides
             </Link>
 
             {isAuthenticated ? (

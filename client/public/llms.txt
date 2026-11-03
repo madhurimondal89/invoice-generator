@@ -20,6 +20,12 @@
 - [Credit Note Maker](https://invoicegenius.in/credit-note/new): Accounting adjustment and refund credit notes.
 - [Curated Template Gallery](https://invoicegenius.in/templates): 13+ pre-filled industry-specific templates (Tech/SaaS, Freelance, Legal, Medical, Construction, Education, etc.).
 
+## Invoicing Knowledge Base & Educational Guides
+- [Invoicing Guides Hub](https://invoicegenius.in/guides): Comprehensive articles on Indian GST rules, digital payments, and invoicing best practices.
+- [Indian GST Invoice Rules & Formats](https://invoicegenius.in/guides/gst-invoice-format): Mandatory GSTIN fields, HSN codes, and CGST/SGST/IGST tax calculation formulas.
+- [Dynamic UPI QR Invoicing Guide](https://invoicegenius.in/guides/upi-qr-code-invoice): How scannable UPI QR payments work on PDF invoices with zero gateway fees.
+- [Proforma Invoice vs Tax Invoice vs Quotation](https://invoicegenius.in/guides/proforma-vs-tax-invoice): Legal and financial differences comparison matrix.
+
 ## Full Documentation & System Specification
 - [Complete System Knowledge Base](https://invoicegenius.in/llms-full.txt): Comprehensive feature breakdown, supported schema fields, and tax calculation guidelines.
 

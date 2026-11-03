@@ -18,6 +18,10 @@ const About = lazy(() => import("@/pages/about"));
 const Contact = lazy(() => import("@/pages/contact"));
 const PrivacyPolicy = lazy(() => import("@/pages/privacy"));
 const TermsOfService = lazy(() => import("@/pages/terms"));
+const GuidesHub = lazy(() => import("@/pages/guides/index"));
+const GstInvoiceGuide = lazy(() => import("@/pages/guides/gst-invoice-rules"));
+const UpiQrInvoiceGuide = lazy(() => import("@/pages/guides/upi-qr-invoice-guide"));
+const ProformaVsTaxInvoiceGuide = lazy(() => import("@/pages/guides/proforma-vs-tax-invoice"));
 const NotFound = lazy(() => import("@/pages/not-found"));
 
 import Navigation from "@/components/navigation";
@@ -97,6 +101,12 @@ function Router() {
             <Route path="/contact" component={Contact} />
             <Route path="/privacy" component={PrivacyPolicy} />
             <Route path="/terms" component={TermsOfService} />
+
+            {/* Invoicing Guides & AEO Knowledge Base */}
+            <Route path="/guides" component={GuidesHub} />
+            <Route path="/guides/gst-invoice-format" component={GstInvoiceGuide} />
+            <Route path="/guides/upi-qr-code-invoice" component={UpiQrInvoiceGuide} />
+            <Route path="/guides/proforma-vs-tax-invoice" component={ProformaVsTaxInvoiceGuide} />
 
             <Route component={NotFound} />
           </Switch>

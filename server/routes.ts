@@ -52,6 +52,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       "Allow: /contact",
       "Allow: /privacy",
       "Allow: /terms",
+      "Allow: /guides",
+      "Allow: /guides/*",
       "Allow: /llms.txt",
       "Allow: /llms-full.txt",
       "Allow: /sitemap.xml",
@@ -113,7 +115,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       { path: "/about", priority: "0.8", changefreq: "monthly" },
       { path: "/contact", priority: "0.8", changefreq: "monthly" },
       { path: "/privacy", priority: "0.6", changefreq: "monthly" },
-      { path: "/terms", priority: "0.6", changefreq: "monthly" }
+      { path: "/terms", priority: "0.6", changefreq: "monthly" },
+      { path: "/guides", priority: "0.9", changefreq: "weekly" },
+      { path: "/guides/gst-invoice-format", priority: "0.9", changefreq: "weekly" },
+      { path: "/guides/upi-qr-code-invoice", priority: "0.9", changefreq: "weekly" },
+      { path: "/guides/proforma-vs-tax-invoice", priority: "0.9", changefreq: "weekly" }
     ];
 
     const xml = [

@@ -7,6 +7,7 @@ import { ArrowLeft, Sparkles } from "lucide-react";
 import InvoiceForm from "@/components/invoice/invoice-form";
 import InvoicePreview from "@/components/invoice/invoice-preview";
 import { useToast } from "@/hooks/use-toast";
+import BuilderSeoFooter from "@/components/invoice/builder-seo-footer";
 
 export default function CreditNoteBuilder() {
   const [, setLocation] = useLocation();
@@ -138,6 +139,9 @@ export default function CreditNoteBuilder() {
             />
           </div>
         </div>
+
+        {/* SEO & FAQs Footer */}
+        <BuilderSeoFooter documentType="credit_note" />
       </div>
     </div>
   );

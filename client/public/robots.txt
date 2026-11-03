@@ -17,6 +17,8 @@ Allow: /about
 Allow: /contact
 Allow: /privacy
 Allow: /terms
+Allow: /guides
+Allow: /guides/*
 Allow: /llms.txt
 Allow: /llms-full.txt
 Allow: /sitemap.xml

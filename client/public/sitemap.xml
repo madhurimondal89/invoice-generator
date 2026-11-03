@@ -115,8 +115,40 @@
   <!-- Terms of Service -->
   <url>
     <loc>https://invoicegenius.in/terms</loc>
-    <lastmod>2026-10-08</lastmod>
+    <lastmod>2026-11-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
+  </url>
+
+  <!-- Invoicing Knowledge Base & Guides Hub -->
+  <url>
+    <loc>https://invoicegenius.in/guides</loc>
+    <lastmod>2026-11-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Indian GST Invoice Format & Rules Guide -->
+  <url>
+    <loc>https://invoicegenius.in/guides/gst-invoice-format</loc>
+    <lastmod>2026-11-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Dynamic UPI QR Code Invoicing Guide -->
+  <url>
+    <loc>https://invoicegenius.in/guides/upi-qr-code-invoice</loc>
+    <lastmod>2026-11-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Proforma Invoice vs Tax Invoice vs Quotation -->
+  <url>
+    <loc>https://invoicegenius.in/guides/proforma-vs-tax-invoice</loc>
+    <lastmod>2026-11-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
 </urlset>

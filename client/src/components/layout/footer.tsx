@@ -257,6 +257,14 @@ export default function Footer() {
             <ul className="space-y-2.5 text-xs">
               <li>
                 <Link 
+                  href="/guides"
+                  className="text-gray-400 hover:text-white transition-colors block text-left"
+                >
+                  Invoicing Guides &amp; GST
+                </Link>
+              </li>
+              <li>
+                <Link 
                   href="/about"
                   className="text-gray-400 hover:text-white transition-colors block text-left"
                 >
